@@ -1,0 +1,31 @@
+@import '../../assets/index.scss';
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    .pagination {
+        width: fit-content;
+        border: 1px solid $gray-color2;
+        border-radius: 100px;
+        padding: 10px 12px;
+        li {
+            display: inline;
+            & + li {
+                margin-left: 12px;
+            }
+            button {
+                cursor: pointer;
+                border: none;
+                background-color: $cream-color;
+                font-size: 16px;
+                font-family: 'NanumSquareRoundOTF';
+                color: $gray-color2;
+
+                &.selected {
+                    color: $main-color;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

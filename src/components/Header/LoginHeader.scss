@@ -1,0 +1,20 @@
+@import '../../assets/index.scss';
+
+.header {
+    background-color: $main-color;
+    width: 100%;
+    min-width: 1200px;
+    max-width: 14400px;
+    height: 60px;
+
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+        width: 150px;
+        height: auto;
+    }
+}

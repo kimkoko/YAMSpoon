@@ -1,0 +1,75 @@
+@import '../../assets/index.scss';
+
+.header {
+    background-color: $main-color;
+    width: 100%;
+    min-width: 1200px;
+    max-width: 14400px;
+    height: 60px;
+
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    align-items: center;
+
+    .logo {
+        width: 150px;
+        height: auto;
+        margin-left: 30px;
+    }
+    
+    .nav {
+        padding-left: 70px;
+        width: 800px;
+        .text{
+            font-size: 16px;
+            @font-face {
+                font-family: 'NanumSquareRound';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+                font-style: bold;
+            }
+            text-decoration: none;
+            color: $cream-color;
+
+            + .text{
+                margin-left: 20px;
+            }
+            white-space: nowrap;
+            &:hover{
+                font-size: 18px;
+            }
+        }
+    }
+    .searchContainer{
+        position: relative;
+        display: flex;
+        input.search-cotainer {
+            margin: 15px;
+
+            width: 300px ;
+            border-radius: 50px;
+            font-size: 16px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border:none;
+        }
+        .search{
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+        }
+    }
+    .myPage{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .login{
+        width: 150px;
+        margin-right: 30px;
+        margin-left: 10px;
+        border: 1px solid $cream-color;
+        padding: 10px;
+    }
+    
+}

@@ -3,27 +3,23 @@
 .pagination-container {
     display: flex;
     justify-content: center;
+    margin: 20px 0 40px 0;
     .pagination {
         width: fit-content;
         border: 1px solid $gray-color2;
         border-radius: 100px;
-        padding: 10px 12px;
+        padding: 0 8px;
         li {
-            display: inline;
-            & + li {
-                margin-left: 12px;
-            }
+            display: inline-block;
             button {
                 cursor: pointer;
                 border: none;
                 background-color: $cream-color;
-                font-size: 16px;
-                font-family: 'NanumSquareRoundOTF';
                 color: $gray-color2;
 
                 &.selected {
                     color: $main-color;
-                    font-weight: 600;
+                    font-weight: 700;
                 }
             }
         }

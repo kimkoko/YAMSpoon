@@ -103,9 +103,6 @@ a:active {
 
 body{
   color: #1d1d1d;
-}
-
-body {
   min-height: 100vh;
   width: 100%;
 }
@@ -148,5 +145,33 @@ input {
       outline: none;
       border: 1px solid $main-color;
     }
+  }
+}
+
+// select
+select {
+  padding: 16px 24px;
+  margin: 10px 0;
+  border: 1px solid $gray-color2;
+  border-radius: 100px;
+  font-size: 16px;
+  color: $gray-color2;
+  outline: none;
+  transition: .3s;
+  cursor: pointer;
+
+  -webkit-appearance:none; /* for chrome */
+  -moz-appearance:none; /*for firefox*/
+  appearance:none;
+  &::-ms-expand{
+    display:none; /*for IE10,11*/
+  }
+
+  background: url('../../public/images/down.svg') no-repeat 97% 50%/15px auto;
+
+
+  &:focus {
+    border: 1px solid $main-color;
+    outline: none;
   }
 }

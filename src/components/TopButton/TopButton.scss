@@ -12,10 +12,12 @@
 
   position: fixed;
   right: 20px;
-  bottom: 180px;
+  bottom: 3%;
 
-  ion-icon{
+  padding: 0px;
+
+  svg{
     color: $main-color;
-    font-size: 27px;
+    width: 30px;
   }
 }

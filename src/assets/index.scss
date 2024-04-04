@@ -1,4 +1,3 @@
-
 // color
 $main-color: #d3233a;
 $sub-color: #a5eee5;
@@ -11,8 +10,31 @@ $correct-color: #32c200;
 // font
 @font-face {
   font-family: 'NanumSquareRound';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
-  font-style: normal;
+  font-weight: 300; 
+  font-style: normal; 
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/naver/NanumSquareRoundL.woff2) format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumSquareRound';
+  font-weight: 400; 
+  font-style: normal; 
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/naver/NanumSquareRoundR.woff2) format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumSquareRound';
+  font-weight: 500; 
+  font-style: normal; 
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/naver/NanumSquareRoundB.woff2) format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumSquareRound';
+  font-weight: 700; 
+  font-style: normal; 
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/naver/NanumSquareRoundEB.woff2) format('woff2');
+  font-display: swap;
 }
 
 * {
@@ -61,31 +83,30 @@ button {
   font-weight: 500;
   font-size: 16px;
 
-    background: #D3233A;
-    color: #FFFFFF;
+  background: $main-color;
+  color: $cream-color;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    + button {
-        flex-direction: column;
-        margin-top: 10px;
-    }
+  + button {
+    flex-direction: column;
+    margin-top: 10px;
+  }
 
-    &.long {
-        width: 400px;
-    }
+  &.long {
+    width: 400px;
+  }
 
-    &.notFilled {
-        background: #FFFFFF;
-        border: 1px solid #D3233A;
-        color: #D3233A;
-    }
+  &.notFilled {
+    background: $cream-color;
+    border: 1px solid $main-color;
+    color: $main-color;
+  }
 
-    &.short {
-        gap: 10px;
-        width: 140px;
-    }
-
+  &.short {
+    gap: 10px;
+    width: 140px;
+  }
 }
 
 /* a tag */
@@ -100,17 +121,9 @@ a:active {
   color: #000;
 }
 
-
-body{
-  color: #1d1d1d;
-  min-height: 100vh;
-  width: 100%;
-}
-
 // input
 input {
   padding: 16px 24px;
-  margin: 10px 0 20px 0;
   border: 1px solid $gray-color2;
   border-radius: 100px;
   font-size: 16px;
@@ -150,8 +163,7 @@ input {
 
 // select
 select {
-  padding: 16px 24px;
-  margin: 10px 0;
+  padding: 16px 26px;
   border: 1px solid $gray-color2;
   border-radius: 100px;
   font-size: 16px;
@@ -167,11 +179,22 @@ select {
     display:none; /*for IE10,11*/
   }
 
-  background: url('../../public/images/down.svg') no-repeat 97% 50%/15px auto;
+  background: url('../components/Icons/down.svg') no-repeat 90% 50%/19px 10px;
 
 
   &:focus {
     border: 1px solid $main-color;
     outline: none;
   }
+}
+
+// message
+.error-message {
+  font-size: 14px;
+  color: $main-color;
+}
+
+.success-message {
+  font-size: 14px;
+  color: $correct-color;
 }

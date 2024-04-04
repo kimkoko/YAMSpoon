@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './agination.scss'
+import './Pagination.scss'
 import ArrowBackFilled from '../Icons/ArrowBackFilled';
 import ArrowForwardFilled from '../Icons/ArrowForwardFilled';
 

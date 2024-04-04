@@ -3,72 +3,89 @@
 .header {
     background-color: $main-color;
     width: 100%;
-    min-width: 1200px;
-    height: 60px;
-
-    box-sizing: border-box;
-    margin: 0;
     display: flex;
+    justify-content: center;
     align-items: center;
+    
+    padding-top: 36px;
+    padding-bottom: 36px;
 
+    
     .logo {
-        width: 150px;
-        height: auto;
-        margin-left: 30px;
+        width: 170px;
+        height: 42px;
     }
     
-    .nav {
-        padding-left: 70px;
-        width: 800px;
-        .text{
-            font-size: 16px;
-            @font-face {
-                font-family: 'NanumSquareRound';
-                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
-                font-style: bold;
-            }
-            text-decoration: none;
-            color: $cream-color;
+    .container {
+        width:77%;
 
-            + .text{
-                margin-left: 20px;
-            }
-            white-space: nowrap;
-            &:hover{
-                font-size: 18px;
-            }
-        }
-    }
-    .searchContainer{
-        position: relative;
         display: flex;
-        input.search-cotainer {
-            margin: 15px;
+        justify-content: space-between;
+        align-items: center;
+        
+        .nav {
+            width: 30%;
+            white-space: nowrap;
+            
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap:22px;
 
-            width: 300px ;
-            border-radius: 50px;
-            font-size: 16px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            border:none;
+            .text {
+                font-size: 16px;
+                text-decoration: none;
+                color: $cream-color;
+
+                white-space: nowrap;
+                transition: all 0.3s;
+
+                &:hover{
+                    font-size: 18px;
+                }
+            }
         }
-        .search{
-            position: absolute;
-            top: 50%;
-            right: 30px;
-            transform: translateY(-50%);
-        }
-    }
-    .myPage{
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-    .login{
-        width: 150px;
-        margin-right: 30px;
-        margin-left: 10px;
-        border: 1px solid $cream-color;
-        padding: 10px;
-    }
+
+        .right-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap:35px;
+
+            .searchContainer{
+                position: relative;
+                display: flex;
+                white-space: nowrap;
     
+                input.search-cotainer {
+                    width: 308px;
+                    border-radius: 100px;
+                    font-size: 16px;
+                    border:none;
+                    padding: 12px 26px;
+                }
+                
+                .search-icon{
+                    position: absolute;
+                    top: 50%;
+                    right: 26px;
+                    transform: translateY(-50%);
+    
+                }
+            }
+    
+            .mypage-icon{
+                width: 24px;
+                height: 25px;
+            }
+    
+            .login{
+                border: 1px solid $cream-color;
+                padding: 12px 21px;
+                white-space: nowrap;
+            }
+        }
+        
+    }
+
 }

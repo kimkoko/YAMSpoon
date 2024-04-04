@@ -2,15 +2,7 @@ import "./Modal.scss";
 import React from "react";
 import PropTypes from "prop-types";
 
-
-function Modal({IconComponent, alertBody, buttonAction, actionText, hideCloseButton}){
-
-  // 닫기 버튼 클릭 시 모달창 닫기
-  function closeModal(){
-    const modal = document.querySelector('.modal');
-    modal.style.display = 'none';
-  }
-
+function Modal({IconComponent, alertBody, buttonAction, actionText, hideCloseButton, closeModal}){
 
   return (
     <>
@@ -34,13 +26,12 @@ function Modal({IconComponent, alertBody, buttonAction, actionText, hideCloseBut
 
 }
 
-
 // propTypes로 props의 타입을 지정해줌
 // isRequired는 필수 props로 지정해줌
 Modal.propTypes = {
 
   // 아이콘 컴포넌트
-  IconComponent: PropTypes.elementType.isRequired,
+  IconComponent: PropTypes.any.isRequired,
   
   // 알림 내용
   alertBody: PropTypes.string.isRequired,
@@ -52,9 +43,10 @@ Modal.propTypes = {
   actionText: PropTypes.string.isRequired,
 
   // 닫기 버튼 숨김 여부
-  hideCloseButton: PropTypes.bool
+  hideCloseButton: PropTypes.bool,
+
+  // 모달 닫기 함수
+  closeModal: PropTypes.func,
 }
-
-
 
 export default Modal; 

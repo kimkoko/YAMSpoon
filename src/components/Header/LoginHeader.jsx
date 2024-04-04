@@ -1,6 +1,6 @@
 import React from 'react';
 import './LoginHeader.scss';
-import Logo from '../Icons/LoginIcon';
+import Logo from '../Icons/LogoIcon';
 
 const LoginHeader = () => {
   return (

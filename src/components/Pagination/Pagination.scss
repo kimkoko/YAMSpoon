@@ -1,0 +1,39 @@
+@import '../../assets/index.scss';
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px 0;
+    height: 49px;
+    .pagination {
+        width: fit-content;
+        border: 1px solid $gray-color2;
+        border-radius: 100px;
+        
+        li {
+            display: inline-block;
+            button {
+                padding-left: 16px;
+                padding-right: 16px;
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+                color: $gray-color2;
+                width: 49px;
+
+                &.selected {
+                    color: $main-color;
+                    font-weight: 700;
+                    border: 3px solid $main-color;
+                    height: 49px;
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .arrow {
+        height: 52px;
+        margin: 0 10px;
+    }
+}

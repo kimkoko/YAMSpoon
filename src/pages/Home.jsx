@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div>
         <Header></Header>
-        <div style={{height:"2000px"}}>home</div>
+          <div style={{height:"2000px"}}>home</div>
         <Footer></Footer>
     </div>
   )

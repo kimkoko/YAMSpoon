@@ -83,31 +83,30 @@ button {
   font-weight: 500;
   font-size: 16px;
 
-    background: #D3233A;
-    color: #FFFFFF;
+  background: $main-color;
+  color: $cream-color;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    + button {
-        flex-direction: column;
-        margin-top: 10px;
-    }
+  + button {
+    flex-direction: column;
+    margin-top: 10px;
+  }
 
-    &.long {
-        width: 400px;
-    }
+  &.long {
+    width: 400px;
+  }
 
-    &.notFilled {
-        background: #FFFFFF;
-        border: 1px solid #D3233A;
-        color: #D3233A;
-    }
+  &.notFilled {
+    background: $cream-color;
+    border: 1px solid $main-color;
+    color: $main-color;
+  }
 
-    &.short {
-        gap: 10px;
-        width: 140px;
-    }
-
+  &.short {
+    gap: 10px;
+    width: 140px;
+  }
 }
 
 /* a tag */
@@ -120,13 +119,6 @@ a:hover,
 a:active {
   text-decoration: none;
   color: #000;
-}
-
-
-body{
-  color: #1d1d1d;
-  min-height: 100vh;
-  width: 100%;
 }
 
 // input
@@ -187,11 +179,22 @@ select {
     display:none; /*for IE10,11*/
   }
 
-  background: url('../../public/images/down.svg') no-repeat 90% 50%/19px 10px;
+  background: url('../components/Icons/down.svg') no-repeat 90% 50%/19px 10px;
 
 
   &:focus {
     border: 1px solid $main-color;
     outline: none;
   }
+}
+
+// message
+.error-message {
+  font-size: 14px;
+  color: $main-color;
+}
+
+.success-message {
+  font-size: 14px;
+  color: $correct-color;
 }

@@ -1,10 +1,11 @@
 import React from 'react';
 import './LoginHeader.scss';
+import Logo from '../Icons/LoginIcon';
 
 const LoginHeader = () => {
   return (
     <header className="login-header">
-        <img className='logo' src={process.env.PUBLIC_URL + '/images/logo.svg'} alt='logo'/>
+        <Logo alt ="logo"/>
     </header>
   );
 };

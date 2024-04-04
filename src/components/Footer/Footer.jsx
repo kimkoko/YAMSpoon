@@ -1,13 +1,16 @@
 import React from 'react';
 import './Footer.scss';
+import Logo from '../Icons/LoginIcon';
 
-const Header = () => {
+const Footer = () => {
   return (
     <footer className="footer">
-        <img className='logo' src={process.env.PUBLIC_URL + '/images/logo.svg'} alt='logo'/>
-        <p>Copyright ©️ eliceTeam6.All rights reserved.</p>
+        <div className='container'>
+          <Logo className="logo" alt ="logo" />
+          <p>Copyright ©️ eliceTeam6.All rights reserved.</p>
+        </div>
     </footer>
   );
 };
 
-export default Header;
+export default Footer;

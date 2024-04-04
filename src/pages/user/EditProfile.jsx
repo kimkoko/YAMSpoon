@@ -1,8 +1,24 @@
-import React from 'react'
-import LoginHeader from '../../components/Header/LoginHeader'
-import './EditProfile.scss'
+import React, { useState } from 'react';
+import LoginHeader from '../../components/Header/LoginHeader';
+import Modal from '../../components/Modal/Modal';
+import Alert from '../../components/Icons/Alert';
+import './EditProfile.scss';
 
-const SignUp = () => {
+const EditProfile = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleWithdraw = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  }
+
+  const confirmWithdraw = () => {
+    // 탈퇴 로직 구현
+    console.log('탈퇴 완료');
+    setIsModalOpen(false);
+    // 다른 페이지로 이동
+  }
+
   return (
     <div>
       <LoginHeader />
@@ -42,12 +58,22 @@ const SignUp = () => {
           </div>
           <div className='button-container'>
             <button type='submit' className='long'>정보 수정</button>
-            <button type='submit' className='long notFilled'>회원 탈퇴</button>
+            <button type='submit' className='long notFilled' onClick={handleWithdraw}>회원 탈퇴</button>
           </div>
         </form>
       </div>
+      {isModalOpen && (
+        <Modal
+          IconComponent={Alert}
+          alertBody='정말 탈퇴하시겠습니까?'
+          buttonAction={confirmWithdraw}
+          actionText='확인'
+          hideCloseButton={false}
+          closeModal={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
 
-export default SignUp
+export default EditProfile;

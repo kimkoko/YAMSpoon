@@ -1,0 +1,153 @@
+@import '../../assets/index.scss';
+
+.material-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 36px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+}
+
+.bar-container {
+    width: 77%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .main-bar {
+        width: 85%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-top: 1px solid $gray-color2;
+        border-bottom: 1px solid $gray-color2;
+        padding: 10px 0;
+        svg {
+            height: 50px;
+            + button {
+                margin-left: 12px;
+            }
+        }
+        :first-child {
+            color: black;
+            border: none;
+            font-weight: 500;
+            margin-left: 20px;
+        }
+        :last-child {
+            margin-left: 12px;
+        }
+        button {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            height: 40px;
+            min-width: 95px;
+            border-radius: 100px;
+            border: 1px solid #DBDBDB;
+            background-color: $cream-color;
+            color: $gray-color2;
+            padding: 0 20px;
+            margin: 4px;
+            font-weight: 400;
+
+            &.selected {
+                background-color: $main-color;
+                color: $cream-color    
+            }
+            svg {
+                height: 16px;
+                width: 16px;
+                margin: 0;
+            }
+        }
+        
+    }
+
+    .Add {
+        width: 147px;
+        height: 48px;
+        border: none;
+    }
+    
+}
+
+.result {
+    width: 77%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 66px;
+    p {
+        width: 250px;
+        font-size: 26px;
+        font-weight: bold;
+        > span {
+            color: $main-color;
+        }
+    }
+    select {
+        margin-left: auto;
+        width: 170px;    
+    }
+}
+
+.ListWrapper {
+    margin-top: 20px;
+    width: 77%;
+    
+    .RecipeList {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        row-gap: 54px;
+        column-gap: 32px;
+        
+        .RecipeItem {
+            width:294px;
+            height: 428px;
+            .ItemImage {
+                width: auto;
+                height: 320px;
+                border-radius: 44px;
+            }
+            p {
+                font-size: 19px;
+                font-weight: bold;
+                margin-top: 28px;
+            }
+            span {
+                margin-top: 28px;
+                display: flex;
+                align-items: center;
+                svg {
+                    height: 19px;
+                    margin-right: 5px;
+                }
+            }
+        }   
+    }
+
+    .EmptyList {
+        height: 429px;
+        border: 1px solid $gray-color2;
+        border-radius: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        color: $gray-color2;
+        font-size: 36px;
+        font-weight: 500;
+    }
+    
+}

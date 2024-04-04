@@ -1,0 +1,95 @@
+@import '../../assets/index.scss';
+
+.banner-container {
+    margin-top: 80px;
+    .banner {
+        height: 605px;
+        width: 77%;
+        margin: auto;
+        background-color: aqua;
+        border-radius: 44px;
+    }
+}
+
+.recipe-container {
+    width: 77%;
+    height: 590px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: auto;
+    padding-top: 82px;
+    border-bottom: 1px solid $gray-color2;
+    .title {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 54px;
+    }
+    .recipe-items {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 32px;
+
+        .recipe-item {
+            width: 284px;
+            height: 324px;
+            position: relative;
+    
+            img {
+                width: auto;
+                height: 320px;
+                border-radius: 44px;
+            }
+            p {
+                font-size: 19px;
+                font-weight: bold;
+                margin-top: 27px;
+            }
+            span {
+                margin-top: 27px;
+                display: flex;
+                align-items: center;
+                svg {
+                    height: 19px;
+                    margin-right: 5px;
+                }
+            }
+            .ranking {
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 20px;
+                font-weight: 500;
+                text-align: center;
+                width: 30px;
+                height: 30px;
+                background-color: $main-color;
+                color: white;
+                padding: 20px 15px 15px 15px;
+                border-radius: 44px 0px;
+            }
+            
+
+
+        }
+    }
+    .popular-recipes-scroll {
+        > :first-child {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            top: 1125px;
+            left: 155px;
+            z-index: 1;
+        }
+        > :last-child {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            top: 1125px;
+            right: 150px;
+            z-index: 1;
+        }
+    }
+}
+

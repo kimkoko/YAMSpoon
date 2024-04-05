@@ -1,0 +1,210 @@
+@import '../../assets/index.scss';
+
+.material-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 36px;
+    height: 174px;
+    display: flex;
+    align-items: center;
+}
+
+.bar-container {
+    width: 77%;
+
+    .button-box{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        gap: 11px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-top: 1px solid $gray-color2;
+        border-bottom: 1px solid $gray-color2;
+        box-sizing: border-box;
+
+        .all{
+            color: black;
+            border: none;
+            font-weight: 500;
+            margin-left: 0px;
+            width: 113px;
+            background: none;
+        }
+    }
+
+    .main-bar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        :last-child{
+            margin-left: 12px;
+        }
+        
+
+        button {
+            box-sizing: border-box;
+            border-radius: 100px;
+            border: 1px solid #DBDBDB;
+            background-color: $cream-color;
+            color: $gray-color2;
+            padding: 15px 34px;
+            font-weight: 400;
+            margin-top: 0px;
+            margin-left: 15px;
+
+            
+
+            
+            &.selected {
+                background-color: $main-color;
+                color: $cream-color   
+            }
+
+            
+            &:hover{
+                color: $main-color;
+                font-weight: 600;
+                border: 1px solid $main-color;
+
+                
+            }
+        }
+        svg {
+            height: 50px;
+            + button {
+                margin-left: 12px;
+            }
+        }
+    }
+
+    .sub-bar {
+        background-color: rgba(211, 35, 58, 0.1);
+        display: flex;
+        flex-direction: row;
+        :first-child {
+            margin-left: 25px;
+        }
+        
+        button {
+            color: $gray-color2;
+            font-weight: 400;
+            background-color: rgba(211, 35, 58, 0);
+            margin: 0;
+            padding: 25px 16px;
+            box-sizing: border-box;
+
+
+            &.selected {
+                color: $main-color;
+                font-weight: 700; 
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+                text-underline-offset : 6px;
+            }
+
+            &:hover{
+                color: $main-color;
+                font-weight: 700;
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+                text-underline-offset : 6px;
+            }
+        }        
+    }
+    
+}
+
+.arrow {
+    height: 50px;
+    + button {
+        margin-left: 12px;
+    }
+}
+
+.result {
+    width: 77%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 99px;
+    p {
+        font-size: 26px;
+        font-weight: bold;
+        > span {
+            color: $main-color;
+        }
+    }
+    select {
+        margin-left: auto;
+    }
+}
+
+.ListWrapper {
+    margin-top: 54px;
+    width: 77%;
+    
+    .RecipeList {
+        // display: grid;
+        // grid-template-columns: repeat(4, 1fr);
+        // grid-template-rows: repeat(3, 1fr);
+        // row-gap: 54px;
+        // column-gap: 32px;
+        display: flex;
+        gap: 35px;
+        row-gap: 54px;
+        flex-wrap: wrap;
+
+        .RecipeItem {
+            width:294px;
+            height: 428px;
+            cursor: pointer;
+
+            &:hover .ItemImage{
+                transform: scale(1.1);
+                transition: all 0.5s;
+            }
+
+            .item-img{
+                border-radius: 44px;
+                overflow: hidden;
+            }
+
+            .ItemImage {
+                width: auto;
+                min-height: 320px;
+                border-radius: 44px;
+                transition: all 0.5s;
+
+            }
+            p {
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 27px;
+            }
+            span {
+                margin-top: 27px;
+                display: flex;
+                font-size: 19px;
+            
+                svg {
+                    width: 19px;
+                    margin-right: 10px;
+                    color: $main-color;
+                }
+            }
+        }
+        
+    }
+    
+}

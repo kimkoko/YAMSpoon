@@ -36,7 +36,6 @@ const MaterialBar = () => {
                 <ArrowForward />
             </div>
             <div className={styles['sub-bar']}>
-                <button>당근</button>
                 {materials[3].subcategories.map((subcategory, idx) => (
                     <button 
                         key={`0-${subcategory}`}
@@ -174,7 +173,7 @@ const materials = [
     {
         id: 4,
         name: '채소',
-        subcategories: ['시금치', '대파','양파']
+        subcategories: ['시금치', '대파','양파', '당근']
     },
     {
         id: 5,
@@ -190,22 +189,7 @@ const materials = [
         id: 7,
         name: '과일',
         subcategories: ['사과', '배']
-    },
-    {
-        id: 8,
-        name: '과일',
-        subcategories: ['사과', '배']
-    },
-    {
-        id: 9,
-        name: '과일',
-        subcategories: ['사과', '배']
-    },
-    {
-        id: 10,
-        name: '과일',
-        subcategories: ['사과', '배']
-    },
+    }
 ]
 
 export default MaterialRecipe

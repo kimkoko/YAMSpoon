@@ -13,7 +13,7 @@ const Refrigerator = () => {
     <div>
         <Header />
         <div className={styles['material-container']}>
-            <div className={styles['title']}>재료별로 레시피가 준비되었어요!</div>
+            <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
             <MaterialBar />
             <div className={styles['result']}>
                 <p>검색 결과 <span>{recipes}</span>건 조회</p>
@@ -30,7 +30,7 @@ const Refrigerator = () => {
   )
 }
 
-const materials = ['감자', '계란', '양파', '당근', '오이', '닭고기']
+const materials = ['감자', '계란', '양파', '당근', '오이']
 const recipes = 9
 
 const MaterialBar = () => {

@@ -20,7 +20,7 @@ const Header = () => {
 
       <div className='container'>
         <div className='nav'>
-          <Link className='text' to = "/material">재료별 레시피</Link>
+          <Link className='text' to = "/material-recipe">재료별 레시피</Link>
           <Link className='text' to = "/type-recipe">종류별 레시피</Link>
           <Link className='text' to = "/regrigerator">나만의 냉장고</Link>
         </div>

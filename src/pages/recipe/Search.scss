@@ -67,9 +67,9 @@
 
             .images-container {
                 display: flex;
-                justify-content: space-between;
-
-                gap: 0 32px;
+                gap: 35px;
+                row-gap: 54px;
+                flex-wrap: wrap;
 
                 .image-container {
                     display: flex;
@@ -78,11 +78,29 @@
                     align-items: flex-start;
                     gap : 27px;
                     float: left;
+                    cursor: pointer;
+
+                    .imgBox{
+                        overflow: hidden;
+                        border-radius: 44px;
+                        transition: all 0.5s;
+                    }
+
+                    &:hover{
+
+                        img{
+                            transform: scale(1.1);
+                            transition: all 0.5s;
+                        }
+                    }
                     
                     .recipe-image {
                         overflow: hidden;
                         width: 100%;
                         border-radius: 44px;
+                        transition: all 0.5s;
+
+                        min-height: 320px;
                     }
 
                     .recipe-name{
@@ -92,7 +110,6 @@
 
                     .like-container{
                         display: flex;
-                        align-items: center;
                         justify-content: flex-start;
                         gap: 0 9px;
 
@@ -101,6 +118,11 @@
                         }
                         .like-count{
                             font-size: 19px;
+                        }
+
+                        svg{
+                            width: 19px;
+                            color: #d3233a;
                         }
                     }
                 }

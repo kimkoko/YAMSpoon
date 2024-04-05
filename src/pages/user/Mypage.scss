@@ -37,6 +37,13 @@
 
 		.edit{
 			padding: 16px 26px;
+			transition: 0.3s;
+
+			&:hover{
+				background: $main-color;
+				color: $cream-color;
+				transition: 0.3s;
+			}
 		}
 	}
 }

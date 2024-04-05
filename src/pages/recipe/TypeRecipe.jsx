@@ -3,7 +3,7 @@ import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Pagination from '../../components/Pagination/Pagination'
 import TopButton from '../../components/TopButton/TopButton'
-import LikeIcon from '../../components/Icons/LikeIcon'
+import Heart from '../../components/Icons/Heart'
 import './TypeRecipe.scss'
 
 const TypeRecipe = () => {
@@ -61,105 +61,61 @@ const TypeRecipe = () => {
           <div className='all-image-container'>
             <div className='images-container'>
               <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                <div className='imgBox'>
+                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                </div>
                 <p className='recipe-name'>레시피 1</p>
                 <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
+                    <Heart fill={"#D3233A"}/>
                     <p className='like-count'>{likeCount}</p>
                 </div>
               </div>
+
               <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                <div className='imgBox'>
+                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                </div>
                 <p className='recipe-name'>레시피 1</p>
                 <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
+                    <Heart fill={"#D3233A"}/>
                     <p className='like-count'>{likeCount}</p>
                 </div>
               </div>
+
               <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                <div className='imgBox'>
+                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                </div>
                 <p className='recipe-name'>레시피 1</p>
                 <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
+                    <Heart fill={"#D3233A"}/>
                     <p className='like-count'>{likeCount}</p>
                 </div>
               </div>
+
               <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                <div className='imgBox'>
+                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                </div>
                 <p className='recipe-name'>레시피 1</p>
                 <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
+                    <Heart fill={"#D3233A"}/>
                     <p className='like-count'>{likeCount}</p>
                 </div>
               </div>
-            </div>
-            <div className='images-container'>
+
               <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                <div className='imgBox'>
+                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
+                </div>
                 <p className='recipe-name'>레시피 1</p>
                 <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
+                    <Heart fill={"#D3233A"}/>
                     <p className='like-count'>{likeCount}</p>
                 </div>
               </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-            </div>
-            <div className='images-container'>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-              <div className='image-container'>
-                <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <LikeIcon className='like-icon' fill= '#D3233A' />
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
+
+              
             </div>
           </div>
         </div>

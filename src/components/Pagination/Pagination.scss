@@ -3,8 +3,8 @@
 .pagination-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0 40px 0;
-  height: 49px;
+  box-sizing: border-box;
+  padding: 50px 0px 100px;
 
   .pagination {
     width: fit-content;
@@ -29,6 +29,10 @@
           height: 49px;
           margin-right: 0;
         }
+
+        &:hover{
+          color : $main-color;
+        }
       }
     }
   }
@@ -36,5 +40,8 @@
   .arrow {
     height: 52px;
     margin: 0 10px;
+    cursor: pointer;
+
+    
   }
 }

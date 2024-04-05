@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 .signin-title {
@@ -50,6 +50,9 @@
   a {
     font-weight: 500;
     transition: .3s;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .find-container {
@@ -57,6 +60,10 @@
       font-weight: 400;
       color: $gray-color2;
       transition: .3s;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .separator {

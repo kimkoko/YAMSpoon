@@ -7,6 +7,7 @@ import Heart from '../../components/Icons/Heart'
 import ArrowBack from '../../components/Icons/ArrowBack'
 import ArrowForward from '../../components/Icons/ArrowForward'
 import Delete from '../../components/Icons/Delete'
+import TopButon from '../../components/TopButton/TopButton'
 
 const Refrigerator = () => {
   return (
@@ -25,6 +26,7 @@ const Refrigerator = () => {
             { recipes === 0 ? <EmptyList /> : <RecipesList />}
         </div>
         <Pagination />
+        <TopButon/>
         <Footer />
     </div>
   )
@@ -67,74 +69,13 @@ const RecipesList = () => {
         <div className={styles['ListWrapper']}>
             <div className={styles['RecipeList']}>
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
+                    
                     <p>레시피 이름 01</p>
                     <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 02</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 03</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 04</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 05</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 06</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 07</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 08</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 09</p>
-                    <span>
-                        <Heart />
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>

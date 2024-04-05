@@ -5,7 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 80px 0px;
 }
 
 .edit-title {

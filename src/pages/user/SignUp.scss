@@ -5,7 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 80px 0px;
 }
 
 .signup-title {
@@ -30,7 +31,16 @@
 
     button {
       margin-left: 16px;
+      transition: 0.3s;
+
+      &:hover{
+        background: $main-color;
+        color: $cream-color;
+        transition: 0.3s;
+      }
     }
+
+    
   }
 
   label {

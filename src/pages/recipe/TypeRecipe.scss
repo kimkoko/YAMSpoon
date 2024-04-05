@@ -42,8 +42,8 @@
             justify-content: flex-start;
             
             gap: 11px ;
-            padding-top: 24px;
-            padding-bottom: 24px;
+            padding-top: 15px;
+            padding-bottom: 15px;
 
             
             .all{
@@ -51,6 +51,7 @@
                 color: $common-color;
                 background-color: $cream-color;
             }
+            
             .food-type-button-container {
                 display: flex;
                 gap:15px;
@@ -59,14 +60,24 @@
                     margin: 0;
                     padding: 15px 33px;
                     background-color: $cream-color;
-                    border: $gray-color2 1px solid;
-                    color: $gray-color2;
+                    border: #d8d8d8 1px solid;
+                    color: #aaaaaa;
+                    font-weight: 400;
+
+                    &:hover{
+                        border:1px solid $main-color;
+                        color: $main-color;
+                    }
                 }
                 .click-food-type-button{
                     margin: 0;
                     padding: 15px 33px;
                     background-color: $main-color;
                     color: $cream-color;
+
+                    &:hover{
+                        color: $cream-color;
+                    }
                 }
             }   
         }
@@ -92,19 +103,13 @@
         }
 
         .all-image-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
             margin-top:54px;
-            margin-bottom: 90px;
-
-            gap: 54px 0;
 
             .images-container {
                 display: flex;
-                justify-content: space-between;
-
-                gap: 0 32px;
+                gap: 35px;
+                row-gap: 54px;
+                flex-wrap: wrap;
 
                 .image-container {
                     display: flex;
@@ -113,11 +118,29 @@
                     align-items: flex-start;
                     gap : 27px;
                     float: left;
+                    cursor: pointer;
+
+                    .imgBox{
+                        overflow: hidden;
+                        border-radius: 44px;
+                        transition: all 0.5s;
+                    }
+
+                    &:hover{
+
+                        img{
+                            transform: scale(1.1);
+                            transition: all 0.5s;
+                        }
+                    }
                     
                     .recipe-image {
                         overflow: hidden;
                         width: 100%;
                         border-radius: 44px;
+                        transition: all 0.5s;
+
+                        min-height: 320px;
                     }
 
                     .recipe-name{
@@ -127,15 +150,19 @@
 
                     .like-container{
                         display: flex;
-                        align-items: center;
                         justify-content: flex-start;
-                        gap: 0 9px;
+                        gap: 0 10px;
 
                         .like-icon{
                             padding: 0;
                         }
                         .like-count{
                             font-size: 19px;
+                        }
+
+                        svg{
+                            width: 19px;
+                            color: #d3233a;
                         }
                     }
                 }

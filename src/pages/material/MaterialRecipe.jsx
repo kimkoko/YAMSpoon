@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/Footer'
 import Heart from '../../components/Icons/Heart'
 import ArrowBack from '../../components/Icons/ArrowBack'
 import ArrowForward from '../../components/Icons/ArrowForward'
+import TopButon from '../../components/TopButton/TopButton'
 
 const MaterialBar = () => {
     const [ selectedMaterial, setSelectedMaterial ] = useState(null);
@@ -20,21 +21,26 @@ const MaterialBar = () => {
     };
     
     return (
+        
         <div className={styles['bar-container']}>
-            <div className={styles['main-bar']}>
-                <button>전체</button>
-                <ArrowBack />
-                {materials.map(material => (
-                    <button 
-                        key={material.id}
-                        className={selectedMaterial === material.id ? styles['selected'] : ''}
-                        onClick={() => handleMaterialClick(material.id)}
-                    >
-                    {material.name}
-                    </button>
-                ))}
-                <ArrowForward />
+            <div className={styles["button-box"]}>
+                <button className={styles["all"]}>전체</button>
+
+                <div className={styles['main-bar']}>
+                    <ArrowBack />
+                    {materials.map(material => (
+                        <button 
+                            key={material.id}
+                            className={selectedMaterial === material.id ? styles['selected'] : ''}
+                            onClick={() => handleMaterialClick(material.id)}
+                        >
+                        {material.name}
+                        </button>
+                    ))}
+                    <ArrowForward />
+                </div>
             </div>
+                
             <div className={styles['sub-bar']}>
                 {materials[3].subcategories.map((subcategory, idx) => (
                     <button 
@@ -46,6 +52,7 @@ const MaterialBar = () => {
                     </button>
                 ))}
             </div>
+            
         </div>
     )
 }
@@ -55,75 +62,61 @@ const RecipesList = () => {
         <div className={styles['ListWrapper']}>
             <div className={styles['RecipeList']}>
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
                     <p>레시피 이름 01</p>
                     <span>
-                        {/* <Heart /> */}
-                        <Heart />
+                        {/* <Heart fill={"#D3233A"}/> */}
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>
+
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 02</p>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
+                    <p>레시피 이름 01</p>
                     <span>
-                        <Heart />
+                        {/* <Heart fill={"#D3233A"}/> */}
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>
+
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 03</p>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
+                    <p>레시피 이름 01</p>
                     <span>
-                        <Heart />
+                        {/* <Heart fill={"#D3233A"}/> */}
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>
+
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    <p>레시피 이름 04</p>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
+                    <p>레시피 이름 01</p>
                     <span>
-                        <Heart />
+                        {/* <Heart fill={"#D3233A"}/> */}
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>
+
                 <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 05</p>
+                    <div className={styles["item-img"]}>
+                        <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+                    </div>
+                    <p>레시피 이름 01</p>
                     <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 06</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 07</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 08</p>
-                    <span>
-                        <Heart />
-                        56,789
-                    </span>
-                </div>
-                <div className={styles['RecipeItem']}>
-                    <img className={styles['ItemImage']} src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_3'/>
-                    <p>레시피 이름 09</p>
-                    <span>
-                        <Heart />
+                        {/* <Heart fill={"#D3233A"}/> */}
+                        <Heart fill={"#D3233A"}/>
                         56,789
                     </span>
                 </div>
@@ -149,6 +142,7 @@ const MaterialRecipe = () => {
             <RecipesList />
         </div>
         <Pagination />
+        <TopButon/>
         <Footer />
     </div>
   )

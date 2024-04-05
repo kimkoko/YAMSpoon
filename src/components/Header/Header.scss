@@ -10,6 +10,14 @@
     padding-top: 36px;
     padding-bottom: 36px;
 
+    .headerInner{
+        min-width: 77%;
+        width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     
     .logo {
         width: 170px;
@@ -17,14 +25,12 @@
     }
     
     .container {
-        width:77%;
-
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 80%;
         
         .nav {
-            width: 30%;
             white-space: nowrap;
             
             display: flex;
@@ -58,7 +64,8 @@
                 white-space: nowrap;
     
                 input.search-cotainer {
-                    width: 308px;
+                    width: auto;
+                    min-width: 308px;
                     border-radius: 100px;
                     font-size: 16px;
                     border:none;
@@ -77,12 +84,26 @@
             .mypage-icon{
                 width: 24px;
                 height: 25px;
+                transition: all 0.3s;
+
+                &:hover{
+                    width: 28px;
+                    height: 29px;
+                    transition: all 0.3s;
+                }
             }
     
             .login{
                 border: 1px solid $cream-color;
                 padding: 12px 21px;
                 white-space: nowrap;
+                transition: all 0.3s;
+
+                &:hover{
+                    background-color: $cream-color;
+                    color: $main-color;
+                    transition: all 0.3s;
+                }
             }
         }
         

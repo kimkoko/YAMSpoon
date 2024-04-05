@@ -69,7 +69,7 @@ function UserSave() {
             <Swiper
               navigation={true}
               loop={true}
-              spaceBetween={32}
+              spaceBetween={35}
               slidesPerView={2}
               breakpoints={{
                 900:
@@ -91,7 +91,7 @@ function UserSave() {
                 <a href="/recipe">
                   <div className='saveItem'>
                     <div className='imgBox'>
-                      <img src='images/recipe1.png' alt='레시피 이미지' />
+                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
                     </div>
                     <div className='infoBox'>
                       <p className='title'>레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름</p>
@@ -109,7 +109,7 @@ function UserSave() {
                 <a href="/recipe">
                   <div className='saveItem'>
                     <div className='imgBox'>
-                      <img src='images/recipe2.png' alt='레시피 이미지' />
+                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
                     </div>
                     <div className='infoBox'>
                       <p className='title'>레시피 이름</p>
@@ -126,7 +126,7 @@ function UserSave() {
                 <a href="/recipe">
                   <div className='saveItem'>
                     <div className='imgBox'>
-                      <img src='images/recipe3.png' alt='레시피 이미지' />
+                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
                     </div>
                     <div className='infoBox'>
                       <p className='title'>레시피 이름</p>
@@ -143,7 +143,7 @@ function UserSave() {
                 <a href="/recipe">
                   <div className='saveItem'>
                     <div className='imgBox'>
-                      <img src='images/recipe4.png' alt='레시피 이미지' />
+                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
                     </div>
                     <div className='infoBox'>
                       <p className='title'>레시피 이름</p>
@@ -160,7 +160,7 @@ function UserSave() {
                 <a href="/recipe">
                   <div className='saveItem'>
                     <div className='imgBox'>
-                      <img src='images/recipe5.png' alt='레시피 이미지' />
+                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
                     </div>
                     <div className='infoBox'>
                       <p className='title'>레시피 이름</p>

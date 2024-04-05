@@ -1,7 +1,7 @@
 import './assets/App.scss';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import MaterialRecipe from './pages/material/MaterialRecipe';
 import Refrigerator from './pages/material/Refrigerator';
 import Recipe from './pages/recipe/Recipe';

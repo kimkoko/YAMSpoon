@@ -6,6 +6,7 @@
     align-items: center;
 
     width: 100%;
+
     .arrow-button {
         width: 49px;
         height: 49px ;
@@ -16,6 +17,10 @@
         display: flex;
         justify-content: center;  
         align-items: center;
+    }
+
+    .next-button{
+        transform: rotate(180deg);
     }
 
     .category-tap-container{
@@ -50,9 +55,5 @@
                 color: $cream-color;
             }
         }
-    }
-
-    .next-button{
-        transform: rotate(180deg);
     }
 }

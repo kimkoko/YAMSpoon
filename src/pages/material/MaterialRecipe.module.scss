@@ -3,7 +3,7 @@
 .material-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
 }
@@ -23,7 +23,7 @@
         width: 100%;
         display: flex;
         justify-content: flex-start;
-        gap: 11px;
+        
         padding-top: 15px;
         padding-bottom: 15px;
         border-top: 1px solid $gray-color2;
@@ -31,12 +31,9 @@
         box-sizing: border-box;
 
         .all{
-            color: black;
-            border: none;
-            font-weight: 500;
-            margin-left: 0px;
             width: 113px;
-            background: none;
+            color: $common-color;
+            background-color: $cream-color;
         }
     }
 
@@ -46,46 +43,6 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-
-        :last-child{
-            margin-left: 12px;
-        }
-        
-
-        button {
-            box-sizing: border-box;
-            border-radius: 100px;
-            border: 1px solid #DBDBDB;
-            background-color: $cream-color;
-            color: $gray-color2;
-            padding: 15px 34px;
-            font-weight: 400;
-            margin-top: 0px;
-            margin-left: 15px;
-
-            
-
-            
-            &.selected {
-                background-color: $main-color;
-                color: $cream-color   
-            }
-
-            
-            &:hover{
-                color: $main-color;
-                font-weight: 600;
-                border: 1px solid $main-color;
-
-                
-            }
-        }
-        svg {
-            height: 50px;
-            + button {
-                margin-left: 12px;
-            }
-        }
     }
 
     .sub-bar {
@@ -123,13 +80,6 @@
         }        
     }
     
-}
-
-.arrow {
-    height: 50px;
-    + button {
-        margin-left: 12px;
-    }
 }
 
 .result {

@@ -45,6 +45,7 @@ UserInfo.propTypes = {
 
 // 유저가 저장한 레시피
 function UserSave() {
+
   
   return (
     <>
@@ -55,7 +56,7 @@ function UserSave() {
           <div className='saveList'>
 
             {/* 저장한 레시피가 존재할 때 */}
-            <ImageCarousel slideDatas={slideData}/>
+            <ImageCarousel slideDatas={slideData} hideRecipeRanking={true}/>
 
             {/* 저장한 레시피가 없을 때 */}
             <div className='empty' style={{"display":"none"}}>

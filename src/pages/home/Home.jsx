@@ -23,6 +23,7 @@ const slideData = [
   {recipeImg: 'recipe4.png', recipeName: '레시피 이름 08', recipeLike: 123124},
   {recipeImg: 'recipe4.png', recipeName: '레시피 이름 09', recipeLike: 500},
   {recipeImg: 'recipe4.png', recipeName: '레시피 이름 10', recipeLike: 1231},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 11', recipeLike: 1231},
 ]
 
 
@@ -50,7 +51,7 @@ const Home = () => {
           <p className={styles['title']}>화제의 레시피를 알려드릴게요!</p>
           <div className={styles['popular-recipes-scroll']}>
             {/* <PopularRecipeList/> */}
-            <ImageCarousel slideDatas={slideData}/>
+            <ImageCarousel slideDatas={slideData} hideRecipeRanking={false}/>
           </div>
         </div>
 
@@ -119,49 +120,5 @@ const RecipeList = () => {
   )
 }
 
-// const PopularRecipeList = () => {
-//   return (
-//     <>
-//       <div className={styles['popular-list']}>
-
-//         <Swiper
-//           navigation={true}
-//           loop={true}
-//           spaceBetween={35}
-//           slidesPerView={2}
-//           breakpoints={{
-//             900:
-//             {
-//               slidesPerView: 3
-//             },
-//             1200:
-//             {
-//               slidesPerView: 4
-//             },
-//           }}
-//           onSlideChange={() => console.log('slide change')}
-//           onSwiper={(swiper) => console.log(swiper)}
-//           modules={[Navigation]}
-//           className="popularItemSwiper mySwiper"
-//           >
-        
-//           <SwiperSlide className={styles['recipe-items']}>
-//             <div className={styles['recipe-item']}>
-//               <div className={styles["recipe-img"]}>
-//                 <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-//               </div>
-//               <div className={styles['ranking']}>1</div>
-//               <p>레시피 이름 01</p>
-//               <span>
-//                 <Heart fill={"#D3233A"}/>
-//                 56,789
-//               </span>
-//             </div>
-//           </SwiperSlide>
-//         </Swiper>
-//       </div>
-//     </>
-//   )
-// }
 
 export default Home

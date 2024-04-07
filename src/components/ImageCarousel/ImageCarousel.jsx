@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import "./ImageSlide.scss";
 import Arrow from ".././Icons/Arrow";
-import ImageSlide from "./ImageSlide";
+// import ImageSlide from "./ImageSlide";
 import propTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import Heart from '../Icons/Heart';
 
 
 
-export default function Slider({ slideDatas }) {
+export default function Slider({ slideDatas, hideRecipeRanking }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const TOTAL_SLIDES = slideDatas.length; // 전체 슬라이드 개수
 
@@ -50,6 +52,7 @@ export default function Slider({ slideDatas }) {
     return null;
   }
 
+
   return (
     <div className='imageSlider'>
       <div className='imageSliderWrap'
@@ -61,15 +64,25 @@ export default function Slider({ slideDatas }) {
         {/* 각 슬라이드를 매핑하여 표시 */}
         {
           slideDatas.map((slide, index) => (
-            <ImageSlide 
-              key={index}
-              recipeImg={slide.recipeImg}
-              recipeName={slide.recipeName}
-              recipeLike={slide.recipeLike.toLocaleString()}
-            />
+            <div className='imageSlide' key={index}>
+              <Link to="/recipe">
+                <div className="recipe-img">
+                    <img src={process.env.PUBLIC_URL + `/images/${slide.recipeImg}`} alt="레시피 이미지"/>
+                </div>
+                {!hideRecipeRanking && <div className='ranking'>{index + 1}</div>}
+                <p className='recipeName'>{slide.recipeName}</p>
+                <div className='likes'>
+                    <span>
+                    <Heart fill={"#D3233A"}/>
+                    {slide.recipeLike.toLocaleString()}
+                    </span>
+                </div>
+              </Link>
+            </div>
           ))
         }
       </div>
+      
     
       <button className='arrow prevBtn' onClick={PrevSlide}>
         <Arrow stroke={"#d3233a"}/>
@@ -82,13 +95,17 @@ export default function Slider({ slideDatas }) {
 }
 
 
+
+
 // props 정의
 Slider.propTypes = {
   slideDatas: propTypes.arrayOf(
     propTypes.shape({
-      recipeImg: propTypes.string.isRequired,
-      recipeName: propTypes.string.isRequired,
-      recipeLike: propTypes.number.isRequired
+      recipeImg: propTypes.string,
+      recipeName: propTypes.string,
+      recipeLike: propTypes.number,
+      recipeRanking: propTypes.number,
     })
-  ).isRequired
+  ).isRequired,
+  hideRecipeRanking: propTypes.bool,
 }

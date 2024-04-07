@@ -115,6 +115,22 @@
 }
 
 
+.ranking {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  background-color: $main-color;
+  color: white;
+  padding: 20px 15px 15px 15px;
+  border-radius: 44px 0px;
+}
+
+
 // 슬라이드 갯수 반응형
 @media screen and (max-width: 1200px){
 
@@ -123,3 +139,4 @@
     }
 
 }
+

@@ -8,17 +8,31 @@ import TopButton from '../../components/TopButton/TopButton'
 import Cutlery from '../../components/Icons/Cutlery'
 import { Link } from 'react-router-dom'
 
-// import required modules
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import ImageCarousel from '../../components/ImageCarousel/ImageCarousel'
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
+
+
+// 화제의 레시피 임시 데이터
+const slideData = [
+  {recipeImg: 'recipe1.png', recipeName: '레시피 이름 01', recipeLike: 56789},
+  {recipeImg: 'recipe2.png', recipeName: '레시피 이름 02', recipeLike: 12345}, 
+  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 03', recipeLike: 98765},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 04', recipeLike: 54321},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 06', recipeLike: 500},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 07', recipeLike: 1231},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 08', recipeLike: 123124},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 09', recipeLike: 500},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 10', recipeLike: 1231},
+  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 11', recipeLike: 1231},
+]
 
 
 
 const Home = () => {
+
+  // 좋아요 많은 순 정렬
+  slideData.sort((a, b) => b.recipeLike - a.recipeLike)
+
   return (
     <div>
         <Header />
@@ -36,9 +50,9 @@ const Home = () => {
         <div className={styles['recipe-container']}>
           <p className={styles['title']}>화제의 레시피를 알려드릴게요!</p>
           <div className={styles['popular-recipes-scroll']}>
-            <PopularRecipeList/>
+            {/* <PopularRecipeList/> */}
+            <ImageCarousel slideDatas={slideData} hideRecipeRanking={false}/>
           </div>
-          
         </div>
 
         <div className={styles['middle-line']}></div>
@@ -47,6 +61,7 @@ const Home = () => {
           <p className={styles['title']}>최근에 올라온 레시피는 어떤가요?</p>
           <RecipeList/>
         </div>
+
         <TopButton />
         <Footer />
     </div>
@@ -105,105 +120,5 @@ const RecipeList = () => {
   )
 }
 
-const PopularRecipeList = () => {
-  return (
-    <>
-      <div className={styles['popular-list']}>
-
-        <Swiper
-          navigation={true}
-          loop={true}
-          spaceBetween={35}
-          slidesPerView={2}
-          breakpoints={{
-            900:
-            {
-              slidesPerView: 3
-            },
-            1200:
-            {
-              slidesPerView: 4
-            },
-          }}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-          modules={[Navigation]}
-          className="popularItemSwiper mySwiper"
-          >
-        
-          <SwiperSlide className={styles['recipe-items']}>
-            <div className={styles['recipe-item']}>
-              <div className={styles["recipe-img"]}>
-                <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-              </div>
-              <div className={styles['ranking']}>1</div>
-              <p>레시피 이름 01</p>
-              <span>
-                <Heart fill={"#D3233A"}/>
-                56,789
-              </span>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide className={styles['recipe-items']}>
-            <div className={styles['recipe-item']}>
-              <div className={styles["recipe-img"]}>
-                <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-              </div>
-              <div className={styles['ranking']}>2</div>
-              <p>레시피 이름 01</p>
-              <span>
-                <Heart fill={"#D3233A"}/>
-                56,789
-              </span>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide className={styles['recipe-items']}>
-            <div className={styles['recipe-item']}>
-              <div className={styles["recipe-img"]}>
-                <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-              </div>
-              <div className={styles['ranking']}>3</div>
-              <p>레시피 이름 01</p>
-              <span>
-                <Heart fill={"#D3233A"}/>
-                56,789
-              </span>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide className={styles['recipe-items']}>
-            <div className={styles['recipe-item']}>
-              <div className={styles["recipe-img"]}>
-                <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-              </div>
-              <div className={styles['ranking']}>4</div>
-              <p>레시피 이름 01</p>
-              <span>
-                <Heart fill={"#D3233A"}/>
-                56,789
-              </span>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide className={styles['recipe-items']}>
-            <div className={styles['recipe-item']}>
-              <div className={styles["recipe-img"]}>
-                <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-              </div>
-              <div className={styles['ranking']}>5</div>
-              <p>레시피 이름 01</p>
-              <span>
-                <Heart fill={"#D3233A"}/>
-                56,789
-              </span>
-            </div>
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </>
-  )
-}
 
 export default Home

@@ -1,17 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import Heart from './Icons/Heart';
-
-// import required modules
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-
+import ImageCarousel from '../components/ImageCarousel/ImageCarousel'
 
 
 // 유저 정보
@@ -51,11 +41,11 @@ UserInfo.propTypes = {
   userName: propTypes.string.isRequired,
 }
 
-const likeColor="#D3233A";
 
 
 // 유저가 저장한 레시피
 function UserSave() {
+
   
   return (
     <>
@@ -66,113 +56,7 @@ function UserSave() {
           <div className='saveList'>
 
             {/* 저장한 레시피가 존재할 때 */}
-            <Swiper
-              navigation={true}
-              loop={true}
-              spaceBetween={35}
-              slidesPerView={2}
-              breakpoints={{
-                900:
-                {
-                  slidesPerView: 3
-                },
-                1200:
-                {
-                  slidesPerView: 4
-                },
-              }}
-              onSlideChange={() => console.log('slide change')}
-              onSwiper={(swiper) => console.log(swiper)}
-              modules={[Navigation]}
-              className="saveItemSwiper mySwiper"
-            >
-              
-              <SwiperSlide>
-                <a href="/recipe">
-                  <div className='saveItem'>
-                    <div className='imgBox'>
-                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    </div>
-                    <div className='infoBox'>
-                      <p className='title'>레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름레시피 이름</p>
-                      <p className='likes'>
-                        <Heart fill={likeColor}/>
-                        <span className='likesNum'>1,223</span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-                
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <a href="/recipe">
-                  <div className='saveItem'>
-                    <div className='imgBox'>
-                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    </div>
-                    <div className='infoBox'>
-                      <p className='title'>레시피 이름</p>
-                      <p className='likes'>
-                        <Heart fill={likeColor}/>
-                        <span className='likesNum'>1,223</span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <a href="/recipe">
-                  <div className='saveItem'>
-                    <div className='imgBox'>
-                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    </div>
-                    <div className='infoBox'>
-                      <p className='title'>레시피 이름</p>
-                      <p className='likes'>
-                        <Heart fill={likeColor}/>
-                        <span className='likesNum'>1,223</span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <a href="/recipe">
-                  <div className='saveItem'>
-                    <div className='imgBox'>
-                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    </div>
-                    <div className='infoBox'>
-                      <p className='title'>레시피 이름</p>
-                      <p className='likes'>
-                        <Heart fill={likeColor}/>
-                        <span className='likesNum'>1,223</span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <a href="/recipe">
-                  <div className='saveItem'>
-                    <div className='imgBox'>
-                      <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-                    </div>
-                    <div className='infoBox'>
-                      <p className='title'>레시피 이름</p>
-                      <p className='likes'>
-                        <Heart fill={likeColor}/>
-                        <span className='likesNum'>1,223</span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </SwiperSlide>
-            </Swiper>
+            <ImageCarousel slideDatas={slideData} hideRecipeRanking={true}/>
 
             {/* 저장한 레시피가 없을 때 */}
             <div className='empty' style={{"display":"none"}}>
@@ -185,6 +69,16 @@ function UserSave() {
     </>
   )
 }
+
+
+// 임시 데이터
+const slideData = [
+  {recipeImg: 'recipe1.png', recipeName: '레시피 이름 01 레시피 이름 01 레시피 이름 01 레시피 이름 01 레시피 이름 01', recipeLike: 56789},
+  {recipeImg: 'recipe2.png', recipeName: '레시피 이름 02', recipeLike: 12345}, 
+  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 03', recipeLike: 98765},
+  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 04', recipeLike: 98765},
+  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 05', recipeLike: 98765},
+]
 
 
 

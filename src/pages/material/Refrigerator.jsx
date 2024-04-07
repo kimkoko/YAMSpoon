@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './Refrigerator.module.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Heart from '../../components/Icons/Heart'
-import ArrowBack from '../../components/Icons/ArrowBack'
-import ArrowForward from '../../components/Icons/ArrowForward'
-import Delete from '../../components/Icons/Delete'
 import TopButon from '../../components/TopButton/TopButton'
+import RefigeratorCarousel from '../../components/RefigeratorCarousel/RefigeratorCarousel'
 
 const Refrigerator = () => {
   return (
@@ -32,32 +30,16 @@ const Refrigerator = () => {
   )
 }
 
-const materials = ['감자', '계란', '양파', '당근', '오이']
+const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어']
 const recipes = 9
 
 const MaterialBar = () => {
-    const [ selectedMaterial, setSelectedMaterial ] = useState(null);
-
-    const handleMaterialClick = (idx) => {
-        setSelectedMaterial(selectedMaterial === idx ? null : idx);
-    };
     
     return (
         <div className={styles['bar-container']}>
             <div className={styles['main-bar']}>
-                <button>전체</button>
-                <ArrowBack />
-                {materials.map((material,idx) => (
-                    <button 
-                        key={idx}
-                        className={selectedMaterial === idx ? styles['selected'] : ''}
-                        onClick={() => handleMaterialClick(idx)}
-                    >
-                    {material}
-                    <Delete />
-                    </button>
-                ))}
-                <ArrowForward />
+                <button className={styles['all']}>전체</button>
+                <RefigeratorCarousel materials={materials} />
             </div>
             <button className={styles['Add']}>재료 추가</button>
         </div>

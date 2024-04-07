@@ -38,23 +38,11 @@ const EditProfile = () => {
           </div>
           <div className="form-group">
             <label htmlFor='id'>아이디</label>
-            <input id='id' type='text' disabled />
-          </div>
-          <div className="form-group">
-            <label htmlFor='password'>비밀번호</label>
-            <input id='password' type='password' placeholder='비밀번호를 입력해 주세요.' />
-          </div>
-          <div className="form-group">
-            <label htmlFor='passwordConfirm'>비밀번호 확인</label>
-            <input id='passwordConfirm' type='password' placeholder='비밀번호를 다시 입력해 주세요.' />
+            <input id='id' type='text' value='elice123' disabled />
           </div>
           <div className="form-group">
             <label htmlFor='email'>이메일</label>
-            <div className="input-with-button">
-              <input id='email' type='email' placeholder='이메일을 입력해 주세요.' />
-              <button className='notFilled short'>인증</button>
-            </div>
-            <input type='number' placeholder='인증번호를 입력해 주세요.' />
+            <input id='email' type='email' value='elice123@naver.com' disabled />
           </div>
           <div className='button-container'>
             <button type='submit' className='long'>정보 수정</button>
@@ -67,7 +55,7 @@ const EditProfile = () => {
           IconComponent={Alert}
           alertBody='정말 탈퇴하시겠습니까?'
           buttonAction={confirmWithdraw}
-          actionText='확인'
+          actionText='탈퇴'
           hideCloseButton={false}
           closeModal={() => setIsModalOpen(false)}
         />

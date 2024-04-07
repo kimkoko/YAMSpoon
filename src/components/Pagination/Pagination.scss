@@ -3,11 +3,13 @@
 .pagination-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   box-sizing: border-box;
   padding: 50px 0px 100px;
 
   .pagination {
     width: fit-content;
+    height: fit-content;
     border: 1px solid $gray-color2;
     border-radius: 100px;
 
@@ -36,12 +38,14 @@
       }
     }
   }
-
-  .arrow {
-    height: 52px;
-    margin: 0 10px;
-    cursor: pointer;
-
-    
+  .arrow-button {
+    padding: 0;
+    background-color: transparent;
   }
+  .arrow {
+    height: 55px;
+    margin: 0px;
+    cursor: pointer; 
+  }
+  
 }

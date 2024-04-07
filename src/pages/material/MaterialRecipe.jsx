@@ -4,21 +4,18 @@ import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Heart from '../../components/Icons/Heart'
-import ArrowBack from '../../components/Icons/ArrowBack'
-import ArrowForward from '../../components/Icons/ArrowForward'
 import TopButon from '../../components/TopButton/TopButton'
 
-const MaterialBar = () => {
-    const [ selectedMaterial, setSelectedMaterial ] = useState(null);
-    const [ selectedSub, setSelectedSub ] = useState(null);
+import CategoryCarousel from '../../components/CategoryCarousel/CategoryCarousel';
 
-    const handleMaterialClick = (materialId) => {
-        setSelectedMaterial(selectedMaterial === materialId ? null : materialId);
-    };
+const MaterialBar = () => {
+    const [ selectedSub, setSelectedSub ] = useState(null);
 
     const handleSubClick = (idx) => {
         setSelectedSub(selectedSub === idx ? null : idx);
     };
+    
+    const categoryData = ['가공/유제품', '고기', '곡물', '과일', '면', '빵/떡', '채소', '콩/견과류', '해산물', '햄/소시지']
     
     return (
         
@@ -27,17 +24,7 @@ const MaterialBar = () => {
                 <button className={styles["all"]}>전체</button>
 
                 <div className={styles['main-bar']}>
-                    <ArrowBack />
-                    {materials.map(material => (
-                        <button 
-                            key={material.id}
-                            className={selectedMaterial === material.id ? styles['selected'] : ''}
-                            onClick={() => handleMaterialClick(material.id)}
-                        >
-                        {material.name}
-                        </button>
-                    ))}
-                    <ArrowForward />
+                    <CategoryCarousel CategoryData={categoryData}/>
                 </div>
             </div>
                 

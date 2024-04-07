@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types';
 import styles from './Refrigerator.module.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
@@ -6,14 +7,23 @@ import Footer from '../../components/Footer/Footer'
 import Heart from '../../components/Icons/Heart'
 import TopButon from '../../components/TopButton/TopButton'
 import RefigeratorCarousel from '../../components/RefigeratorCarousel/RefigeratorCarousel'
+import AddModal from './AddModal'
 
 const Refrigerator = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddClick = (e) => {
+        e.preventDefault();
+        setIsModalOpen(true);
+        console.log(isModalOpen)
+    }
+
   return (
     <div>
         <Header />
         <div className={styles['material-container']}>
             <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
-            <MaterialBar />
+            <MaterialBar handleAddClick={handleAddClick}/>
             <div className={styles['result']}>
                 <p>검색 결과 <span>{recipes}</span>건 조회</p>
                 <select name="order">
@@ -23,6 +33,9 @@ const Refrigerator = () => {
             </div>
             { recipes === 0 ? <EmptyList /> : <RecipesList />}
         </div>
+        {
+            isModalOpen && <AddModal closeModal={() => setIsModalOpen(false)}/>
+        }
         <Pagination />
         <TopButon/>
         <Footer />
@@ -33,7 +46,7 @@ const Refrigerator = () => {
 const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어']
 const recipes = 9
 
-const MaterialBar = () => {
+const MaterialBar = ({handleAddClick}) => {
     
     return (
         <div className={styles['bar-container']}>
@@ -41,7 +54,7 @@ const MaterialBar = () => {
                 <button className={styles['all']}>전체</button>
                 <RefigeratorCarousel materials={materials} />
             </div>
-            <button className={styles['Add']}>재료 추가</button>
+            <button className={styles['Add']} onClick={handleAddClick}>재료 추가</button>
         </div>
     )
 }
@@ -76,5 +89,9 @@ const EmptyList = () => {
     </div>
   )
 }
+
+MaterialBar.propTypes = {
+    handleAddClick: PropTypes.func.isRequired
+};
 
 export default Refrigerator

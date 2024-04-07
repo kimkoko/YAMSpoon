@@ -32,7 +32,7 @@ const CategoryCarousel = ({ CategoryData }) => {
     return (
         <div className="category-container">
             <button className='arrow-button previous-button' onClick={previousCategory}>
-                <Arrow/>
+                <Arrow />
             </button>
             <div className="category-tap-container">
                 {CategoryData.slice(startIndex, endIndex).map((category, index) => (
@@ -43,7 +43,7 @@ const CategoryCarousel = ({ CategoryData }) => {
                 ))}
             </div>
             <button className='arrow-button next-button' onClick={nextCategory}>
-                <Arrow  />
+                <Arrow />
             </button>
         </div>
     );

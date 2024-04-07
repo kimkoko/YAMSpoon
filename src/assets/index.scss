@@ -85,6 +85,7 @@ button {
 
   background: $main-color;
   color: $cream-color;
+  transition: .3s;
 
   cursor: pointer;
 
@@ -101,6 +102,11 @@ button {
     background: $cream-color;
     border: 1px solid $main-color;
     color: $main-color;
+
+    &:hover{
+      background: $main-color;
+      color: $cream-color;
+    }
   }
 
   &.short {
@@ -108,7 +114,6 @@ button {
     width: 140px;
   }
 }
-
 /* a tag */
 a {
   color: #000;

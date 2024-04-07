@@ -43,7 +43,7 @@ const Refrigerator = () => {
   )
 }
 
-const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어']
+const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어','꽁치']
 const recipes = 9
 
 const MaterialBar = ({handleAddClick}) => {

@@ -13,7 +13,7 @@ import FindPassword from './pages/user/FindPassword';
 import MyPage from './pages/user/MyPage';
 import SignIn from './pages/user/SignIn';
 import SignUp from './pages/user/SignUp';
-
+import ResetPassword from './pages/user/ResetPassword';
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }

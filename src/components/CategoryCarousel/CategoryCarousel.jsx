@@ -5,7 +5,7 @@ import './CategoryCarousel.scss'
 
 const CategoryCarousel = ({ CategoryData }) => {
     const [startIndex, setStartIndex] = useState(0); // 시작 인덱스 설정
-    const itemsToShow = 8; // 한 번에 표시할 항목 수
+    const itemsToShow = 7; // 한 번에 표시할 항목 수
 
     const endIndex = Math.min(startIndex + itemsToShow, CategoryData.length); // 끝 인덱스 계산
 

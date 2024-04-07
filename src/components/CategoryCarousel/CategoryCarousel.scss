@@ -28,10 +28,11 @@
         justify-content: space-between;
         align-items: center;
 
-        width: 85%;
+        width: 80%;
 
         white-space: nowrap;
         overflow: hidden;
+        gap: 10px;
 
         .category-button{
             margin: 0;

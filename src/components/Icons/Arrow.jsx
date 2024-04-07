@@ -1,17 +1,9 @@
 import React from 'react';
-import propTypes from "prop-types";
 
-export default function Arrow ({stroke}) {
+export default function Arrow () {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" viewBox="0 0 512 512">
-            <path fill="none" stroke={stroke} strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M244 400L100 256l144-144M120 256h292"/>
+        <svg width="17.89" height="18" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.77869 19L1.52231 10L9.77869 0.999999M2.66903 10L19.4111 10" stroke="#D3233A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-
     )
-}
-
-
-// props 정의
-Arrow.propTypes = {
-    stroke: propTypes.string,
 }

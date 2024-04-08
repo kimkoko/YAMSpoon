@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./ImageSlide.scss";
 import Arrow from ".././Icons/Arrow";
-// import ImageSlide from "./ImageSlide";
 import propTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import Heart from '../Icons/Heart';
@@ -14,23 +13,21 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
 
   // Next 버튼 클릭 시
   const NextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === TOTAL_SLIDES - 1 ? 0 : prevSlide + 1));
-    
-    // 마지막 슬라이드에서 다음 버튼 클릭 시 첫 슬라이드로 이동
-    if (currentSlide === TOTAL_SLIDES - 4) {
-      setCurrentSlide(0);
-    }
-
+    setCurrentSlide(prevSlide => 
+      // 만약 현재 슬라이드가 마지막 슬라이드(TOTAL_SLIDES - 1)이거나,
+      // 마지막 슬라이드에서 4개 이전의 슬라이드(TOTAL_SLIDES - 4)인 경우 첫 슬라이드로 설정
+      prevSlide === TOTAL_SLIDES - 1 || prevSlide === TOTAL_SLIDES - 4 ? 0 : prevSlide + 1
+    );
   };
 
   // Prev 버튼 클릭 시
   const PrevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? TOTAL_SLIDES - 1 : prevSlide - 1));
-
-    // 첫 슬라이드에서 이전 버튼 클릭 시 마지막 슬라이드로 이동
-    if (currentSlide === 0) {
-      setCurrentSlide(TOTAL_SLIDES - 4);
-    }
+    setCurrentSlide(prevSlide =>
+      // 첫 슬라이드인 경우 마지막에서 네 번째 슬라이드로 설정
+      prevSlide === 0 ? TOTAL_SLIDES - 4 :
+      // 그 외의 경우에는 슬라이드 인덱스를 1 감소
+      prevSlide - 1
+    );
   };
 
   // 4개 이하의 슬라이드가 있을 때는 버튼을 렌더링하지 않음

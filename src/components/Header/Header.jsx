@@ -15,7 +15,7 @@ const Header = () => {
   }
 
   return (
-    <header className='header'>
+    <header>
       <div className='headerInner'>
         <Link to ="/"><Logo /></Link>
 

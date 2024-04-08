@@ -4,7 +4,7 @@ import Logo from '../Icons/LogoIcon';
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer>
         <div className='container'>
           <Logo className="logo" alt ="logo" />
           <p>Copyright ©️ eliceTeam6.All rights reserved.</p>

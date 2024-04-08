@@ -1,0 +1,70 @@
+[
+    {
+    "id": "hong123",
+    "name": "홍길동",
+    "email": "hong123@naver.com",
+    "password": "rlfehd123!!",
+    "nickname": "길동",
+    "isAdmin": false,
+    "recipe": [
+        {
+        "name": "오이깍두기",
+        "user_like": [
+            {"user_id": ""},
+            {"user_id": ""},
+            {"user_id": ""}
+        ],
+        "img": "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"
+        }
+    ],
+    "ingredients": ["김치", "고추장", "된장", "고추"]
+    },
+    {
+    "id": "son111",
+    "name": "손흥민",
+    "email": "son111@gmail.com",
+    "password": "thsgmdals111~",
+    "nickname": "쏘니",
+    "isAdmin": false,
+    "recipe": [
+        {
+        "name": "오이깍두기",
+        "user_like": [
+            {"user_id": ""},
+            {"user_id": ""},
+            {"user_id": ""}
+        ],
+        "img": "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"
+        },
+        {
+        "name": "새우살고로케",
+        "user_like": [
+            {"user_id": ""},
+            {"user_id": ""},
+            {"user_id": ""}
+        ],
+        "img": "https://2bob.co.kr/data/recipe/20210923172019-JCM4P.jpg"
+        },
+        {
+        "name": "봉골레 파스타",
+        "user_like": [
+            {"user_id": ""},
+            {"user_id": ""},
+            {"user_id": ""}
+        ],
+        "img": "https://2bob.co.kr/data/recipe/20210908140344-RM4IC.jpg"
+        }
+    ],
+    "ingredients": []
+    },
+    {
+    "id": "karina",
+    "name": "유지민",
+    "email": "karina@example.com",
+    "password": "karina00!",
+    "nickname": "카리나",
+    "isAdmin": false,
+    "recipe": [],
+    "ingredients": []
+    }
+]

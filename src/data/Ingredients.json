@@ -1,0 +1,42 @@
+[
+    {
+        "name": "계란",
+        "category": "가공/유제품"
+    },
+    {
+        "name": "돈까스",
+        "category": "가공/유제품"
+    },
+    {
+        "name": "닭고기",
+        "category": "고기류"
+    },
+    {
+        "name": "감자",
+        "category": "곡물"
+    },
+    {
+        "name": "소면",
+        "category": "면"
+    },
+    {
+        "name": "떡국떡",
+        "category": "빵/떡"
+    },
+    {
+        "name": "김치",
+        "category": "채소"
+    },
+    {
+        "name": "양파",
+        "category": "채소"
+    },
+    {
+        "name": "깨",
+        "category": "콩/견과류"
+    },
+    {
+        "name": "고등어",
+        "category": "해산물"
+    }
+]

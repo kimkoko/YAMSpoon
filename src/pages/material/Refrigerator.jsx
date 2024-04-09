@@ -6,11 +6,18 @@ import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Heart from '../../components/Icons/Heart'
 import TopButon from '../../components/TopButton/TopButton'
-import RefigeratorCarousel from '../../components/RefigeratorCarousel/RefigeratorCarousel'
+import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
+
+
+
 
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [ materials, setMaterials ] = useState(['감자', '계란']);
+    // const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어','꽁치']
+    const recipes = 9
 
   const handleAddClick = (e) => {
         e.preventDefault();
@@ -18,12 +25,18 @@ const Refrigerator = () => {
         console.log(isModalOpen)
     }
 
+    const handleDeleteMaterial = (index) => {
+        const updatedMaterials = [...materials];
+        updatedMaterials.splice(index, 1);
+        setMaterials(updatedMaterials);
+    }
+
   return (
     <div>
         <Header />
         <div className={styles['material-container']}>
             <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
-            <MaterialBar handleAddClick={handleAddClick}/>
+            <MaterialBar handleAddClick={handleAddClick} materials={materials} deleteMaterial={handleDeleteMaterial} recipes={recipes} />
             <div className={styles['result']}>
                 <p>검색 결과 <span>{recipes}</span>건 조회</p>
                 <select name="order">
@@ -43,16 +56,13 @@ const Refrigerator = () => {
   )
 }
 
-const materials = ['감자', '계란', '양파', '당근', '오이', '김치', '고등어','꽁치']
-const recipes = 9
+const MaterialBar = ({handleAddClick, materials, handleDeleteMaterial, recipes}) => {
 
-const MaterialBar = ({handleAddClick}) => {
-    
     return (
         <div className={styles['bar-container']}>
             <div className={styles['main-bar']}>
                 <button className={styles['all']}>전체</button>
-                <RefigeratorCarousel materials={materials} />
+                <Carousel CategoryData={materials} items={recipes} showDeleteButton={true} handleDeleteMaterial = {handleDeleteMaterial}/>
             </div>
             <button className={styles['Add']} onClick={handleAddClick}>재료 추가</button>
         </div>
@@ -91,7 +101,10 @@ const EmptyList = () => {
 }
 
 MaterialBar.propTypes = {
-    handleAddClick: PropTypes.func.isRequired
+    handleAddClick: PropTypes.func.isRequired,
+    materials: PropTypes.array.isRequired,
+    handleDeleteMaterial: PropTypes.func.isRequired,
+    recipes: PropTypes.number.isRequired
 };
 
 export default Refrigerator

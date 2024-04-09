@@ -34,13 +34,14 @@
             width: 113px;
             color: $common-color;
             background-color: $cream-color;
-            white-space: nowrap     ;
+            white-space: nowrap;
         }
     }
 
     .Add {
         padding: 16px 36px;
         border: none;
+        white-space: nowrap;
     }
     
 }

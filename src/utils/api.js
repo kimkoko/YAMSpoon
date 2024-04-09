@@ -1,37 +1,50 @@
-import axios from 'axios';
+import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-// axios 인스턴스
-const instance = axios.create({
-    baseURL: 'https://localhost:3000',
-    timeout: 1000
-});
+axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Authorization'] = '토큰값';
+axios.defaults.timeout = 5000;
+
+export const api = axios.create();
 
 // 요청
-instance.interceptors.request.use(
-    function (config) {
-        // 요청 성공 직전 호출됩니다.
-        // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
-        config.headers["Content-Type"] = "application/json; charset=utf-8";
-        config.headers["Authorization"] = " 토큰 값";
-        return config;
-    }, 
-    function (error) {
-        // 요청 에러 직전 호출됩니다.
-        console.log(error)
-        return Promise.reject(error);
+api.interceptors.request.use(
+  (req) => {
+    return req;
+  },
+  (err) => {
+    if (isAxiosError(err)) {
+      if (err.status === HttpStatusCode.BadRequest) {
+        console.error('Bad Request - 400');
+      } else if (err.status === HttpStatusCode.NotFound) {
+        console.error('Not Found - 404');      
+      } else {
+        console.error('Request Error: ', err.message);
+      }
+    } else {
+      console.error('axios 외부에서 발생한 에러: ', err.message);
     }
+    return Promise.reject(err);
+  }
 );
 
-
 // 응답
-instance.interceptors.response.use(
-    function (response) {
-        console.log(response)
-        return response;
-    },
-
-    function (error) {
-        console.log(error)
-        return Promise.reject(error);
+api.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (err) => {
+    if (isAxiosError(err)) {
+      if (err.status === HttpStatusCode.Unauthorized) {
+        console.error('Unauthorized - 401');
+      } else if (err.status === HttpStatusCode.InternalServerError) {
+        console.error('Internal Server Error - 500');
+      } else {
+        console.error('Response Error: ', err.message);
+      }
+    } else {
+      console.error('axios 외부에서 발생한 에러: ', err.message);
     }
+    return Promise.reject(err);
+  }
 );

@@ -2,7 +2,6 @@ import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.headers.common['Authorization'] = '토큰값';
 axios.defaults.timeout = 5000;
 
 export const api = axios.create();

@@ -1,222 +1,222 @@
 {
     "ingredients": [
         {
-            "_id": "a1",
+            "id": "a1",
             "name": "계란",
             "category": "가공/유제품",
-            "category_id": "c1"
+            "categoryid": "c1"
         },
         {
-            "_id": "a2",
+            "id": "a2",
             "name": "소고기",
             "category": "고기",
-            "category_id": "c2"
+            "categoryid": "c2"
         },
         {
-            "_id": "a3",
+            "id": "a3",
             "name": "돼지고기",
             "category": "고기",
-            "category_id": "c2"
+            "categoryid": "c2"
         },
         {
-            "_id": "a4",
+            "id": "a4",
             "name": "감자",
             "category": "곡물",
-            "category_id": "c3"
+            "categoryid": "c3"
         },
         {
-            "_id": "a5",
+            "id": "a5",
             "name": "스파게티면",
             "category": "면",
-            "category_id": "c5"
+            "categoryid": "c5"
         },
         {
-            "_id": "a6",
+            "id": "a6",
             "name": "가래떡",
             "category": "빵/떡",
-            "category_id": "c6"
+            "categoryid": "c6"
         },
         {
-            "_id": "a7",
+            "id": "a7",
             "name": "김치",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a8",
+            "id": "a8",
             "name": "양파",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a9",
+            "id": "a9",
             "name": "깨",
             "category": "콩/견과류",
-            "category_id": "c8"
+            "categoryid": "c8"
         },
         {
-            "_id": "a10",
+            "id": "a10",
             "name": "고등어",
             "category": "해산물",
-            "category_id": "c9"
+            "categoryid": "c9"
         },
         {
-            "_id": "a11",
+            "id": "a11",
             "name": "대파",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a12",
+            "id": "a12",
             "name": "소시지",
             "category": "햄/소시지",
-            "category_id": "c10"
+            "categoryid": "c10"
         },
         {
-            "_id": "a13",
+            "id": "a13",
             "name": "팽이버섯",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a14",
+            "id": "a14",
             "name": "파프리카",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a15",
+            "id": "a15",
             "name": "어묵",
             "category": "해산물",
-            "category_id": "c9"
+            "categoryid": "c9"
         },
         {
-            "_id": "a16",
+            "id": "a16",
             "name": "콩나물",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a17",
+            "id": "a17",
             "name": "마늘",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a18",
+            "id": "a18",
             "name": "닭고기",
             "category": "고기",
-            "category_id": "c2"
+            "categoryid": "c2"
         },
         {
-            "_id": "a19",
+            "id": "a19",
             "name": "양배추",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a20",
+            "id": "a20",
             "name": "표고버섯",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a21",
+            "id": "a21",
             "name": "배추",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a22",
+            "id": "a22",
             "name": "고추",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a23",
+            "id": "a23",
             "name": "청경채",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a24",
+            "id": "a24",
             "name": "새우",
             "category": "해산물",
-            "category_id": "c9"
+            "categoryid": "c9"
         },
         {
-            "_id": "a25",
+            "id": "a25",
             "name": "삼치",
             "category": "해산물",
-            "category_id": "c9"
+            "categoryid": "c9"
         },
         {
-            "_id": "a26",
+            "id": "a26",
             "name": "밀가루",
             "category": "곡물",
-            "category_id": "c3"
+            "categoryid": "c3"
         },
         {
-            "_id": "a27",
+            "id": "a27",
             "name": "오이",
             "category": "채소",
-            "category_id": "c7"
+            "categoryid": "c7"
         },
         {
-            "_id": "a28",
+            "id": "a28",
             "name": "군만두",
             "category": "가공/유제품",
-            "category_id": "c1"
+            "categoryid": "c1"
         }
 
     ],
 
     "ingredientsCategory": [
     {
-        "_id": "c1",
+        "id": "c1",
         "category": "가공/유제품"
     },
     {
-        "_id": "c2",
+        "id": "c2",
         "category": "고기"
     },
     {
-        "_id": "c3",
+        "id": "c3",
         "category" : "곡물"
     },
     {
-        "_id": "c4",
+        "id": "c4",
         "category" : "과일"
     },
     {
-        "_id": "c5",
+        "id": "c5",
         "category" : "면"
     },
     {
-        "_id": "c6",
+        "id": "c6",
         "category" : "빵/떡"
     },
     {
-        "_id": "c7",
+        "id": "c7",
         "category" : "채소"
     },
     {
-        "_id": "c8",
+        "id": "c8",
         "category" : "콩/견과류"
     },
     {
-        "_id": "c9",
+        "id": "c9",
         "category" : "해산물"
     },
     {
-        "_id": "c10",
+        "id": "c10",
         "category" : "햄/소시지"
     }
     ],
 
     "recipes": [
     {
-        "_id": "r1",
+        "id": "r1",
         "name": "반숙 명란 덮밥",
         "description": "혼자 점심 먹는 주부나 싱글들을 위한 실용적인 1인분 레시피",
         "content": 
@@ -254,7 +254,7 @@
     },
 
     {
-        "_id": "r2",
+        "id": "r2",
         "name": "햄버거 김밥",
         "description": "자르면 귀여운 햄버거가 짠! 하고 나오는 김밥이에요.\n불을 쓰지 않아 아이들과 함께 만들기 좋고 색깔만 맞추면 어떤 재료든 응용 가능하답니다.\n어린이날 맞이 소풍 도시락 메뉴나 아이 생일상에 올리기 딱 좋아요.",
         "content": 
@@ -286,7 +286,7 @@
     },
 
     {
-        "_id": "r3",
+        "id": "r3",
         "name": "참치마요 볶음밥",
         "description": "자취생 필수템 통조림 참치로 감칠맛 가득한 볶음밥을 만들어보세요.\n간장과 마요네즈로 간을 맞추면 풍미를 두 배로 끌어올릴 수 있답니다.",
         "content": 
@@ -330,7 +330,7 @@
     },
 
     {
-        "_id": "r4",
+        "id": "r4",
         "name": "어묵국",
         "description": "초보라도 맛 내기 어렵지 않아요.\n재료? 단촐하죠. 어묵 맛이 충분히 우러날 때까지 끓이는 게 포인트.\n안주 없을 때도 제대로입니다.",
         "content": 
@@ -366,7 +366,7 @@
     },
 
     {
-        "_id": "r5",
+        "id": "r5",
         "name": "콩나물냉국",
         "description": "콩나물냉국은 아스파라긴산이 풍부해 속풀이 해장용으로, 땀을 많이 흘린 날 후루룩 시원하게 먹기도 좋답니다.\n콩나물의 비린 맛은 다진 마늘을 더해 깔끔하게 잡아주세요.",
         "content": 
@@ -408,7 +408,7 @@
     },
 
     {
-        "_id": "r6",
+        "id": "r6",
         "name": "전복삼계탕",
         "description": "요즘 같은 영양과잉 시대엔 따로 보양식이 필요 없다지만 삼계탕 한 그릇 안 먹고 지나가면 아쉽잖아요.\n손질만 잘하면 사실 그리 어렵지 않은 게 삼계탕이에요.\n한 번만 끓여보면 의외로 쉽게 느껴질 거예요. 차근차근 따라 해보세요!",
         "content": 
@@ -448,7 +448,7 @@
     },
 
     {
-        "_id": "r7",
+        "id": "r7",
         "name": "훠궈 물꼬치",
         "description": "불과 몇 년 사이 중국식 샤브샤브인 훠궈가 양꼬치만큼 큰 인기를 끌었죠.\n사실 훠궈 소스 하나면 집에서도 전문점 못지않게 진하고 매콤한 풍미를 마음껏 누릴 수 있어요.\n원하는 재료를 꼬치에 끼워 퐁당퐁당 빠뜨려 먹는 재미. 온 가족 저녁식사 메뉴로도 제격이에요.",
         "content": 
@@ -484,7 +484,7 @@
     },
 
     {
-        "_id": "r8",
+        "id": "r8",
         "name": "늙은 호박 된장찌개",
         "description": "제주식으로 달큰함을 더해 보글보글 끓인 된장찌개예요.\n바지락의 시원함과 늙은 호박의 구수함이 은근 잘 어우러진답니다.\n수제비를 넣어 먹어도 좋아요.",
         "content": 
@@ -527,7 +527,7 @@
     },
 
     {
-        "_id": "r9",
+        "id": "r9",
         "name": "얼큰 김치우동",
         "description": "야들야들한 어묵에 김치와 우동사리를 더해 푸짐하고 뜨끈한 우동을 만들었어요.\n진한 어묵 국물을 사용해서 따로 육수를 낼 필요도 없어요.",
         "content": 
@@ -564,7 +564,7 @@
     },
 
     {
-        "_id": "r10",
+        "id": "r10",
         "name": "냉이 버섯전골",
         "description": "기분마저 향긋하게 만드는 냉이로 칼칼한 전골을 끓여보세요.\n육수 낼 필요 없이 냉이하나로 시원한 국물 맛을 보장할 수 있답니다.\n취향에 따라 미나리 등 봄나물을 추가해도 좋아요.",
         "content": 
@@ -629,7 +629,7 @@
     },
 
     {
-        "_id": "r11",
+        "id": "r11",
         "name": "양배추볶음",
         "description": "양배추가 몸에 좋은 건 알아도 생으로는 잘 안 먹히고 요리하자니 번거롭다고요?\n집에 있는 양념장으로 휘리릭 볶아보세요.\n아삭아삭 식감 좋고 적당히 짭조름해 여기저기 곁들이기 좋은 반찬이 됩니다.\n냉장 보관해두고 꺼내 먹거나 전자레인지에 살짝 데워 먹어도 좋지만, \n양배추 숨이 죽을 수 있으니 조금씩 만들어 바로 먹는 게 가장 맛있어요.",
         "content": [
@@ -686,7 +686,7 @@
     },
 
     {
-        "_id": "r12",
+        "id": "r12",
         "name": "김치볶음",
         "description": "아무리 맛있는 음식도 김치 없인 느끼해요. \n김치를 달콤 고소하게 볶아 따뜻하게 곁들여보세요. \n새콤달콤 입맛을 돋워준답니다.",
         "content": [
@@ -721,7 +721,7 @@
     },
 
     {
-        "_id": "r13",
+        "id": "r13",
         "name": "닭가슴살장조림",
         "description": "쇠고기로 만들던 장조림을 닭가슴살로 바꾸니 지방 함량이 쭉 내려가네요.\n그동안 닭가슴살을 살 빼기 위해 먹는 맛없는 식재료로만 여겼다면 \n양념장으로 윤기 나게 조린 장조림이 정답이에요!",
         "content": [
@@ -777,7 +777,7 @@
     },
 
     {
-        "_id": "r14",
+        "id": "r14",
         "name": "옥수수알감자조림",
         "description": "여름에 가장 맛있는 감자, 꽈리고추, 옥수수가 뭉쳤어요.\n달콤 짭짤한 양념으로 맛나게 조리니 제철 채소가 밥도둑이 되네요.\n골고루 간이 배도록 타이밍을 지켜주세요.\n단단한 감자는 먼저 삶아서 볶고, 말캉한 꽈리고추는 맨 마지막에 투입해요.",
         "content": [
@@ -830,7 +830,7 @@
     },
 
     {
-        "_id": "r15",
+        "id": "r15",
         "name": "배추생채",
         "description": "겨울 무만큼 달콤한 배추를 살살 버무려 생채를 만들어보세요. \n배추김치보다 더 아삭하고 싱싱한 맛에 자꾸 손이 간답니다. \n짭조름하게 끓인 된장찌개를 넣어 비벼 먹어도 좋아요.",
         "content": [
@@ -886,7 +886,7 @@
     },
 
     {
-        "_id": "r16",
+        "id": "r16",
         "name": "청경채무침",
         "description": "볶음 요리의 부재료로만 사용했던 청경채, 이제 든든한 반찬으로 즐겨보세요. \n푸릇푸릇한 색감을 살려 보기에도 맛있어 보이고, 아작아작한 씹는 맛도 일품! \n참기름 향이 고소하게 풍겨 자꾸 젓가락이 가네요.",
         "content": [
@@ -932,7 +932,7 @@
     },
 
     {
-        "_id": "r17",
+        "id": "r17",
         "name": "갈릭새우꼬치",
         "description": "고소하고 짭짜름한 새우를 한입씩 쏙쏙~ 빼먹어요. \n캠핑장에서는 직화 꼬치구이로 즐기고요. \n따순 밥 위에 올려 레몬즙을 뿌려 먹어도 별미죠. \n뭐니 뭐니 해도 구워서 바로 먹어야 제일 맛나요.",
         "content": [
@@ -976,7 +976,7 @@
     },
 
     {
-        "_id": "r18",
+        "id": "r18",
         "name": "카레삼치구이",
         "description": "노릇노릇 잘 구운 생선을 흰쌀밥 위에 척 얹어 먹고 싶지만 \n비린내도 고민, 살도 잘 흐트러져서 엄두가 안 난다고요? \n생선 요리가 처음인 주부들을 위한 이밥차의 레시피! \n카레가루 덕분에 비린내도 확 줄고, 밑간 없이도 간이 잘 맞네요. \n밀가루를 묻히면 모양이 예쁘게 고정되니까 보기에도 좋아요.",
         "content": [
@@ -1006,7 +1006,7 @@
     },
 
     {
-        "_id": "r19",
+        "id": "r19",
         "name": "마라닭구이",
         "description": "오븐에 구워 기름기를 쪽 밴 담백한 닭날개와 닭봉에 \n혀를 톡 쏘는 화자오의 얼얼한 매운 옷을 입혔어요. \n손으로 들고 뜯고 맛보다가 살만 쏙쏙 발라 흰밥과 마요네즈를 더해 주먹밥을 만들어보세요. \n들숨, 날숨으로도 날리기에 역부족인 매콤함을 순식간에 잠재우네요.",
         "content": [
@@ -1048,7 +1048,7 @@
     },
 
     {
-        "_id": "r20",
+        "id": "r20",
         "name": "대하꼬치",
         "description": "대하 하면 가장 먼저 떠오르는 \n소금구이 대신 꼬치에 꽂아 구웠어요. \n불향을 입혀 비린 맛을 잡고 \n새콤달콤한 양념장을 슥~ 바르니 \n맥주 생각이 절로 나요.",
         "content": [
@@ -1091,7 +1091,7 @@
     },
 
     {
-        "_id": "r21",
+        "id": "r21",
         "name": "오이깍두기",
         "description": "오이소박이 느낌의 깍두기예요.\n무로 만드는 깍두기와 다르게 아삭아삭 시원함이 가득하답니다.\n밥에 물 말아서 하나 얹어 먹으면 사라진 입맛 찾기에도 제격이에요.",
         "content": [
@@ -1122,7 +1122,7 @@
     },
 
     {
-        "_id": "r22",
+        "id": "r22",
         "name": "새우살고로케",
         "description": "탱탱한 새우와 고소한 돼지고기를 한 번에!\n촉촉하고 알찬 태국식 고로케 텃만꿍이에요.\n오늘만큼은 꼭 비곗살이 많은 고기를 사용해주세요.\n느끼함 없이 고소한데다 식감이 탱탱해져 더욱 맛있답니다.",
         "content": [
@@ -1150,7 +1150,7 @@
     },
 
     {
-        "_id": "r23",
+        "id": "r23",
         "name": "봉골레 파스타",
         "description": "바지락의 진한 맛을 살려\n감칠맛 가득한 봉골레 파스타를 만들었어요.\n국물을 자작하게 만들어서\n수저로 떠먹어도 참 맛있답니다.",
         "content": [
@@ -1177,7 +1177,7 @@
     },
 
     {
-        "_id": "r24",
+        "id": "r24",
         "name": "명란 파스타",
         "description": "스파게티에 명란의 진한 감칠맛을 입혀 볶으면\n한국인의 입맛을 저격한\n완벽한 오일 파스타를 만들 수 있어요.\n짭조름한 그 맛에 생각만 해도 군침이 돈답니다.",
         "content": [
@@ -1204,7 +1204,7 @@
     },
 
     {
-        "_id": "r25",
+        "id": "r25",
         "name": "통마늘 만두맛탕",
         "description": "만두에 맛탕 소스를 더하면\n'단짠단짠’으로 끝장나는 조합을 만들죠.\n묵직하게 감기는 탁주나 청아한 청주와\n환상적인 페어링을 이루는 건 물론\n아이들 간식으로도 훌륭해요.\n새우와 고기, 채소로 촘촘히 채운 군만두를\n한입 베어 문 순간 훅 치고 들어오는 꿀맛.\n고민할 필요 있나요?",
         "content": [
@@ -1233,39 +1233,39 @@
 
     "recipeCategory": [
         {
-            "_id": "rc1",
+            "id": "rc1",
             "category" : "한식"
         },
         {
-            "_id": "rc2",
+            "id": "rc2",
             "category" : "일식"
         },
         {
-            "_id": "rc3",
+            "id": "rc3",
             "category" : "중식"
         },
         {
-            "_id": "rc4",
+            "id": "rc4",
             "category" : "양식"
         },
         {
-            "_id": "rc5",
+            "id": "rc5",
             "category" : "디저트"
         },
         {
-            "_id": "rc6",
+            "id": "rc6",
             "category" : "음료/술"
         },
         {
-            "_id": "rc7",
+            "id": "rc7",
             "category" : "기타"
         }
     ],
 
     "user": [
     {
-        "_id": "u1",
-        "id": "hong123",
+        "id": "u1",
+        "userId": "hong123",
         "name": "홍길동",
         "email": "hong123@naver.com",
         "password": "rlfehd123!!",
@@ -1275,8 +1275,8 @@
         "ingredients": ["a7", "a12", "a16", "a22"]
     },
     {
-        "_id": "u2",
-        "id": "son111",
+        "id": "u2",
+        "userId": "son111",
         "name": "손흥민",
         "email": "son111@gmail.com",
         "password": "thsgmdals111~",
@@ -1286,8 +1286,8 @@
         "ingredients": []
     },
     {
-        "_id": "u3",
-        "id": "karina",
+        "id": "u3",
+        "userId": "karina",
         "name": "유지민",
         "email": "karina@example.com",
         "password": "karina00!",
@@ -1297,8 +1297,8 @@
         "ingredients": []
     },
     {
-        "_id": "u4",
-        "id": "lee456",
+        "id": "u4",
+        "userId": "lee456",
         "name": "이순신",
         "email": "lee456@naver.com",
         "password": "navalhero456!!",
@@ -1308,8 +1308,8 @@
         "ingredients": ["a7", "a12", "a16", "a22"]
     },
     {
-        "_id": "u5",
-        "id": "kim789",
+        "id": "u5",
+        "userId": "kim789",
         "name": "김유신",
         "email": "kim789@naver.com",
         "password": "greatgeneral789!!",
@@ -1319,8 +1319,8 @@
         "ingredients": ["a7", "a12", "a16", "a22"]
     },
     {
-        "_id": "u6",
-        "id": "park101",
+        "id": "u6",
+        "userId": "park101",
         "name": "박지성",
         "email": "park101@naver.com",
         "password": "runningman101!!",
@@ -1330,8 +1330,8 @@
         "ingredients": ["a7", "a12", "a16", "a22"]
     },
     {
-        "_id": "u7",
-        "id": "choi202",
+        "id": "u7",
+        "userId": "choi202",
         "name": "최무선",
         "email": "choi202@naver.com",
         "password": "gunpowder202!!",
@@ -1341,8 +1341,8 @@
         "ingredients": ["a7", "a12", "a16", "a22"]
     },
     {
-        "_id": "u8",
-        "id": "kang99",
+        "id": "u8",
+        "userId": "kang99",
         "name": "강호동",
         "email": "kang99@naver.com",
         "password": "kangrules99#",
@@ -1352,8 +1352,8 @@
         "ingredients": ["a3", "a8", "a15"]
     },
     {
-        "_id": "u9",
-        "id": "yjs11",
+        "id": "u9",
+        "userId": "yjs11",
         "name": "유재석",
         "email": "yjs11@gmail.com",
         "password": "dbwotjr!",
@@ -1363,8 +1363,8 @@
         "ingredients": ["a2", "a11", "a17", "a20", "a22"]
     },
     {
-        "_id": "u10",
-        "id": "yunakim",
+        "id": "u10",
+        "userId": "yunakim",
         "name": "김연아",
         "email": "yunakim@gmail.com",
         "password": "yunaqueen22$",

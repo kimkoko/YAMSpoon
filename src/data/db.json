@@ -248,11 +248,7 @@
                 "value": "0.5"
             }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1","u2","u3","u4","u5"],
         "category": "rc2",
         "img": "https://2bob.co.kr/data/recipe/20220804142632-D1Q5R.jpg"
     },
@@ -284,11 +280,7 @@
             "value": "2.5"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u5","u6","u7","u8","u9","u10"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210907163851-59TAU.jpg"
     },
@@ -332,11 +324,7 @@
             "value": "0.3"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1","u3","u9"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210907163851-59TAU.jpg"
     },
@@ -372,11 +360,7 @@
             "value": "0.3"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u7"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20211008173505-PZI5E.jpg"
     },
@@ -418,11 +402,7 @@
             "value": "1"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1","u2","u3","u4","u5","u6","u7","u8","u9","u10"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210712175844-2CJ9L.jpg"
     },
@@ -462,11 +442,7 @@
             "value": "약간"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u10","u7","u4"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210712171216-N3JE9.jpg"
     },
@@ -502,11 +478,7 @@
             "value": "1봉"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u4","u5"],
         "category": "rc3",
         "img": "https://2bob.co.kr/data/recipe/20210923181935-HLQ4Z.jpg"
     },
@@ -549,11 +521,7 @@
             "value": "(0.5)"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u8","u6","u4","u2","u1","u3"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20211117152449-BOUI2.jpg"
     },
@@ -590,11 +558,7 @@
             "value": "약간"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1","u5","u9","u10"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210218140615-EF2N9.jpg"
     },
@@ -659,11 +623,7 @@
             "value": "1"
         }
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1","u2","u3","u4","u5","u6","u7","u8","u9"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210308130918-U0M2N.jpg"
     },
@@ -720,11 +680,7 @@
             "value": "약간"
         }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u2","u3","u4","u5","u6","u7","u8"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20170520224850-EZ57L.jpg"
     },
@@ -759,11 +715,7 @@
             "value": "1스푼"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u2","u3","u4","u5","u6","u7","u8","u10"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20170409224705-3DASQ.jpg"
     },
@@ -819,11 +771,7 @@
             "value": "약간"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u2","u3","u4","u5","u8"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20170412130743-EB72F.jpg"
     },
@@ -876,11 +824,7 @@
             "value": "약간"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u2","u6","u7","u8"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20220804161607-X9UN0.png"
     },
@@ -936,11 +880,7 @@
             "value": "1스푼"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u10"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20211102200157-GTND8.jpg"
     },
@@ -986,11 +926,7 @@
             "value": "약간"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u8","u3"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20170419172052-NCI52.jpg"
     },
@@ -1034,11 +970,7 @@
             "value": "약간"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u2","u3","u4","u5","u7","u9","u10"],
         "category": "rc4",
         "img": "https://2bob.co.kr/data/recipe/20210923154959-ULE7Z.jpg"
     },
@@ -1068,11 +1000,7 @@
         "sauce": [
             {}
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u5","u6","u9"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20170518213745-YZU37.jpg"
     },
@@ -1114,11 +1042,7 @@
             "value": "2스푼"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u5","u10","u1","u2","u4"],
         "category": "rc3",
         "img": "https://2bob.co.kr/data/recipe/20210304140742-UG74N.jpg"
     },
@@ -1161,11 +1085,7 @@
             "value": "1스푼"
             }
         ],
-        "user_like": [
-            {"user_id": ""},
-            {"user_id": ""},
-            {"user_id": ""}
-        ],
+        "user_like": ["u3","u5"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210923153812-924SC.jpg"
     },
@@ -1196,11 +1116,7 @@
         {"key": "멸치액젓", "value": "2스푼"},
         {"key": "새우젓", "value": "1스푼"}
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u3"],
         "category": "rc1",
         "img": "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"
     },
@@ -1228,11 +1144,7 @@
         {"key": "간장", "value": "1스푼"},
         {"key": "후춧가루", "value": "약간"}
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u6","u7","u8","u9"],
         "category": "rc7",
         "img": "https://2bob.co.kr/data/recipe/20210923172019-JCM4P.jpg"
     },
@@ -1259,11 +1171,7 @@
         {"key": "맛술", "value": "4스푼"},
         {"key": "후춧가루", "value": "약간"}
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u3","u4","u5","u6","u7","u10","u9"],
         "category": "rc4",
         "img": "https://2bob.co.kr/data/recipe/20210908140344-RM4IC.jpg"
     },
@@ -1290,11 +1198,7 @@
         {"key": "다진마늘", "value": "0.5스푼"},
         {"key": "후춧가루", "value": "약간"}
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u3","u4","u5"],
         "category": "rc4",
         "img": "https://2bob.co.kr/data/recipe/20210908135807-G8AO2.jpg"
     },
@@ -1319,11 +1223,7 @@
         {"key": "올리고당", "value": "1스푼"},
         {"key": "간장", "value": "1스푼"}
         ],
-        "user_like": [
-        {"user_id": ""},
-        {"user_id": ""},
-        {"user_id": ""}
-        ],
+        "user_like": ["u1"],
         "category": "rc7",
         "img": "https://2bob.co.kr/data/recipe/20210923181345-RO0M4.jpg"
     }
@@ -1395,6 +1295,83 @@
         "isAdmin": false,
         "recipe": [],
         "ingredients": []
+    },
+    {
+        "_id": "u4",
+        "id": "lee456",
+        "name": "이순신",
+        "email": "lee456@naver.com",
+        "password": "navalhero456!!",
+        "nickname": "거북선",
+        "isAdmin": false,
+        "recipe": ["r2"],
+        "ingredients": ["a7", "a12", "a16", "a22"]
+    },
+    {
+        "_id": "u5",
+        "id": "kim789",
+        "name": "김유신",
+        "email": "kim789@naver.com",
+        "password": "greatgeneral789!!",
+        "nickname": "화랑",
+        "isAdmin": false,
+        "recipe": ["r3"],
+        "ingredients": ["a7", "a12", "a16", "a22"]
+    },
+    {
+        "_id": "u6",
+        "id": "park101",
+        "name": "박지성",
+        "email": "park101@naver.com",
+        "password": "runningman101!!",
+        "nickname": "캡틴파크",
+        "isAdmin": false,
+        "recipe": ["r4"],
+        "ingredients": ["a7", "a12", "a16", "a22"]
+    },
+    {
+        "_id": "u7",
+        "id": "choi202",
+        "name": "최무선",
+        "email": "choi202@naver.com",
+        "password": "gunpowder202!!",
+        "nickname": "화약",
+        "isAdmin": false,
+        "recipe": ["r5"],
+        "ingredients": ["a7", "a12", "a16", "a22"]
+    },
+    {
+        "_id": "u8",
+        "id": "kang99",
+        "name": "강호동",
+        "email": "kang99@naver.com",
+        "password": "kangrules99#",
+        "nickname": "호동이",
+        "isAdmin": false,
+        "recipe": ["r1", "r3", "r4", "r5", "r6", "r9"],
+        "ingredients": ["a3", "a8", "a15"]
+    },
+    {
+        "_id": "u9",
+        "id": "yjs11",
+        "name": "유재석",
+        "email": "yjs11@gmail.com",
+        "password": "dbwotjr!",
+        "nickname": "재석",
+        "isAdmin": false,
+        "recipe": ["r5", "r8"],
+        "ingredients": ["a2", "a11", "a17", "a20", "a22"]
+    },
+    {
+        "_id": "u10",
+        "id": "yunakim",
+        "name": "김연아",
+        "email": "yunakim@gmail.com",
+        "password": "yunaqueen22$",
+        "nickname": "연아",
+        "isAdmin": false,
+        "recipe": ["r2", "r4", "r7", "r9"],
+        "ingredients": ["a1", "a9", "a20"]
     }
     ]
 }

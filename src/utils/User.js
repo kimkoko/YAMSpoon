@@ -1,4 +1,4 @@
-import API from './api';
+import api from './api';
 
 export default {
   /**
@@ -7,7 +7,7 @@ export default {
    * @param id
    */
   getUser(id) {
-    return API({
+    return api({
       url: `/user/${id}`,
       method: 'get'
     })
@@ -19,7 +19,7 @@ export default {
    * @param id
    */
   updateUser(id) {
-    return API({
+    return api({
       url: `/user/${id}`,
       method: 'put'
     })
@@ -31,7 +31,7 @@ export default {
    * @param id
    */
   deleteUser(id) {
-    return API({
+    return api({
       url: `/user/${id}`,
       method: 'delete'
     })
@@ -42,7 +42,7 @@ export default {
    * @summary 회원가입
    */
   createUser() {
-    return API({
+    return api({
       url: '/user',
       method: 'post'
     })
@@ -53,7 +53,7 @@ export default {
    * @summary 로그인
    */
   loginUser() {
-    return API({
+    return api({
       url: '/user',
       method: 'post'
     })
@@ -65,7 +65,7 @@ export default {
    * @param id
    */
   getUserFridge(id) {
-    return API({
+    return api({
       url: `/user/${id}/fridge`,
       method: 'get'
     })
@@ -77,7 +77,7 @@ export default {
    * @param id
    */
   updateUserFridge(id) {
-    return API({
+    return api({
       url: `/user/${id}/fridge`,
       method: 'put'
     })
@@ -89,7 +89,7 @@ export default {
    * @param id
    */
   updateUserBookmark(id) {
-    return API({
+    return api({
       url: `/user/${id}/bookmark`,
       method: 'put'
     })
@@ -100,7 +100,7 @@ export default {
    * @summary 사용자 아이디 찾기
    */
   findUserId() {
-    return API({
+    return api({
       url: '/findUserid',
       method: 'post'
     })
@@ -111,7 +111,7 @@ export default {
    * @summary 사용자 비밀번호 찾기
    */
   findUserPassword() {
-    return API({
+    return api({
       url: '/findUserpw',
       method: 'post'
     })
@@ -122,7 +122,7 @@ export default {
    * @summary 비밀번호 재설정
    */
   resetPassword() {
-    return API({
+    return api({
       url: '/resetPassword',
       method: 'put'
     })

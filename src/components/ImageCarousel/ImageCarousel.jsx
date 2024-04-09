@@ -49,7 +49,7 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
     return null;
   }
 
-
+  
   return (
     <div className='imageSlider'>
       <div className='imageSliderWrap'
@@ -64,14 +64,16 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
             <div className='imageSlide' key={index}>
               <Link to="/recipe">
                 <div className="recipe-img">
-                    <img src={process.env.PUBLIC_URL + `/images/${slide.recipeImg}`} alt="레시피 이미지"/>
+                    {/* <img src={process.env.PUBLIC_URL + `/images/${slide.img}`} alt="레시피 이미지"/> */}
+                    <img src={slide.img} alt="레시피 이미지"/>
                 </div>
+                {/* 레시피 랭킹 숨김 여부 */}
                 {!hideRecipeRanking && <div className='ranking'>{index + 1}</div>}
-                <p className='recipeName'>{slide.recipeName}</p>
+                <p className='recipeName'>{slide.name}</p>
                 <div className='likes'>
                     <span>
-                    <Heart fill={"#D3233A"}/>
-                    {slide.recipeLike.toLocaleString()}
+                      <Heart fill={"#D3233A"}/>
+                      {slide.user_like.length}
                     </span>
                 </div>
               </Link>
@@ -98,10 +100,9 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
 Slider.propTypes = {
   slideDatas: propTypes.arrayOf(
     propTypes.shape({
-      recipeImg: propTypes.string,
-      recipeName: propTypes.string,
-      recipeLike: propTypes.number,
-      recipeRanking: propTypes.number,
+      img: propTypes.string,
+      name: propTypes.string,
+      user_like: propTypes.object,
     })
   ).isRequired,
   hideRecipeRanking: propTypes.bool,

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styles from './MaterialBar.module.scss'
-import CategoryCarousel from '../../components/CategoryCarousel/CategoryCarousel';
+import Carousel from "../../components/Carousel/Carousel";
 
 const MaterialBar = () => {
     const [ selectedSub, setSelectedSub ] = useState(null);
@@ -10,7 +10,8 @@ const MaterialBar = () => {
     };
     
     const categoryData = ['가공/유제품', '고기', '곡물', '과일', '면', '빵/떡', '채소', '콩/견과류', '해산물', '햄/소시지']
-    
+    const items = 7;
+
     return (
         
         <div className={styles['bar-container']}>
@@ -18,7 +19,7 @@ const MaterialBar = () => {
                 <button className={styles["all"]}>전체</button>
 
                 <div className={styles['main-bar']}>
-                    <CategoryCarousel CategoryData={categoryData}/>
+                    <Carousel CategoryData={categoryData} items={items} showDeleteButton={false} />
                 </div>
             </div>
                 

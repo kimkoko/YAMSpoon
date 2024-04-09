@@ -1,10 +1,11 @@
 import "./Modal.scss";
 import React from "react";
 import PropTypes from "prop-types";
+import ReactDOM from 'react-dom';
 
 function Modal({IconComponent, alertBody, buttonAction, actionText, hideCloseButton, closeModal}){
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div className="modal">
         <div className="modal__overlay"></div>
@@ -21,7 +22,7 @@ function Modal({IconComponent, alertBody, buttonAction, actionText, hideCloseBut
           </div>
         </div>
       </div>
-    </>
+    </>, document.body
   )
 
 }

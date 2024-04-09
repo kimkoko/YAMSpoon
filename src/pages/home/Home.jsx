@@ -7,32 +7,29 @@ import Heart from '../../components/Icons/Heart'
 import TopButton from '../../components/TopButton/TopButton'
 import Cutlery from '../../components/Icons/Cutlery'
 import { Link } from 'react-router-dom'
-
 import ImageCarousel from '../../components/ImageCarousel/ImageCarousel'
+import _ from "lodash"
 
 
 
 // 화제의 레시피 임시 데이터
-const slideData = [
-  {recipeImg: 'recipe1.png', recipeName: '레시피 이름 01', recipeLike: 56789},
-  {recipeImg: 'recipe2.png', recipeName: '레시피 이름 02', recipeLike: 12345}, 
-  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 03', recipeLike: 98765},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 04', recipeLike: 54321},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 06', recipeLike: 500},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 07', recipeLike: 1231},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 08', recipeLike: 123124},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 09', recipeLike: 500},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 10', recipeLike: 1231},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 11', recipeLike: 1231},
+const slideLikesData = [
+  { name: "오이깍두기1", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}, {"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기2", user_like: [{"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기3", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기4", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}, {"user_id": "asdasdasd"}, {"user_id": "asdasdasd"}, {"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기5", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기6", user_like: [{"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
 ]
 
 
 
 const Home = () => {
 
-  // 좋아요 많은 순 정렬
-  slideData.sort((a, b) => b.recipeLike - a.recipeLike)
-
+  // 좋아요 많은 순 정렬  
+  const slideDataDeepCopy = _.cloneDeep(slideLikesData)
+  const sortLikesData = slideDataDeepCopy.sort((a, b) => b.user_like.length - a.user_like.length)
+  
   return (
     <div>
         <Header />
@@ -50,8 +47,7 @@ const Home = () => {
         <div className={styles['recipe-container']}>
           <p className={styles['title']}>화제의 레시피를 알려드릴게요!</p>
           <div className={styles['popular-recipes-scroll']}>
-            {/* <PopularRecipeList/> */}
-            <ImageCarousel slideDatas={slideData} hideRecipeRanking={false}/>
+            <ImageCarousel slideDatas={sortLikesData} hideRecipeRanking={false}/>
           </div>
         </div>
 

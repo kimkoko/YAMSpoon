@@ -73,12 +73,14 @@ function UserSave() {
 
 // 임시 데이터
 const slideData = [
-  {recipeImg: 'recipe1.png', recipeName: '레시피 이름 01 레시피 이름 01 레시피 이름 01 레시피 이름 01 레시피 이름 01', recipeLike: 56789},
-  {recipeImg: 'recipe2.png', recipeName: '레시피 이름 02', recipeLike: 12345}, 
-  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 03', recipeLike: 98765},
-  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 04', recipeLike: 98765},
-  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 05', recipeLike: 98765},
+  { name: "오이깍두기1", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}, {"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기2", user_like: [{"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기3", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기4", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}, {"user_id": "asdasdasd"}, {"user_id": "asdasdasd"}, {"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기5", user_like: [{"user_id": "asdasdasd"}, {"user_id": "asdadas"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
+  { name: "오이깍두기6", user_like: [{"user_id": "asdasdasd"}],img: "https://2bob.co.kr/data/recipe/20210712181218-TKL3I.jpg"},
 ]
+
 
 
 

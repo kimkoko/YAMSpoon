@@ -49,14 +49,15 @@ export default {
   },
 
   /**
-   * @method put
+   * @method PUT
    * @summary 레시피 좋아요 조회
    * @param id
    */
-  putLikeRecipe(id) {
+  putLikeRecipe(id, recipeData) {
     return api({
       url: `/recipes/${id}/like`,
       method: 'put',
+      data: recipeData
     });
   },
 

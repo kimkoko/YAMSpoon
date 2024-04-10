@@ -18,10 +18,11 @@ export default {
    * @summary 사용자 정보 업데이트
    * @param id
    */
-  updateUser(id) {
+  updateUser(id, userData) {
     return api({
       url: `/user/${id}`,
-      method: 'put'
+      method: 'put',
+      data: userData
     })
   },
   
@@ -41,10 +42,11 @@ export default {
    * @method POST
    * @summary 회원가입
    */
-  createUser() {
+  createUser(userData) {
     return api({
       url: '/user',
-      method: 'post'
+      method: 'post',
+      data: userData
     })
   },
 
@@ -52,10 +54,11 @@ export default {
    * @method POST
    * @summary 로그인
    */
-  loginUser() {
+  loginUser(userData) {
     return api({
       url: '/user',
-      method: 'post'
+      method: 'post',
+      data: userData
     })
   },
 
@@ -76,10 +79,11 @@ export default {
    * @summary 사용자 냉장고 재료 업데이트
    * @param id
    */
-  updateUserFridge(id) {
+  updateUserFridge(id, userData) {
     return api({
       url: `/user/${id}/fridge`,
-      method: 'put'
+      method: 'put',
+      data: userData
     })
   },
 
@@ -88,10 +92,11 @@ export default {
    * @summary 사용자 북마크 업데이트
    * @param id
    */
-  updateUserBookmark(id) {
+  updateUserBookmark(id, userData) {
     return api({
       url: `/user/${id}/bookmark`,
-      method: 'put'
+      method: 'put',
+      data: userData
     })
   },
 
@@ -99,10 +104,11 @@ export default {
    * @method POST
    * @summary 사용자 아이디 찾기
    */
-  findUserId() {
+  findUserId(userData) {
     return api({
       url: '/findUserid',
-      method: 'post'
+      method: 'post',
+      data: userData
     })
   },
 
@@ -110,10 +116,11 @@ export default {
    * @method POST
    * @summary 사용자 비밀번호 찾기
    */
-  findUserPassword() {
+  findUserPassword(userData) {
     return api({
       url: '/findUserpw',
-      method: 'post'
+      method: 'post',
+      data: userData
     })
   },
 
@@ -121,10 +128,11 @@ export default {
    * @method PUT
    * @summary 비밀번호 재설정
    */
-  resetPassword() {
+  resetPassword(userData) {
     return api({
       url: '/resetPassword',
-      method: 'put'
+      method: 'put',
+      data: userData
     })
   },
 }

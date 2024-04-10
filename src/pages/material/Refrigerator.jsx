@@ -9,14 +9,11 @@ import TopButon from '../../components/TopButton/TopButton'
 import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 
-
-
-
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [ materials, setMaterials ] = useState(['감자', '계란','양파', '당근', '오이', '김치', '고등어','꽁치' ]);
-    const recipes = 4;
+  const [ materials, setMaterials ] = useState(['감자1', '계란1','양파1', '참치액1', '오이1', '김치', '고등어','꽁치','김치', '고등어','꽁치','김치', '고등어','꽁치2' ]);
+  const recipes = 7;
 
   const handleAddClick = (e) => {
         e.preventDefault();
@@ -60,7 +57,6 @@ const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes 
     return (
         <div className={styles['bar-container']}>
             <div className={styles['main-bar']}>
-                <button className={styles['all']}>전체</button>
                 <Carousel CategoryData={materials} items={recipes} showDeleteButton={true} deleteMaterial = {handleDeleteMaterial}/>
             </div>
             <button className={styles['Add']} onClick={handleAddClick}>재료 추가</button>

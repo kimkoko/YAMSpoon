@@ -1,4 +1,4 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, createContext, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import ArrowButton from './ArrowButton';
 import CategoryTap from './CategoryTap';
@@ -9,8 +9,12 @@ const SelectdCategoryContext = createContext();
 const Carousel = ({ CategoryData, items, showDeleteButton, deleteMaterial }) => {
     const [startIndex, setStartIndex] = useState(0);
     const itemsToShow = items;
-    const endIndex = Math.min(startIndex + itemsToShow, CategoryData.length);
+    const endIndex = Math.min(startIndex + itemsToShow-1, CategoryData.length);
     const [selected, setSelected] = useState(Array(CategoryData.length).fill(false));
+
+    const containerStyle = useMemo(() => {
+        return deleteMaterial ? { width:'100%' } : {width: '100%'};
+    }, [deleteMaterial]);
 
     // 카테고리 선택
     const handleSelect = (index) => {
@@ -41,7 +45,7 @@ const Carousel = ({ CategoryData, items, showDeleteButton, deleteMaterial }) => 
     };
 
     return (
-        <div className='category-container'>
+        <div className='category-container' style={containerStyle}>
             <ArrowButton direction="previous" onClick={previousCategory} />
             <SelectdCategoryContext.Provider value={{ selected, handleSelect }}>
                 <CategoryTap 

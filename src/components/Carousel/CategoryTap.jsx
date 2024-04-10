@@ -5,8 +5,8 @@ import './Carousel.scss';
 
 const CategoryTap = ({ CategoryData, startIndex, endIndex, selected, handleSelect, deleteMaterial }) => {
     const containerStyle = useMemo(() => {
-        return deleteMaterial ? { justifyContent: 'flex-start', flex: 1 } : {justifyContent: 'space-between'};
-    }, [deleteMaterial]);
+        return CategoryData.length <=  5 ? { justifyContent: 'flex-start', flex: 1 } : { justifyContent: 'space-between', flex: 1 };
+    }, [CategoryData]);
 
     return (
         <div className='category-tap-container' style={containerStyle}>

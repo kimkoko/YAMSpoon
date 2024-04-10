@@ -31,7 +31,7 @@ export default {
    */
   getCatgory(categoryId) {
     return api({
-      url: `/recipes/${categoryId}`,
+      url: `/recipes?category=${categoryId}`,
       method: 'get',
     });
   },

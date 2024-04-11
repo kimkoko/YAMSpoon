@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './Pagination.scss'
 import ArrowBackFilled from '../Icons/ArrowBackFilled';
 import ArrowForwardFilled from '../Icons/ArrowForwardFilled';
 
-const Pagination = () => {
+const Pagination = ({ items, onPageChange }) => {
   const [ selectedPage, setSelectedPage ] = useState(0);
-  const [ pageList, setPageList ] = useState([])
-  //const totalPage = ['1', '2', '3', '4']
-  const totalItems = 161
+  const [ pageList, setPageList ] = useState([]);
   const itemsPerPage = 16
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const totalPages = Math.ceil(items.length/ itemsPerPage);
 
   useEffect(() => {
     if(totalPages < 5) {
-      const newList = []
+      const newList = [];
       for(let i = 1; i <= totalPages; i++) {
         newList.push(i)
       }
       setPageList(newList)
-    }
-    else setPageList([1,2,3,4,5])
-  }, [])
+    } else setPageList([1,2,3,4,5])
+  }, [totalPages])
 
   const handlePageClick = (idx) => {
     setSelectedPage(idx)
+    onPageChange(idx);
   };
 
   const goToNextGroup = () => {
@@ -72,6 +71,11 @@ const Pagination = () => {
       </button>
     </nav>
   )
+}
+
+Pagination.propTypes = {
+  items: PropTypes.array.isRequired,
+  onPageChange: PropTypes.func.isRequired,
 }
 
 export default Pagination;

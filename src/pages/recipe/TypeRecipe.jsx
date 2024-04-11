@@ -1,28 +1,58 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Pagination from '../../components/Pagination/Pagination'
 import TopButton from '../../components/TopButton/TopButton'
 import Heart from '../../components/Icons/Heart'
+import RecipeCategory from '../../utils/RecipeCategory'
+import Recipe from '../../utils/Recipe'
 import './TypeRecipe.scss'
 
 const TypeRecipe = () => {
-  
-  const foodType = ["양식", "중식", "일식", "한식"];
-  const [selected, setSelected] = useState(Array(foodType.length).fill(false));
+  const [foodType, setFoodType] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [recipes , setRecipes] = useState([]);
+  const itemsPerPage = 16;
+  const [startIndex, setStartIndex] = useState(0);
 
-  const handleSelect = (index) => {
-    const newSelected = [...selected];
-    newSelected[index] = !newSelected[index];
-    setSelected(newSelected);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await RecipeCategory.getRecipeCategory();
+      setFoodType(response.data.map(category => category));
+      const recipeResponse = await Recipe.getRecipe();
+      setRecipes(recipeResponse.data);
+    }
+    
+    fetchData()
+  }, [])
+
+  const handleSelect = async (index, categoryId) => {
+    if (selected === index) {
+      setSelected(null);
+    }else{
+      setSelected(index);
+      const response = await Recipe.getCatgory(categoryId);
+      setRecipes(response.data);
+    }
   };
 
+  const handleAllButton = async() => {
+    const response = await Recipe.getRecipe();
+    setRecipes(response.data);
+    setSelected(null);
+  }
 
-  
-  const searchResultCount = 35;
-  const likeCount = 58678;
-  
+  const handlePageChange = (pageIndex) => {
+    setStartIndex(pageIndex * itemsPerPage);
+  }
 
+  const makeArray = (arr, size) => {
+    const result = [];
+    for(let i = 0; i < arr.length; i += size){
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  }
 
   return (
     <div>
@@ -34,15 +64,15 @@ const TypeRecipe = () => {
         <div className='food-type'>
           <div className='line'/>
           <div className='food-type-filter'>
-            <button className='all'>전체</button>
+            <button className='all' onClick={() => handleAllButton()}>전체</button>
             <div className='food-type-button-container'>
-              {foodType.map((type, index) => (
+              {foodType.map((category, index) => (
                 <button
                   key={index}
-                  className={`food-type-button ${selected[index] ? 'click-food-type-button' : ''}`}
-                  onClick={() => handleSelect(index)}
+                  className={`food-type-button ${selected === index ? 'click-food-type-button' : ''}`}
+                  onClick={() => handleSelect(index, category.id)}
                 >
-                  {type}
+                  {category.category}
                 </button>
                 ))}
             </div>
@@ -51,7 +81,7 @@ const TypeRecipe = () => {
         </div>
         <div className='search-result-container'>
           <div className='result-container'>
-            <p className='result-count'>검색 결과 <span className="count">{searchResultCount}</span>건 조회</p>
+            <p className='result-count'>검색 결과 <span className="count">{recipes.length}</span>건 조회</p>
             <select name="filter">
               <option value="latest">최신순</option>
               <option value="useful">유용한순</option>
@@ -59,70 +89,28 @@ const TypeRecipe = () => {
             </select>
           </div>
           <div className='all-image-container'>
-            <div className='images-container'>
-              <div className='image-container'>
-                <div className='imgBox'>
-                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                </div>
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <Heart fill={"#D3233A"}/>
-                    <p className='like-count'>{likeCount}</p>
-                </div>
+            {makeArray(recipes.slice(startIndex, startIndex + itemsPerPage), 4).map((row, rowIndex) => (
+              <div key={rowIndex} className='images-container'>
+                {row.map((recipes, columnIndex) => (
+                  <div key={rowIndex * 4 + columnIndex} className='image-container'>
+                    <div className='imgBox'>
+                      <img className='recipe-image' src={recipes.img} alt={recipes.name} />
+                    </div>
+                    <p className='recipe-name'>{recipes.name}</p>
+                    <div className='like-container'>
+                      <Heart fill={"#D3233A"} />
+                      <p className='like-count'>{recipes.user_like.length}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              <div className='image-container'>
-                <div className='imgBox'>
-                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                </div>
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <Heart fill={"#D3233A"}/>
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-
-              <div className='image-container'>
-                <div className='imgBox'>
-                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                </div>
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <Heart fill={"#D3233A"}/>
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-
-              <div className='image-container'>
-                <div className='imgBox'>
-                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                </div>
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <Heart fill={"#D3233A"}/>
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-
-              <div className='image-container'>
-                <div className='imgBox'>
-                  <img className='recipe-image' src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt="레시피1" />
-                </div>
-                <p className='recipe-name'>레시피 1</p>
-                <div className='like-container'>
-                    <Heart fill={"#D3233A"}/>
-                    <p className='like-count'>{likeCount}</p>
-                </div>
-              </div>
-
-              
-            </div>
+            ))}
           </div>
         </div>
+        <Pagination items={recipes} onPageChange={handlePageChange}/>
+        <TopButton />
+        <Footer />
       </div>
-      <Pagination />
-      <TopButton />
-      <Footer />
     </div>
   )
 }

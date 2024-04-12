@@ -10,7 +10,6 @@ const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMate
     const [startIndex, setStartIndex] = useState(0);
     const itemsToShow = items;
     const endIndex = Math.min(startIndex + itemsToShow-1, CategoryData.length);
-    const endIndex = Math.min(startIndex + itemsToShow-1, CategoryData.length);
     const [selected, setSelected] = useState(Array(CategoryData.length).fill(false));
 
     const containerStyle = useMemo(() => {
@@ -57,7 +56,6 @@ const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMate
     };
 
     return (
-        <div className='category-container' style={containerStyle}>
         <div className='category-container' style={containerStyle}>
             <ArrowButton direction="previous" onClick={previousCategory} />
             <SelectdCategoryContext.Provider value={{ selected, handleSelect }}>

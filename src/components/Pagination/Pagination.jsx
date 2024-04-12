@@ -11,7 +11,7 @@ const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
 
   useEffect(() => {
     if(totalPages < 5) {
-      const newList = [];
+      const newList = []
       for(let i = 1; i <= totalPages; i++) {
         newList.push(i)
       }
@@ -42,34 +42,9 @@ const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
       } else {
         setSelectedPage(selectedPage + 1)
       }
-    if (selectedPage + 1 < totalPages) {
-      if ((selectedPage + 1) % 5 === 0) {
-        const newFirstPage = selectedPage + 1;
-        const newPageList = []
-        for (let i = newFirstPage + 1; i <= Math.min(newFirstPage + 5, totalPages); i++) {
-          newPageList.push(i)
-        }
-        setPageList(newPageList)
-        setSelectedPage(newFirstPage)
-      } else {
-        setSelectedPage(selectedPage + 1)
-      }
     }
   };
   const goToPrevGroup = () => {
-    if (selectedPage > 0) {
-      if ((selectedPage + 1) % 5 === 1) { 
-        const newFirstPage = selectedPage - 4;
-        const newPageList = [];
-        for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-          newPageList.push(i);
-        }
-        setPageList(newPageList);
-        setSelectedPage(selectedPage - 1); 
-      } else {
-        setSelectedPage(selectedPage - 1);
-      }
-    } 
     if (selectedPage > 0) {
       if ((selectedPage + 1) % 5 === 1) { 
         const newFirstPage = selectedPage - 4;

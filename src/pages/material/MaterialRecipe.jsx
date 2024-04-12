@@ -116,23 +116,38 @@ const MaterialRecipe = () => {
 
 
 const RecipesList = ({ pageData }) => {
+  if (!pageData) return 
+
+    const makeArray = (array, size) => {
+      const newArr = [];
+      for (let i = 0; i < array.length; i += size) {
+          newArr.push(array.slice(i, i + size));
+      }
+      return newArr;
+    };
+
+    
     return (
         <div className={styles['ListWrapper']}>
             <div className={styles['RecipeList']}>
-                { pageData && pageData.map((item, idx) => (
-                    <div className={styles['RecipeItem']} key={idx}>
-                        <Link to = {`/recipes/${item.id}`}>
-                        <div className={styles["item-img"]}>
-                            <img className={styles['ItemImage']} src={item.img} alt='image_1'/>
-                        </div>
-                        <p>{item.name}</p>
-                        <span>
-                            <Heart fill={"#D3233A"}/>
-                            {item.user_like.length}
-                        </span>
-                        </Link>
-                    </div>
-                ))}
+                { makeArray(pageData, 4).map((chunk, pageIndex) => (
+                  <div key={pageIndex} className={styles['Recipe-container']}>
+                      {chunk.map((item, idx) => (
+                          <div className={styles['RecipeItem']} key={idx}>
+                              <Link to={`/recipes/${item.id}`}>
+                                  <div className={styles["item-img"]}>
+                                      <img className={styles['ItemImage']} src={item.img} alt='image_1' />
+                                  </div>
+                                  <p>{item.name}</p>
+                                  <span>
+                                      <Heart fill={"#D3233A"} />
+                                      {item.user_like.length}
+                                  </span>
+                              </Link>
+                          </div>
+                      ))}
+                  </div>
+              ))}
             </div>
         </div>
     )

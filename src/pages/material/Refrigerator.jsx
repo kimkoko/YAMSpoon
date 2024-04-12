@@ -12,8 +12,8 @@ import AddModal from './AddModal'
 const Refrigerator = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [ materials, setMaterials ] = useState(['감자1', '계란1','양파1', '참치액1', '오이1', '김치', '고등어','꽁치','김치', '고등어','꽁치','김치', '고등어','꽁치2' ]);
-    const recipes = 7;
+  const [ materials, setMaterials ] = useState(['감자1', '계란1','양파1', '참치액1', '오이1', '김치', '고등어','꽁치','김치', '고등어','꽁치','김치', '고등어','꽁치2' ]);
+  const recipes = 7;
 
     const handleAddClick = (e) => {
         e.preventDefault();

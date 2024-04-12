@@ -35,6 +35,7 @@
         background-color: rgba(211, 35, 58, 0.1);
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         :first-child {
             margin-left: 25px;
         }

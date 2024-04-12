@@ -50,89 +50,14 @@
         margin: 0 auto 54px;
     }
 
-
-    .recipe-items {
-
-
-        .recipe-item {
-
-            &:hover {
-                img {
-                    transform: scale(1.1);
-                    transition: all 0.5s;
-                }
-            }
-
-
-            position: relative;
-            cursor: pointer;
-            
-            .recipe-img{
-                overflow: hidden;
-                transition: all 0.5s;
-                border-radius: 44px;
-            }
-
-            img {
-                width: 100%;
-                height: auto;
-                min-height: 324px;
-                border-radius: 44px;
-                transition: all 0.5s;
-            }
-            p {
-                font-size: 20px;
-                font-weight: 700;
-                margin-bottom: 27px;
-                line-height: 1.5;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                margin-top: 27px;
-            }
-            span {
-                margin-top: 27px;
-                display: flex;
-                font-size: 19px;
-                svg {
-                    color: #d3233a;
-                    margin-right: 10px;
-                    width: 19px;
-                }
-            }
-            .ranking {
-                position: absolute;
-                top: 0;
-                left: 0;
-                font-size: 20px;
-                font-weight: 500;
-                text-align: center;
-                width: 30px;
-                height: 30px;
-                background-color: $main-color;
-                color: white;
-                padding: 20px 15px 15px 15px;
-                border-radius: 44px 0px;
-            }
-            
-
-
-        }
-
-        
-    }
-
-
-
-
     .recipe-items2 {
         display: flex;
         gap:35px;
         align-items: flex-start;
         box-sizing: border-box !important;
         padding: 0 25px 82px!important;
-        justify-content: center;
+        justify-content: flex-start;
+        width:100%;
 
         .recipe-item {
 
@@ -144,21 +69,22 @@
             }
 
             position: relative;
-            // width: 294px; 
             cursor: pointer;
+            width: calc(25% - 35px);
 
             .recipe-img{
-                overflow: hidden;
-                transition: all 0.5s;
                 border-radius: 44px;
+				height: auto;
+				min-height: 324px;
+				margin-bottom: 27px;
+                overflow: hidden;
             }
     
             img {
                 width: 100%;
-                height: auto;
-                min-height: 324px;
-                border-radius: 44px;
-                transition: all 0.5s;
+				height: 324px;
+				border-radius: 44px;
+                transition:all 0.5s;
             }
             p {
                 font-size: 20px;

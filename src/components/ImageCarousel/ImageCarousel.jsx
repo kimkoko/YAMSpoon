@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import "./ImageSlide.scss";
 import Arrow from ".././Icons/Arrow";
 import propTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Heart from '../Icons/Heart';
-
 
 
 export default function Slider({ slideDatas, hideRecipeRanking }) {
@@ -45,11 +44,10 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
   })
   
   // slideDatas가 없으면 아무것도 렌더링하지 않음
-  if (!slideDatas) {
+  if (!slideDatas || slideDatas.length === 0) {
     return null;
   }
 
-  
   return (
     <div className='imageSlider'>
       <div className='imageSliderWrap'
@@ -62,9 +60,8 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
         {
           slideDatas.map((slide, index) => (
             <div className='imageSlide' key={index}>
-              <Link to="/recipe">
+              <Link to={`/recipes/${slide.id}`}>
                 <div className="recipe-img">
-                    {/* <img src={process.env.PUBLIC_URL + `/images/${slide.img}`} alt="레시피 이미지"/> */}
                     <img src={slide.img} alt="레시피 이미지"/>
                 </div>
                 {/* 레시피 랭킹 숨김 여부 */}
@@ -81,8 +78,7 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
           ))
         }
       </div>
-      
-    
+
       <button className='arrow prevBtn' onClick={PrevSlide}>
         <Arrow stroke={"#d3233a"}/>
       </button>
@@ -93,17 +89,8 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
   );
 }
 
-
-
-
 // props 정의
 Slider.propTypes = {
-  slideDatas: propTypes.arrayOf(
-    propTypes.shape({
-      img: propTypes.string,
-      name: propTypes.string,
-      user_like: propTypes.object,
-    })
-  ).isRequired,
-  hideRecipeRanking: propTypes.bool,
-}
+  slideDatas: propTypes.array.isRequired,
+  hideRecipeRanking: propTypes.bool
+};

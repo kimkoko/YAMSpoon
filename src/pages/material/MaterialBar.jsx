@@ -9,8 +9,8 @@ const MaterialBar = () => {
         setSelectedSub(selectedSub === idx ? null : idx);
     };
     
-    const categoryData = ['가공/유제품', '고기', '곡물', '과일', '면', '빵/떡', '채소', '콩/견과류', '해산물', '햄/소시지']
-    const items = 7;
+    const categoryData = ['가공/유제품', '고기', '곡물', '과일', '면', '빵/떡','콩/견과류', '채소', '해산물', '햄/소시지']
+    const items = 8;
 
     return (
         

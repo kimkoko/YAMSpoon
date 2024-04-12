@@ -43,7 +43,7 @@ export default {
    */
   getDetailRecipe(id) {
     return api({
-      url: `/recipes/detail/${id}`,
+      url: `/recipes/${id}`,
       method: 'get',
     });
   },

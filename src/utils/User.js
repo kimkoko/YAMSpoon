@@ -16,14 +16,13 @@ export default {
   /**
    * @method PUT
    * @summary 사용자 정보 업데이트
-   * @param id 아이디
-   * @param userData 사용자 정보
+   * @param newUserInfo 새로운 사용자 정보
    */
-  updateUser(id, userData) {
+  updateUser(id, newUserInfo) {
     return api({
       url: `/user/${id}`,
       method: 'put',
-      data: userData
+      data: newUserInfo
     })
   },
   

@@ -1,4 +1,4 @@
-import React, {useState, createContext, useMemo} from 'react';
+import React, {useState, createContext, useMemo, forwardRef, useImperativeHandle} from 'react';
 import PropTypes from 'prop-types';
 import ArrowButton from './ArrowButton';
 import CategoryTap from './CategoryTap';
@@ -6,7 +6,7 @@ import './Carousel.scss'
 
 const SelectdCategoryContext = createContext();
 
-const Carousel = ({ CategoryData, items, showDeleteButton, deleteMaterial, handleSubSelect }) => {
+const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMaterial, handleSubSelect, fridge }, ref) => {
     const [startIndex, setStartIndex] = useState(0);
     const itemsToShow = items;
     const endIndex = Math.min(startIndex + itemsToShow-1, CategoryData.length);
@@ -16,11 +16,20 @@ const Carousel = ({ CategoryData, items, showDeleteButton, deleteMaterial, handl
         return deleteMaterial ? { width:'100%' } : {width: '100%'};
     }, [deleteMaterial]);
 
+    useImperativeHandle(ref, () => ({
+        handleSelect: (index) => {
+            if (index === -1) setSelected(Array(CategoryData.length).fill(false))    
+        }
+    }))
+
     // 카테고리 선택
     const handleSelect = (index) => {
         const newSelected = [ ...selected];
-        newSelected.fill(false)
-        newSelected[index] = true
+        if (fridge) newSelected[index] = !newSelected[index];
+        else {
+            newSelected.fill(false)
+            newSelected[index] = true
+        } 
         setSelected(newSelected);
         handleSubSelect? handleSubSelect(index) : null
     }
@@ -62,14 +71,16 @@ const Carousel = ({ CategoryData, items, showDeleteButton, deleteMaterial, handl
             <ArrowButton direction='next' onClick={nextCategory} />
         </div>
     )
-}
+})
 
 Carousel.propTypes = {
     CategoryData: PropTypes.array.isRequired,
     items: PropTypes.number.isRequired,
     showDeleteButton: PropTypes.bool.isRequired,
     deleteMaterial: PropTypes.func,
-    handleSubSelect: PropTypes.func
+    handleSubSelect: PropTypes.func,
+    fridge: PropTypes.bool
 }
 
+Carousel.displayName = 'Carousel';
 export default Carousel;

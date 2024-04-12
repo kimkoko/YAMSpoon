@@ -3,35 +3,43 @@ import LoginHeader from '../../components/Header/LoginHeader';
 import './ResetPassword.scss';
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [passwordConfirmError, setPasswordConfirmError] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(false);
+  const [formData, setFormData] = useState({
+    password: '',
+    passwordConfirm: ''
+  });
+
+  const [validation, setValidation] = useState({
+    passwordError: '',
+    passwordConfirmError: '',
+    passwordMatch: false
+  });
+
+  const { password, passwordConfirm } = formData;
+  const { passwordError, passwordConfirmError, passwordMatch } = validation;
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
-    setPassword(newPassword);
-    // 비밀번호 유효성 검사
-    if (newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-      setPasswordError('X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.');
-    } else {
-      setPasswordError('');
-    }
-  }
+    setFormData({ ...formData, password: newPassword });
+    setValidation({
+      ...validation,
+      passwordError: 
+        newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+          ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.' 
+          : '',
+      passwordConfirmError: newPassword !== passwordConfirm ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
+      passwordMatch: newPassword === passwordConfirm
+    });
+  };
 
   const handlePasswordConfirmChange = (e) => {
     const newPasswordConfirm = e.target.value;
-    setPasswordConfirm(newPasswordConfirm);
-    // 비밀번호 확인
-    if (newPasswordConfirm !== password) {
-      setPasswordConfirmError('X 입력하신 비밀번호와 일치하지 않습니다.');
-      setPasswordMatch(false);
-    } else {
-      setPasswordConfirmError('');
-      setPasswordMatch(true);
-    }
-  }
+    setFormData({ ...formData, passwordConfirm: newPasswordConfirm });
+    setValidation({
+      ...validation,
+      passwordConfirmError: newPasswordConfirm !== password ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
+      passwordMatch: newPasswordConfirm === password
+    });
+  };
 
   return (
     <div>

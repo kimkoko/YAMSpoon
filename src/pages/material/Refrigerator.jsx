@@ -9,9 +9,6 @@ import TopButon from '../../components/TopButton/TopButton'
 import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 
-
-
-
 const Refrigerator = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -15,7 +15,7 @@ export default {
   /**
    * @method GET
    * @summary 재료별 레시피 조회
-   * @param ingredientId
+   * @param ingredientId 재료 아이디
    */
   getIngredientRecipe(ingredientId) {
     return api({
@@ -27,7 +27,7 @@ export default {
   /**
    * @method GET
    * @summary 타입별 레시피 조회
-   * @param categoryId
+   * @param categoryId 타입(카테고리) 아이디
    */
   getCatgory(categoryId) {
     return api({
@@ -39,19 +39,19 @@ export default {
   /**
    * @method GET
    * @summary 레시피 상세 조회
-   * @param id
+   * @param id 레시피 아이디
    */
   getDetailRecipe(id) {
     return api({
-      url: `/recipes/detail/${id}`,
+      url: `/recipes/${id}`,
       method: 'get',
     });
   },
 
   /**
-   * @method PUT
-   * @summary 레시피 좋아요 조회
-   * @param id
+   * @method put
+   * @summary 레시피 좋아요
+   * @param id 레시피 아이디
    */
   putLikeRecipe(id, recipeData) {
     return api({

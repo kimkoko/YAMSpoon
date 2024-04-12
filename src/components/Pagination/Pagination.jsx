@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './Pagination.scss'
 import ArrowBackFilled from '../Icons/ArrowBackFilled';
 import ArrowForwardFilled from '../Icons/ArrowForwardFilled';
 
-const Pagination = () => {
+const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
   const [ selectedPage, setSelectedPage ] = useState(0);
   const [ pageList, setPageList ] = useState([])
-  //const totalPage = ['1', '2', '3', '4']
-  const totalItems = 161
-  const itemsPerPage = 16
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
@@ -20,39 +18,51 @@ const Pagination = () => {
       setPageList(newList)
     }
     else setPageList([1,2,3,4,5])
-  }, [])
+  }, [totalPages])
+
+  useEffect(() => {
+    if( !handlePageData ) return
+    handlePageData([selectedPage * itemsPerPage, selectedPage * itemsPerPage + itemsPerPage])
+  }, [selectedPage])
 
   const handlePageClick = (idx) => {
     setSelectedPage(idx)
   };
 
   const goToNextGroup = () => {
-    if (pageList.length === 5 && pageList[4] < totalPages) {
-      const newFirstPage = pageList[4] + 1
-      const newPageList = []
-      for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-        newPageList.push(i)
+    if (selectedPage + 1 < totalPages) {
+      if ((selectedPage + 1) % 5 === 0) {
+        const newFirstPage = selectedPage + 1;
+        const newPageList = []
+        for (let i = newFirstPage + 1; i <= Math.min(newFirstPage + 5, totalPages); i++) {
+          newPageList.push(i)
+        }
+        setPageList(newPageList)
+        setSelectedPage(newFirstPage)
+      } else {
+        setSelectedPage(selectedPage + 1)
       }
-      setPageList(newPageList)
-      setSelectedPage(newFirstPage-1)
     }
   };
-
   const goToPrevGroup = () => {
-    if (pageList[0] > 1) {
-      const newFirstPage = Math.max(pageList[0] - 5, 1);
-      const newPageList = []
-      for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-        newPageList.push(i)
+    if (selectedPage > 0) {
+      if ((selectedPage + 1) % 5 === 1) { 
+        const newFirstPage = selectedPage - 4;
+        const newPageList = [];
+        for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
+          newPageList.push(i);
+        }
+        setPageList(newPageList);
+        setSelectedPage(selectedPage - 1); 
+      } else {
+        setSelectedPage(selectedPage - 1);
       }
-      setPageList(newPageList)
-      setSelectedPage(newFirstPage+3)
-    }
+    } 
   };
 
   return (
     <nav className='pagination-container'>
-      <button className='arrow-button' onClick={goToPrevGroup} disabled={pageList[0] === 1}>
+      <button className='arrow-button' onClick={goToPrevGroup}>
         <ArrowBackFilled />
       </button>
       <ul className='pagination'>
@@ -67,11 +77,18 @@ const Pagination = () => {
           ))
         }
       </ul>
-      <button className='arrow-button' onClick={goToNextGroup} disabled={pageList[pageList.length - 1] === totalPages}>
+      <button className='arrow-button' onClick={goToNextGroup}>
         <ArrowForwardFilled />
       </button>
     </nav>
   )
 }
+
+Pagination.propTypes = {
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  recipeData: PropTypes.array,
+  handlePageData: PropTypes.func
+};
 
 export default Pagination;

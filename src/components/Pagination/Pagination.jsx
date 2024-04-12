@@ -4,11 +4,10 @@ import './Pagination.scss'
 import ArrowBackFilled from '../Icons/ArrowBackFilled';
 import ArrowForwardFilled from '../Icons/ArrowForwardFilled';
 
-const Pagination = ({ items, onPageChange }) => {
+const Pagination = ({ totalItems, itemsPerPage, handlePageData }) => {
   const [ selectedPage, setSelectedPage ] = useState(0);
   const [ pageList, setPageList ] = useState([]);
-  const itemsPerPage = 16
-  const totalPages = Math.ceil(items.length/ itemsPerPage);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
     if(totalPages < 5) {
@@ -20,33 +19,45 @@ const Pagination = ({ items, onPageChange }) => {
     } else setPageList([1,2,3,4,5])
   }, [totalPages])
 
+  useEffect(() => {
+    if ( !handlePageData ) return
+    handlePageData([selectedPage * itemsPerPage, selectedPage * itemsPerPage + itemsPerPage])
+  }, [selectedPage])
+
   const handlePageClick = (idx) => {
     setSelectedPage(idx)
-    onPageChange(idx);
   };
 
   const goToNextGroup = () => {
-    if (pageList.length === 5 && pageList[4] < totalPages) {
-      const newFirstPage = pageList[4] + 1
-      const newPageList = []
-      for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-        newPageList.push(i)
+    if (selectedPage + 1 < totalPages) {
+      if ((selectedPage + 1) % 5 === 0) {
+        const newFirstPage = selectedPage + 1;
+        const newPageList = []
+        for (let i = newFirstPage + 1; i <= Math.min(newFirstPage + 5, totalPages); i++) {
+          newPageList.push(i)
+        }
+        setPageList(newPageList)
+        setSelectedPage(newFirstPage)
+      } else {
+        setSelectedPage(selectedPage + 1)
       }
-      setPageList(newPageList)
-      setSelectedPage(newFirstPage-1)
     }
   };
 
   const goToPrevGroup = () => {
-    if (pageList[0] > 1) {
-      const newFirstPage = Math.max(pageList[0] - 5, 1);
-      const newPageList = []
-      for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-        newPageList.push(i)
+    if (selectedPage > 0) {
+      if ((selectedPage + 1) % 5 === 1) { 
+        const newFirstPage = selectedPage - 4;
+        const newPageList = [];
+        for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
+          newPageList.push(i);
+        }
+        setPageList(newPageList);
+        setSelectedPage(selectedPage - 1); 
+      } else {
+        setSelectedPage(selectedPage - 1);
       }
-      setPageList(newPageList)
-      setSelectedPage(newFirstPage+3)
-    }
+    } 
   };
 
   return (
@@ -74,8 +85,9 @@ const Pagination = ({ items, onPageChange }) => {
 }
 
 Pagination.propTypes = {
-  items: PropTypes.array.isRequired,
-  onPageChange: PropTypes.func.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  handlePageData: PropTypes.func
 }
 
 export default Pagination;

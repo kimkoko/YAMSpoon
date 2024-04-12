@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import _ from "lodash"
+import { Link } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import Pagination from '../../components/Pagination/Pagination'
@@ -10,13 +11,12 @@ import Recipe from '../../utils/Recipe'
 import './TypeRecipe.scss'
 
 const TypeRecipe = () => {
-  const navigate = useNavigate();
-
   const [foodType, setFoodType] = useState([]);
   const [selected, setSelected] = useState(null);
   const [recipes , setRecipes] = useState([]);
-  const itemsPerPage = 16;
-  const [startIndex, setStartIndex] = useState(0);
+  const [ pageData, setPageData ] = useState([]);
+  const [ pageIndex, setPageIndex ] = useState(null);
+  const [ totalItems, setTotalItems ] = useState(null);
 
   const [sortingFilter, setSortingFilter] = useState('latest');
   const [sortedRecipes, setSortedRecipes] = useState([]);
@@ -30,6 +30,8 @@ const TypeRecipe = () => {
       // 레시피 데이터 가져오기
       const recipeResponse = await Recipe.getRecipe();
       setRecipes(recipeResponse.data);
+      const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data);
+      setSortedRecipes(recipeDataDeepCopy);
     }
     
     fetchData()
@@ -37,7 +39,7 @@ const TypeRecipe = () => {
 
   useEffect(() => {
     // 정렬된 레시피 배열
-    const sorted = [...recipes].sort((a, b) => {
+    const sorted = sortedRecipes.sort((a, b) => {
       if (sortingFilter === 'latest'){
         return new Date(b.createdAt) - new Date(a.createdAt);
       }else if (sortingFilter === 'famous') {
@@ -50,8 +52,25 @@ const TypeRecipe = () => {
     setSortedRecipes(sorted);
   }, [sortingFilter, recipes]);
 
+  // 
+  useEffect(() => {
+    if (!sortedRecipes || !pageIndex) return;
+  
+    const startIndex = pageIndex[0] || 0;
+    const endIndex = pageIndex[1] || 16;
+    setPageData(sortedRecipes.slice(startIndex, endIndex));
+  }, [pageIndex, sortedRecipes]);
+
+  useEffect(() => {
+    if (sortedRecipes) {
+      setTotalItems(sortedRecipes.length);
+    }
+  }, [sortedRecipes]);
+
+
   // 카테고리 선택 핸들러
   const handleSelect = async (index, categoryId) => {
+    setSortingFilter('latest');
     if (selected === index) {
       setSelected(null);
     }else{
@@ -61,21 +80,19 @@ const TypeRecipe = () => {
     }
   };
 
+
   // 전체 버튼 클릭 핸들러
   const handleAllButton = async() => {
+    setSortingFilter('latest');
+
     const response = await Recipe.getRecipe();
     setRecipes(response.data);
     setSelected(null);
   }
 
   // 페이지 바뀔때마다 보여줄 레시피 핸들러
-  const handlePageChange = (pageIndex) => {
-    setStartIndex(pageIndex * itemsPerPage);
-  }
-
-  // 레시피 클릭시 레시피 상세 페이지로 이동
-  const handleClickRecipe = (recipeId) => {
-    navigate(`recipe/${recipeId}`);
+  const handlePageData = (data) => {
+    setPageIndex([data[0], data[1]])
   }
 
   // 정렬 기준 변경 이벤트 핸들러
@@ -122,30 +139,34 @@ const TypeRecipe = () => {
             <p className='result-count'>검색 결과 <span className="count">{recipes.length}</span>건 조회</p>
             <select name="filter" value={sortingFilter} onChange={handleSortingChange}>
               <option value="latest">최신순</option>
-              {/* <option value="useful">유용한순</option> */}
               <option value="famous">인기순</option>
             </select>
           </div>
           <div className='all-image-container'>
-            {makeArray(sortedRecipes.slice(startIndex, startIndex + itemsPerPage), 4).map((row, rowIndex) => (
+            {makeArray(pageData, 4).map((row, rowIndex) => (
               <div key={rowIndex} className='images-container'>
-                {row.map((recipes, columnIndex) => (
-                  <div key={rowIndex * 4 + columnIndex} className='image-container' onClick={() => handleClickRecipe(recipes.id)}>
+                {row.map((recipe, columnIndex) => (
+                  <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe.id}`} className='image-container'>
                     <div className='imgBox'>
-                      <img className='recipe-image' src={recipes.img} alt={recipes.name} />
+                      <img className='recipe-image' src={recipe.img} alt={recipe.name} />
                     </div>
-                    <p className='recipe-name'>{recipes.name}</p>
+                    <p className='recipe-name'>{recipe.name}</p>
                     <div className='like-container'>
                       <Heart fill={"#D3233A"} />
-                      <p className='like-count'>{recipes.user_like.length}</p>
+                      <p className='like-count'>{recipe.user_like.length}</p>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ))}
-          </div>
+          </div>x
         </div>
-        <Pagination items={recipes} onPageChange={handlePageChange}/>
+        { sortedRecipes && <Pagination
+                            key={sortedRecipes.length + sortingFilter} 
+                            totalItems={totalItems} 
+                            itemsPerPage={16} 
+                            handlePageData={handlePageData}
+                        />}
         <TopButton />
         <Footer />
       </div>

@@ -16,7 +16,7 @@ const TypeRecipe = () => {
   const [recipes , setRecipes] = useState([]);
   const [ pageData, setPageData ] = useState([]);
   const [ pageIndex, setPageIndex ] = useState(null);
-  const [ totalItems, setTotalItems ] = useState(null);
+  const [ totalItems, setTotalItems ] = useState(0);
 
   const [sortingFilter, setSortingFilter] = useState('latest');
   const [sortedRecipes, setSortedRecipes] = useState([]);
@@ -30,6 +30,7 @@ const TypeRecipe = () => {
       // 레시피 데이터 가져오기
       const recipeResponse = await Recipe.getRecipe();
       setRecipes(recipeResponse.data);
+
       const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data);
       setSortedRecipes(recipeDataDeepCopy);
     }
@@ -52,18 +53,21 @@ const TypeRecipe = () => {
     setSortedRecipes(sorted);
   }, [sortingFilter, recipes]);
 
-  // 
+  // 페이지 인덱스에 따라 보여줄 레시피 설정
   useEffect(() => {
     if (!sortedRecipes || !pageIndex) return;
-  
+    
+    // 페이지 인덱스 계산
     const startIndex = pageIndex[0] || 0;
     const endIndex = pageIndex[1] || 16;
+
     setPageData(sortedRecipes.slice(startIndex, endIndex));
   }, [pageIndex, sortedRecipes]);
-
+  
+  // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
   useEffect(() => {
     if (sortedRecipes) {
-      setTotalItems(sortedRecipes.length);
+        setTotalItems(sortedRecipes.length);
     }
   }, [sortedRecipes]);
 
@@ -79,7 +83,6 @@ const TypeRecipe = () => {
       setRecipes(response.data);
     }
   };
-
 
   // 전체 버튼 클릭 핸들러
   const handleAllButton = async() => {
@@ -100,7 +103,7 @@ const TypeRecipe = () => {
     setSortingFilter(e.target.value);
   }
 
-  // 배열을 원하는 크기로 나누는 함수 [ a x b 배열 ]
+  // 배열을 원하는 크기로 나누는 함수
   const makeArray = (arr, size) => {
     const result = [];
     for(let i = 0; i < arr.length; i += size){
@@ -159,7 +162,7 @@ const TypeRecipe = () => {
                 ))}
               </div>
             ))}
-          </div>x
+          </div>
         </div>
         { sortedRecipes && <Pagination
                             key={sortedRecipes.length + sortingFilter} 

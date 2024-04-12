@@ -13,25 +13,29 @@ import FindPassword from './pages/user/FindPassword';
 import MyPage from './pages/user/MyPage';
 import SignIn from './pages/user/SignIn';
 import SignUp from './pages/user/SignUp';
-import ResetPassword from './pages/user/ResetPassword';
+import ResetPassword from './pages/user/ResetPassword'; 
+import UseScrollToTop from '../src/components/UseScrollToTop/UseScrollToTop';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} /> 
-      <Route path="/material-recipe" element={<MaterialRecipe />} /> 
-      <Route path="/regrigerator" element={<Refrigerator />} /> 
-      <Route path="/recipe" element={<Recipe />} /> 
-      <Route path="/search" element={<Search />} /> 
-      <Route path="/type-recipe" element={<TypeRecipe />} /> 
-      <Route path="/edit-profile" element={<EditProfile />} />
-      <Route path="/find-id" element={<FindId />} />
-      <Route path="/find-password" element={<FindPassword />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-    </Routes>
+    <>
+      <UseScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} /> 
+        <Route path="/material-recipe" element={<MaterialRecipe />} /> 
+        <Route path="/regrigerator" element={<Refrigerator />} /> 
+        <Route path="/recipes/:recipeId" element={<Recipe />} /> 
+        <Route path="/search" element={<Search />} /> 
+        <Route path="/type-recipe" element={<TypeRecipe />} /> 
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/find-id" element={<FindId />} />
+        <Route path="/find-password" element={<FindPassword />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
+    </>
   );
 }
 

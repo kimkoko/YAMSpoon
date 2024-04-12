@@ -1,8 +1,9 @@
 @import '../../assets/index.scss';
 
-.inner{
+.recipeInner{
     width: 66%;
     margin: 0 auto;
+    padding-bottom: 100px;
 }
 
 .recipeTop{
@@ -20,15 +21,15 @@
             width: 100%;
             border-radius: 44px;
             margin-bottom: 32px;
-            height: auto;
+            height: 469px;
 
             img{
                 width: 100%;
                 border-radius: 44px;
+                height: 100%;
             }
         }
-
-
+        
         .saveAndLikes{
             text-align: center;
             display: flex;

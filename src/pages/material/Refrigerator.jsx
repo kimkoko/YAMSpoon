@@ -10,12 +10,12 @@ import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 
 const Refrigerator = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [ materials, setMaterials ] = useState(['감자1', '계란1','양파1', '참치액1', '오이1', '김치', '고등어','꽁치','김치', '고등어','꽁치','김치', '고등어','꽁치2' ]);
   const recipes = 7;
 
-  const handleAddClick = (e) => {
+    const handleAddClick = (e) => {
         e.preventDefault();
         setIsModalOpen(true);
         console.log(isModalOpen)
@@ -27,29 +27,29 @@ const Refrigerator = () => {
         setMaterials(updatedMaterials);
     }
 
-  return (
-    <div>
-        <Header />
-        <div className={styles['material-container']}>
-            <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
-            <MaterialBar handleAddClick={handleAddClick} materials={materials} handleDeleteMaterial={handleDeleteMaterial} recipes={recipes} />
-            <div className={styles['result']}>
-                <p>검색 결과 <span>{recipes}</span>건 조회</p>
-                <select name="order">
-                    <option value="latest">최신순</option>
-                    <option value="likes">인기순</option>
-                </select>
+    return (
+        <div>
+            <Header />
+            <div className={styles['material-container']}>
+                <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
+                <MaterialBar handleAddClick={handleAddClick} materials={materials} handleDeleteMaterial={handleDeleteMaterial} recipes={recipes} />
+                <div className={styles['result']}>
+                    <p>검색 결과 <span>{recipes}</span>건 조회</p>
+                    <select name="order">
+                        <option value="latest">최신순</option>
+                        <option value="likes">인기순</option>
+                    </select>
+                </div>
+                { recipes === 0 ? <EmptyList /> : <RecipesList />}
             </div>
-            { recipes === 0 ? <EmptyList /> : <RecipesList />}
+            {
+                isModalOpen && <AddModal closeModal={() => setIsModalOpen(false)}/>
+            }
+            <Pagination />
+            <TopButon/>
+            <Footer />
         </div>
-        {
-            isModalOpen && <AddModal closeModal={() => setIsModalOpen(false)}/>
-        }
-        <Pagination />
-        <TopButon/>
-        <Footer />
-    </div>
-  )
+    )
 }
 
 const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes }) => {

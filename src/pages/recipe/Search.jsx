@@ -93,7 +93,7 @@ const handleSortingChange = (e) => {
     setSortingFilter(e.target.value);
 }
 
-// 배열을 원하는 크기로 나누는 함수
+// 배열을 원하는 크기로 나누는 함수 
 const makeArray = (arr, size) => {
     const result = [];
     for(let i = 0; i < arr.length; i += size){

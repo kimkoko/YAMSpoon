@@ -6,7 +6,7 @@ import './Carousel.scss'
 
 const SelectdCategoryContext = createContext();
 
-const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMaterial, handleSubSelect, fridge }, ref) => {
+const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMaterial, handleSubSelect, fridge, handleSelectMat }, ref) => {
     const [startIndex, setStartIndex] = useState(0);
     const itemsToShow = items;
     const endIndex = Math.min(startIndex + itemsToShow-1, CategoryData.length);
@@ -32,6 +32,7 @@ const Carousel = forwardRef(({ CategoryData, items, showDeleteButton, deleteMate
         } 
         setSelected(newSelected);
         handleSubSelect? handleSubSelect(index) : null
+        handleSelectMat? handleSelectMat(newSelected) : null
     }
 
     // 이전 카테고리 버튼
@@ -79,7 +80,8 @@ Carousel.propTypes = {
     showDeleteButton: PropTypes.bool.isRequired,
     deleteMaterial: PropTypes.func,
     handleSubSelect: PropTypes.func,
-    fridge: PropTypes.bool
+    fridge: PropTypes.bool,
+    handleSelectMat: PropTypes.func
 }
 
 Carousel.displayName = 'Carousel';

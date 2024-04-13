@@ -1,4 +1,5 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
+import PropTypes from 'prop-types';
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import './HomeSlideArrows.scss'
@@ -7,32 +8,34 @@ import Heart from '../../components/Icons/Heart'
 import TopButton from '../../components/TopButton/TopButton'
 import Cutlery from '../../components/Icons/Cutlery'
 import { Link } from 'react-router-dom'
-
 import ImageCarousel from '../../components/ImageCarousel/ImageCarousel'
-
-
-
-// 화제의 레시피 임시 데이터
-const slideData = [
-  {recipeImg: 'recipe1.png', recipeName: '레시피 이름 01', recipeLike: 56789},
-  {recipeImg: 'recipe2.png', recipeName: '레시피 이름 02', recipeLike: 12345}, 
-  {recipeImg: 'recipe3.png', recipeName: '레시피 이름 03', recipeLike: 98765},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 04', recipeLike: 54321},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 06', recipeLike: 500},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 07', recipeLike: 1231},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 08', recipeLike: 123124},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 09', recipeLike: 500},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 10', recipeLike: 1231},
-  {recipeImg: 'recipe4.png', recipeName: '레시피 이름 11', recipeLike: 1231},
-]
-
-
+import _ from "lodash"
+import Recipe from '../../utils/Recipe'
 
 const Home = () => {
+  const [ sortLikesData, setSortLikesData ] = useState(null)
+  const [ newestData, setNewestData ] = useState(null)
+  
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await Recipe.getRecipe()
+        const slideDataDeepCopy = _.cloneDeep(response.data)
+        const newestData = slideDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+        setNewestData(newestData.slice(0,4))
 
-  // 좋아요 많은 순 정렬
-  slideData.sort((a, b) => b.recipeLike - a.recipeLike)
+        const sortedData = slideDataDeepCopy.sort((a, b) => b.user_like.length - a.user_like.length)
+        const slicedData = sortedData.slice(0, 10);
+        setSortLikesData(slicedData)
 
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+  
   return (
     <div>
         <Header />
@@ -50,8 +53,7 @@ const Home = () => {
         <div className={styles['recipe-container']}>
           <p className={styles['title']}>화제의 레시피를 알려드릴게요!</p>
           <div className={styles['popular-recipes-scroll']}>
-            {/* <PopularRecipeList/> */}
-            <ImageCarousel slideDatas={slideData} hideRecipeRanking={false}/>
+          {sortLikesData && <ImageCarousel slideDatas={sortLikesData} hideRecipeRanking={false} />}
           </div>
         </div>
 
@@ -59,7 +61,7 @@ const Home = () => {
         
         <div className={styles['recipe-container']}>
           <p className={styles['title']}>최근에 올라온 레시피는 어떤가요?</p>
-          <RecipeList/>
+          {newestData && <RecipeList recipes={newestData}/>}
         </div>
 
         <TopButton />
@@ -68,57 +70,33 @@ const Home = () => {
   )
 }
 
-const RecipeList = () => {
+const RecipeList = ({ recipes }) => {
   return (
     <div className={styles['recipe-items2']}>
-  
-      <div className={styles['recipe-item']}>
-        <div className={styles['recipe-img']}>
-          <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
+      {recipes.map((recipe, index) => (
+          <div className={styles['recipe-item']} key={index}>
+            <Link to={`/recipes/${recipe.id}`}>
+            <div className={styles['recipe-img']}>
+              <img src={recipe.img} alt={`image_${index + 1}`} />
+            </div>
+            <p>{recipe.name}</p>
+            <span>
+              <Heart fill={"#D3233A"} />
+              {recipe.user_like.length}
+            </span>
+            </Link>
         </div>
-        <p>레시피 이름 01</p>
-        <span>
-          <Heart fill={"#D3233A"}/>
-          56,789
-        </span>
-      </div>
-
-      <div className={styles['recipe-item']}>
-        <div className={styles['recipe-img']}>
-          <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-        </div>
-        <p>레시피 이름 01</p>
-        <span>
-          <Heart fill={"#D3233A"}/>
-          56,789
-        </span>
-      </div>
-
-      <div className={styles['recipe-item']}>
-        <div className={styles['recipe-img']}>
-          <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-        </div>
-        <p>레시피 이름 01</p>
-        <span>
-          <Heart fill={"#D3233A"}/>
-          56,789
-        </span>
-      </div>
-
-      <div className={styles['recipe-item']}>
-        <div className={styles['recipe-img']}>
-          <img src={process.env.PUBLIC_URL + '/images/recipe1.png'} alt='image_1'/>
-        </div>
-        <p>레시피 이름 01</p>
-        <span>
-          <Heart fill={"#D3233A"}/>
-          56,789
-        </span>
-      </div>    
+      ))}
     </div>
-    
-  )
-}
+  );
+};
 
+RecipeList.propTypes = {
+  recipes: PropTypes.arrayOf(PropTypes.shape({
+    img: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    user_like: PropTypes.array.isRequired,
+  })).isRequired,
+};
 
 export default Home

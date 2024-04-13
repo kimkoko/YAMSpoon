@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import './Header.scss';
 import SearchIcon from '../Icons/SearchIcon';
@@ -7,15 +7,24 @@ import Logo from '../Icons/LogoIcon'
 
 const Header = () => {
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState('');
 
+  // 엔터키를 누르면 검색값 전달
   const activeEnter = (e) => {
     if(e.key === "Enter") {
-      navigate('/search');
+      navigate(`/search?recipes=${searchValue}`);
+      console.log(searchValue);
     }
   }
 
+  // input 값 변화를 확인하는 핸들러
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+    console.log(searchValue);
+  }
+
   return (
-    <header className='header'>
+    <header>
       <div className='headerInner'>
         <Link to ="/"><Logo /></Link>
 
@@ -28,9 +37,15 @@ const Header = () => {
 
           <div className='right-container'>
             <div className='searchContainer'>
-              <input className="search-cotainer" id='search' type="text" placeholder="무엇을 찾아드릴까요?"
+              <input 
+                className="search-cotainer" 
+                id="search" 
+                type="text" 
+                placeholder="무엇을 찾아드릴까요?"
+                value={searchValue}
+                onChange={handleInputChange}
                 onKeyDown={(e) => activeEnter(e)}/>
-              <Link className="search-icon" to="/search"><SearchIcon alt ="searchIcon" /></Link>
+              <Link className="search-icon" to={`/search?recipes=${searchValue}`}><SearchIcon alt ="searchIcon" /></Link>
             </div>
             <Link className='mypage-icon' to="/mypage"><MypageIcon alt="myPageIcon"/></Link>
             <Link to="/signin"><button className='login'>로그인</button></Link>

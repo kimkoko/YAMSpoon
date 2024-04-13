@@ -18,7 +18,6 @@
             border: none;
             font-weight: 500;
             margin-left: 0px;
-            width: 113px;
             background: none;
             white-space: nowrap;
         }
@@ -36,6 +35,7 @@
         background-color: rgba(211, 35, 58, 0.1);
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         :first-child {
             margin-left: 25px;
         }

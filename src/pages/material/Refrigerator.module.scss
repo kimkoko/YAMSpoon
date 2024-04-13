@@ -19,10 +19,13 @@
 .bar-container {
     width: 77%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     justify-content: space-between;
+    gap:15px;
+    
     .main-bar {
-        width: 85%;
+        width: 100%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -34,13 +37,14 @@
             width: 113px;
             color: $common-color;
             background-color: $cream-color;
-            white-space: nowrap     ;
+            white-space: nowrap;
         }
     }
 
     .Add {
         padding: 16px 36px;
         border: none;
+        white-space: nowrap;
     }
     
 }
@@ -50,7 +54,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 99px;
+    margin-top: 50px;
     p {
         font-size: 26px;
         font-weight: bold;
@@ -68,54 +72,58 @@
     width: 77%;
     
     .RecipeList {
-        // display: grid;
-        // grid-template-columns: repeat(4, 1fr);
-        // grid-template-rows: repeat(3, 1fr);
-        // row-gap: 54px;
-        // column-gap: 32px;
         display: flex;
-        gap: 35px;
         row-gap: 54px;
         flex-wrap: wrap;
         
-        .RecipeItem {
-            width:294px;
-            height: 428px;
-            cursor: pointer;
+        .Recipe-container {
+            display: flex;
+            width: 100%;
+            flex-wrap: nowrap;
+            gap: 35px;
 
-            &:hover .ItemImage{
-                transform: scale(1.1);
-                transition: all 0.5s;
-            }
-
-            .item-img{
-                border-radius: 44px;
-                overflow: hidden;
-            }
-
-            .ItemImage {
-                width: auto;
-                height: 320px;
-                border-radius: 44px;
-                transition: all 0.5s;
-            }
-            p {
-                font-size: 19px;
-                font-weight: bold;
-                margin-top: 28px;
-            }
-            span {
-                margin-top: 28px;
-                display: flex;
-                font-size: 19px;
-                svg {
-                    width: 19px;
-                    margin-right: 10px;
-                    color: $main-color;
+            .RecipeItem {
+                width: 23%;
+                height: 428px;
+                cursor: pointer;
+    
+                &:hover .ItemImage{
+                    transform: scale(1.1);
+                    transition: all 0.5s;
+                }
+    
+                .item-img{
+                    overflow: hidden;
+                    border-radius: 44px;
+                    .ItemImage {
+                        width: 100%;
+                        height: 320px;
+                        transition: all 0.5s;
+                    }
+                }
+    
+                
+                p {
+                    font-size: 20px;
+                    font-weight: bold;
+                    margin-top: 27px;
+                }
+                span {
+                    margin-top: 27px;
+                    display: flex;
+                    font-size: 19px;
+                
+                    svg {
+                        width: 19px;
+                        margin-right: 10px;
+                        color: $main-color;
+                    }
                 }
             }
-        }   
-    }
+        }
+ 
+    }  
+    
 
     .EmptyList {
         height: 429px;
@@ -125,10 +133,11 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-
+        white-space: pre-line;
         color: $gray-color2;
         font-size: 36px;
         font-weight: 500;
+
     }
     
 }

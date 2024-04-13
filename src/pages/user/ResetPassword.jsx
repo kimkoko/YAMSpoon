@@ -1,36 +1,76 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
 import './ResetPassword.scss';
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [passwordConfirmError, setPasswordConfirmError] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(false);
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    password: '',
+    passwordConfirm: ''
+  });
+
+  const [validation, setValidation] = useState({
+    passwordError: '',
+    passwordConfirmError: '',
+    passwordMatch: false
+  });
+
+  const { password, passwordConfirm } = formData;
+  const { passwordError, passwordConfirmError, passwordMatch } = validation;
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
-    setPassword(newPassword);
-    // 비밀번호 유효성 검사
-    if (newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-      setPasswordError('X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.');
+    setFormData({ ...formData, password: newPassword });
+    if (passwordConfirm === '') {
+      setValidation({
+        ...validation,
+        passwordError:
+          newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+            ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.'
+            : '',
+      })
     } else {
-      setPasswordError('');
+      setValidation({
+        ...validation,
+        passwordError:
+          newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+            ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.'
+            : '',
+        passwordConfirmError: newPassword !== passwordConfirm ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
+        passwordMatch: newPassword === passwordConfirm && newPassword !== ''
+      })
     }
-  }
+  };
 
   const handlePasswordConfirmChange = (e) => {
     const newPasswordConfirm = e.target.value;
-    setPasswordConfirm(newPasswordConfirm);
-    // 비밀번호 확인
-    if (newPasswordConfirm !== password) {
-      setPasswordConfirmError('X 입력하신 비밀번호와 일치하지 않습니다.');
-      setPasswordMatch(false);
-    } else {
-      setPasswordConfirmError('');
-      setPasswordMatch(true);
+    setFormData({ ...formData, passwordConfirm: newPasswordConfirm });
+    setValidation({
+      ...validation,
+      passwordConfirmError: newPasswordConfirm !== password ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
+      passwordMatch: newPasswordConfirm === password && newPasswordConfirm !== ''
+    })
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 빈 값 확인
+    const emptyField = Object.keys(formData).find(field => !formData[field]);
+    if (emptyField) {
+      const inputElement = document.getElementById(emptyField);
+      const text = inputElement.getAttribute('placeholder');
+      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
+      if (inputElement) {
+        inputElement.focus();
+        return;
+      }
     }
+
+    alert('재설정 완료');
+    navigate('/signin');
   }
 
   return (
@@ -38,7 +78,7 @@ const ResetPassword = () => {
       <LoginHeader />
       <div className='reset-container'>
         <p className='reset-title'>비밀번호 재설정</p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor='password'>새 비밀번호</label>
             <input 

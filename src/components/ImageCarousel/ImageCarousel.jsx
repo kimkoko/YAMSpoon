@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "./ImageSlide.scss";
 import Arrow from ".././Icons/Arrow";
-// import ImageSlide from "./ImageSlide";
 import propTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Heart from '../Icons/Heart';
-
 
 
 export default function Slider({ slideDatas, hideRecipeRanking }) {
@@ -14,23 +12,21 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
 
   // Next 버튼 클릭 시
   const NextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === TOTAL_SLIDES - 1 ? 0 : prevSlide + 1));
-    
-    // 마지막 슬라이드에서 다음 버튼 클릭 시 첫 슬라이드로 이동
-    if (currentSlide === TOTAL_SLIDES - 4) {
-      setCurrentSlide(0);
-    }
-
+    setCurrentSlide(prevSlide => 
+      // 만약 현재 슬라이드가 마지막 슬라이드(TOTAL_SLIDES - 1)이거나,
+      // 마지막 슬라이드에서 4개 이전의 슬라이드(TOTAL_SLIDES - 4)인 경우 첫 슬라이드로 설정
+      prevSlide === TOTAL_SLIDES - 1 || prevSlide === TOTAL_SLIDES - 4 ? 0 : prevSlide + 1
+    );
   };
 
   // Prev 버튼 클릭 시
   const PrevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? TOTAL_SLIDES - 1 : prevSlide - 1));
-
-    // 첫 슬라이드에서 이전 버튼 클릭 시 마지막 슬라이드로 이동
-    if (currentSlide === 0) {
-      setCurrentSlide(TOTAL_SLIDES - 4);
-    }
+    setCurrentSlide(prevSlide =>
+      // 첫 슬라이드인 경우 마지막에서 네 번째 슬라이드로 설정
+      prevSlide === 0 ? TOTAL_SLIDES - 4 :
+      // 그 외의 경우에는 슬라이드 인덱스를 1 감소
+      prevSlide - 1
+    );
   };
 
   // 4개 이하의 슬라이드가 있을 때는 버튼을 렌더링하지 않음
@@ -48,10 +44,9 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
   })
   
   // slideDatas가 없으면 아무것도 렌더링하지 않음
-  if (!slideDatas) {
+  if (!slideDatas || slideDatas.length === 0) {
     return null;
   }
-
 
   return (
     <div className='imageSlider'>
@@ -65,16 +60,17 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
         {
           slideDatas.map((slide, index) => (
             <div className='imageSlide' key={index}>
-              <Link to="/recipe">
+              <Link to={`/recipes/${slide.id}`}>
                 <div className="recipe-img">
-                    <img src={process.env.PUBLIC_URL + `/images/${slide.recipeImg}`} alt="레시피 이미지"/>
+                    <img src={slide.img} alt="레시피 이미지"/>
                 </div>
+                {/* 레시피 랭킹 숨김 여부 */}
                 {!hideRecipeRanking && <div className='ranking'>{index + 1}</div>}
-                <p className='recipeName'>{slide.recipeName}</p>
+                <p className='recipeName'>{slide.name}</p>
                 <div className='likes'>
                     <span>
-                    <Heart fill={"#D3233A"}/>
-                    {slide.recipeLike.toLocaleString()}
+                      <Heart fill={"#D3233A"}/>
+                      {slide.user_like.length}
                     </span>
                 </div>
               </Link>
@@ -82,8 +78,7 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
           ))
         }
       </div>
-      
-    
+
       <button className='arrow prevBtn' onClick={PrevSlide}>
         <Arrow stroke={"#d3233a"}/>
       </button>
@@ -94,18 +89,8 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
   );
 }
 
-
-
-
 // props 정의
 Slider.propTypes = {
-  slideDatas: propTypes.arrayOf(
-    propTypes.shape({
-      recipeImg: propTypes.string,
-      recipeName: propTypes.string,
-      recipeLike: propTypes.number,
-      recipeRanking: propTypes.number,
-    })
-  ).isRequired,
-  hideRecipeRanking: propTypes.bool,
-}
+  slideDatas: propTypes.array.isRequired,
+  hideRecipeRanking: propTypes.bool
+};

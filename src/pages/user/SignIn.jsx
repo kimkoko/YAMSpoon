@@ -14,30 +14,45 @@ const SignIn = () => {
     id: '',
     password: ''
   });
-  const [formError, setFormError] = useState('');
+
+  const [validation, setValidation] = useState({
+    idError: '',
+    passwordError: '',
+  });
+
   const [errorModalOpen, setErrorModalOpen] = useState(false);
 
   const { id, password } = formData;
+  const { idError, passwordError } = validation;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setValidation({ ...validation, [`${name}Error`]: '' });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!id || !password) {
-      setFormError('※ 모든 필드를 입력해 주세요.');
-    } else {
-      setFormError('');
-      const res = await api.get('/user');
-      const user = res.data.find(user => user.userId === id && user.password === password);
-      if (user) {
-        alert(`로그인 성공! 안녕하세요 ${user.name}님`)
-        navigate('/');
-      } else {
-        setErrorModalOpen(true);
+
+    // 빈 값 확인
+    const emptyField = Object.keys(formData).find(field => !formData[field]);
+    if (emptyField) {
+      const inputElement = document.getElementById(emptyField);
+      const text = inputElement.getAttribute('placeholder');
+      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
+      if (inputElement) {
+        inputElement.focus();
+        return;
       }
+    }
+
+    const res = await api.get('/user');
+    const user = res.data.find(user => user.userId === id && user.password === password);
+    if (user) {
+      alert(`로그인 성공! 안녕하세요 ${user.name}님`)
+      navigate('/');
+    } else {
+      setErrorModalOpen(true);
     }
   }
 
@@ -57,6 +72,7 @@ const SignIn = () => {
               value={formData.id}
               onChange={handleInputChange}
             />
+            {idError && <p className="error-message">{idError}</p>}
           </div>
           <div className="form-group">
             <label htmlFor='password'>비밀번호</label>
@@ -68,8 +84,8 @@ const SignIn = () => {
               value={formData.password}
               onChange={handleInputChange}
             />
+            {passwordError && <p className="error-message">{passwordError}</p>}
           </div>
-          {formError && <p className='error-message'>{formError}</p>}
           <button type='submit' className='signin-button long'>로그인</button>
         </form>
         <div className='link-container'>

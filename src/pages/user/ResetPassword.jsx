@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
 import './ResetPassword.scss';
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     password: '',
     passwordConfirm: ''
@@ -20,15 +23,25 @@ const ResetPassword = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
-    setValidation({
-      ...validation,
-      passwordError: 
-        newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
-          ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.' 
-          : '',
-      passwordConfirmError: newPassword !== passwordConfirm ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
-      passwordMatch: newPassword === passwordConfirm
-    });
+    if (passwordConfirm === '') {
+      setValidation({
+        ...validation,
+        passwordError:
+          newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+            ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.'
+            : '',
+      })
+    } else {
+      setValidation({
+        ...validation,
+        passwordError:
+          newPassword.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+            ? 'X 비밀번호는 8자 이상이고 특수문자를 포함해야 합니다.'
+            : '',
+        passwordConfirmError: newPassword !== passwordConfirm ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
+        passwordMatch: newPassword === passwordConfirm && newPassword !== ''
+      })
+    }
   };
 
   const handlePasswordConfirmChange = (e) => {
@@ -37,16 +50,35 @@ const ResetPassword = () => {
     setValidation({
       ...validation,
       passwordConfirmError: newPasswordConfirm !== password ? 'X 입력하신 비밀번호와 일치하지 않습니다.' : '',
-      passwordMatch: newPasswordConfirm === password
-    });
+      passwordMatch: newPasswordConfirm === password && newPasswordConfirm !== ''
+    })
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 빈 값 확인
+    const emptyField = Object.keys(formData).find(field => !formData[field]);
+    if (emptyField) {
+      const inputElement = document.getElementById(emptyField);
+      const text = inputElement.getAttribute('placeholder');
+      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
+      if (inputElement) {
+        inputElement.focus();
+        return;
+      }
+    }
+
+    alert('재설정 완료');
+    navigate('/signin');
+  }
 
   return (
     <div>
       <LoginHeader />
       <div className='reset-container'>
         <p className='reset-title'>비밀번호 재설정</p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor='password'>새 비밀번호</label>
             <input 

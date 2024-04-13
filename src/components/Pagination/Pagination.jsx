@@ -11,8 +11,8 @@ const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
 
   useEffect(() => {
     if(totalPages < 5) {
-      const newList = []
-      for(let i = 1; i <= totalPages; i++) {
+      const newList = [1]
+      for(let i = 2; i <= totalPages; i++) {
         newList.push(i)
       }
       setPageList(newList)
@@ -23,46 +23,34 @@ const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
   useEffect(() => {
     if( !handlePageData ) return
     handlePageData([selectedPage * itemsPerPage, selectedPage * itemsPerPage + itemsPerPage])
+    
+    const startIndex = Math.floor(selectedPage/5)
+    const newList = []
+    if(selectedPage === 0) return
+    for (let i = 1; i <=5; i++) {
+      const num = i + (startIndex * 5)
+      if(num === totalPages+1) break
+      newList.push(num)
+    }
+    setPageList(newList)
   }, [selectedPage])
 
   const handlePageClick = (idx) => {
     setSelectedPage(idx)
   };
 
-  const goToNextGroup = () => {
-    if (selectedPage + 1 < totalPages) {
-      if ((selectedPage + 1) % 5 === 0) {
-        const newFirstPage = selectedPage + 1;
-        const newPageList = []
-        for (let i = newFirstPage + 1; i <= Math.min(newFirstPage + 5, totalPages); i++) {
-          newPageList.push(i)
-        }
-        setPageList(newPageList)
-        setSelectedPage(newFirstPage)
-      } else {
-        setSelectedPage(selectedPage + 1)
-      }
-    }
+  const goToNext = () => {
+    if (selectedPage === totalPages - 1) return
+    setSelectedPage(prev => prev+1)
   };
-  const goToPrevGroup = () => {
-    if (selectedPage > 0) {
-      if ((selectedPage + 1) % 5 === 1) { 
-        const newFirstPage = selectedPage - 4;
-        const newPageList = [];
-        for (let i = newFirstPage; i <= Math.min(newFirstPage + 4, totalPages); i++) {
-          newPageList.push(i);
-        }
-        setPageList(newPageList);
-        setSelectedPage(selectedPage - 1); 
-      } else {
-        setSelectedPage(selectedPage - 1);
-      }
-    } 
+  const goToPrev = () => {
+    if (selectedPage === 0) return
+    setSelectedPage(prev => prev-1)
   };
 
   return (
     <nav className='pagination-container'>
-      <button className='arrow-button' onClick={goToPrevGroup}>
+      <button className='arrow-button' onClick={goToPrev}>
         <ArrowBackFilled />
       </button>
       <ul className='pagination'>
@@ -77,7 +65,7 @@ const Pagination = ({totalItems, itemsPerPage, handlePageData}) => {
           ))
         }
       </ul>
-      <button className='arrow-button' onClick={goToNextGroup}>
+      <button className='arrow-button' onClick={goToNext}>
         <ArrowForwardFilled />
       </button>
     </nav>

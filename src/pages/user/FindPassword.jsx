@@ -13,21 +13,23 @@ const FindPassword = () => {
   const [formData, setFormData] = useState({
     id: '',
     email: '',
-    emailCode: ''
   });
+  const [emailCode, setEmailCode] = useState('');
 
   const [validation, setValidation] = useState({
+    idError: '',
     emailError: '',
     emailSend: false,
-    formError: ''
+    emailCodeError: ''
   });
 
-  const { id, email, emailCode } = formData;
-  const { emailError, emailSend, formError } = validation;
+  const { id, email } = formData;
+  const { idError, emailError, emailSend, emailCodeError } = validation;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setValidation({ ...validation, [`${name}Error`]: '' });
   };
 
   const handleEmailChange = (e) => {
@@ -40,23 +42,46 @@ const FindPassword = () => {
     })
   };
 
-  const handleEmailSend = () => {
-    setValidation({ ...validation, emailSend: true });
+  const handleEmailSend = async () => {
+    setValidation({ ...validation, emailSend: true, emailError: '' });
+    // 이메일 인증번호 전송
   };
+
+  const handleEmailCodeChange = (e) => {
+    const newEmailCode = e.target.value;
+    setEmailCode(newEmailCode);
+  }
+
+  const handleEmailCodeConfirm = async () => {
+    // 이메일 인증번호 확인
+    if (!emailCode) {
+      setValidation({ ...validation, emailCodeError: '※ 인증번호를 입력해 주세요.' })
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!id || !email) {
-      setValidation({ ...validation, formError: '※ 모든 필드를 입력해 주세요.' });
-    } else if (!emailSend) {
-      setValidation({ ...validation, formError: '※ 이메일 인증을 해주세요.' });
-    } else if (emailError) {
-      setValidation({ ...validation, formError: '※ 유효하지 않은 값이 있습니다.' });
-    } else {
-      setValidation({ ...validation, formError: '' });
-      // setIsModalOpen(true);
-      navigate('/reset-password');
+    
+    // 빈 값 확인
+    const emptyField = Object.keys(formData).find(field => !formData[field]);
+    if (emptyField) {
+      const inputElement = document.getElementById(emptyField);
+      const text = inputElement.getAttribute('placeholder');
+      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
+      if (inputElement) {
+        inputElement.focus();
+        return;
+      }
     }
+
+    // 이메일 인증 확인
+    if (!emailSend) {
+      setValidation({ ...validation, emailError: '※ 이메일 인증을 해주세요.' });
+      return;
+    }
+
+    // setIsModalOpen(true);
+    navigate('/reset-password');
   }
 
   return (
@@ -74,7 +99,9 @@ const FindPassword = () => {
               placeholder='아이디를 입력해 주세요.'
               value={id}
               onChange={handleInputChange}
+              className={`${idError && 'invalid'}`}
             />
+            {idError && <p className="error-message">{idError}</p>}
           </div>
           <div className="form-group">
             <label htmlFor='email'>이메일</label>
@@ -92,9 +119,9 @@ const FindPassword = () => {
                 type="button"
                 className="notFilled short"
                 onClick={handleEmailSend}
-                disabled={!email || emailSend || emailError !== ''}
+                disabled={!email || emailSend || emailError === 'X 이메일 형식이 올바르지 않습니다.'}
               >
-                전송
+                인증
               </button>
             </div>
             {emailSend && (
@@ -103,15 +130,15 @@ const FindPassword = () => {
                   type="number"
                   placeholder="인증번호를 입력해 주세요."
                   value={emailCode}
-                  onChange={handleInputChange}
+                  onChange={handleEmailCodeChange}
                   name="emailCode"
                 />
-                <button type="button" className="notFilled short">인증</button>
+                <button type="button" className="notFilled short" onClick={handleEmailCodeConfirm}>확인</button>
               </div>
             )}
             {emailError && <p className="error-message">{emailError}</p>}
+            {emailCodeError && <p className="error-message">{emailCodeError}</p>}
           </div>
-          {formError && <p className="error-message">{formError}</p>}
           <button type='submit' className='findpassword-button long'>비밀번호 찾기</button>
         </form>
       </div>

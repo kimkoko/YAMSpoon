@@ -3,6 +3,7 @@ import LoginHeader from '../../components/Header/LoginHeader';
 import { Link, useNavigate } from 'react-router-dom';
 // import User from '../../utils/User';
 import { api } from '../../utils/api';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import Alert from '../../components/Icons/Alert';
 import './SignIn.scss';
@@ -35,15 +36,8 @@ const SignIn = () => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
     const res = await api.get('/user');

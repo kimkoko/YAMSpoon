@@ -5,21 +5,34 @@ import Alert from '../../components/Icons/Alert';
 import './EditProfile.scss';
 import User from '../../utils/User';
 import { useNavigate } from 'react-router-dom';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 
 export default function EditProfile () {
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
-  const [userId, setUserId] = useState(''); // 사용자 아이디
-  const [name, setName] = useState(''); // 이름
-  const [email, setEmail] = useState(''); // 이메일
-  const [password, setPassword] = useState(''); // 비밀번호
-  const [nickName, setNickName] = useState(''); // 닉네임
-  const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 
-  const [recipe, setRecipe] = useState([]); // 저장한 레시피
-  const [ingredients, setIngredients] = useState([]); // 저장한 재료
-  const [formError, setFormError] = useState('');
 
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '', // 이름
+    nickname: '', // 닉네임
+    userId: '', // 사용자 아이디
+    email: '', // 이메일
+  });
+
+  const [validation, setValidation] = useState({
+    nameError: '',
+    nicknameError: '',
+  });
+
+  const { name, nickname, userId, email } = formData;
+  const { nameError, nicknameError } = validation;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setValidation({ ...validation, [`${name}Error`]: '' });
+  };
 
   // 사용자 ID 임시로 지정
   const id = "u3"
@@ -29,44 +42,29 @@ export default function EditProfile () {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await User.getUser(id);
-
-      setUserId(response.data.userId);
-      setName(response.data.name);
-      setEmail(response.data.email);
-      setPassword(response.data.password);
-      setNickName(response.data.nickname);
-      setIsAdmin(response.data.isAdmin);
-      setRecipe(response.data.recipe);
-      setIngredients(response.data.ingredients);
+      setFormData({
+        ...formData,
+        name: response.data.name,
+        nickname: response.data.nickname,
+        userId: response.data.userId,
+        email: response.data.email,
+      })
     }
 
-    fetchUser()
+    fetchUser();
   }, [])
 
   // 정보 수정 함수
   const handleEdit = async (e) => {
     e.preventDefault();
 
-    const newUserInfo = {
-      id: id,
-      userId: userId,
-      name: name,
-      email: email,
-      password: password,
-      nickname: nickName,
-      isAdmin: isAdmin,
-      recipe: recipe,
-      ingredients: ingredients
+    // 빈 값 확인
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
-    if (!name || !nickName) {
-      setFormError('※ 모든 필드를 입력해 주세요.');
-      return
-    } else {
-      await User.updateUser(id, newUserInfo);
-      setFormError('');
-      setEditSuccess(true);
-    }
+    await User.updateUser(id, formData);
+    setEditSuccess(true);
   }
 
   // 마이 페이지로 이동
@@ -97,26 +95,41 @@ export default function EditProfile () {
         <form>
           <div className="form-group">
             <label htmlFor='name'>이름</label>
-            <input id='name' type='text' placeholder='이름을 입력해 주세요.' value={name} 
-            onChange={(e) => setName(e.target.value)}/>
+            <input
+              id='name'
+              type='text'
+              name='name'
+              placeholder='이름을 입력해 주세요.'
+              value={name}
+              onChange={handleInputChange}
+              className={`${nameError && 'invalid'}`}
+            />
+            {nameError && <p className="error-message">{nameError}</p>}
           </div>
           <div className="form-group">
             <label htmlFor='nickname'>닉네임</label>
             <div className="input-with-button">
-              <input id='nickname' type='text' placeholder='닉네임을 입력해 주세요.' value={nickName}
-              onChange={(e) => setNickName(e.target.value)}/>
+              <input
+                id='nickname'
+                type='text'
+                name='nickname'
+                placeholder='닉네임을 입력해 주세요.'
+                value={nickname}
+                onChange={handleInputChange}
+                className={`${nicknameError && 'invalid'}`}
+              />
               <button className='notFilled short'>중복 확인</button>
             </div>
+            {nicknameError && <p className="error-message">{nicknameError}</p>}
           </div>
           <div className="form-group">
-            <label htmlFor='id'>아이디</label>
-            <input id='id' type='text' value={userId} disabled />
+            <label htmlFor='userId'>아이디</label>
+            <input id='userId' type='text' value={userId} disabled />
           </div>
           <div className="form-group">
             <label htmlFor='email'>이메일</label>
             <input id='email' type='email' value={email} disabled />
           </div>
-          {formError && <p className='error-message'>{formError}</p>}
           <div className='button-container'>
             <button type='submit' className='long' onClick={handleEdit}>정보 수정</button>
             <button type='submit' className='long notFilled' onClick={handleWithdraw}>회원 탈퇴</button>

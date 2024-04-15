@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
 import User from '../../utils/User';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import Check from '../../components/Icons/Check';
 import './SignUp.scss';
@@ -115,15 +116,8 @@ const SignUp = () => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
     // 유효한 값 확인

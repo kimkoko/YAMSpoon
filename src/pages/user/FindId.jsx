@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LoginHeader from '../../components/Header/LoginHeader';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import FindIdIcon from '../../components/Icons/FindIdIcon';
 import './FindId.scss';
@@ -60,15 +61,8 @@ const FindId = () => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
     // 이메일 인증 확인

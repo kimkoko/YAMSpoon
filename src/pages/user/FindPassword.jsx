@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 // import Modal from '../../components/Modal/Modal';
 // import FindPwIcon from '../../components/Icons/FindPwIcon';
 import './FindPassword.scss';
@@ -63,15 +64,8 @@ const FindPassword = () => {
     e.preventDefault();
     
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
     // 이메일 인증 확인

@@ -25,13 +25,24 @@ export default function EditProfile () {
     nicknameError: '',
   });
 
+  const [basicData, setBasicData] = useState({
+    password: '',
+    isAdmin: false,
+    recipe: [],
+    ingredients: [],
+  });
+
   const { name, nickname, userId, email } = formData;
   const { nameError, nicknameError } = validation;
+  const newUserInfo = {
+    ...formData,
+    ...basicData,
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setValidation({ ...validation, [`${name}Error`]: '' });
+    setFormData(prev => ({...prev, [name]: value}));
+    setValidation(prev => ({...prev, [`${name}Error`]: ''}));
   };
 
   // 사용자 ID 임시로 지정
@@ -42,17 +53,17 @@ export default function EditProfile () {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await User.getUser(id);
+      const { name, nickname, userId, email } = response.data;
       setFormData({
-        ...formData,
-        name: response.data.name,
-        nickname: response.data.nickname,
-        userId: response.data.userId,
-        email: response.data.email,
+        name,
+        nickname,
+        userId,
+        email,
       })
     }
 
     fetchUser();
-  }, [])
+  }, [id])
 
   // 정보 수정 함수
   const handleEdit = async (e) => {
@@ -63,7 +74,7 @@ export default function EditProfile () {
       return;
     }
 
-    await User.updateUser(id, formData);
+    await User.updateUser(id, newUserInfo);
     setEditSuccess(true);
   }
 

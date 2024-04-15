@@ -47,8 +47,7 @@ $correct-color: #32c200;
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer,
-header, hgroup, menu, nav, section {
+article, aside, details, figcaption, figure, hgroup, menu, nav, section {
   display: block;
 }
 
@@ -112,6 +111,13 @@ button {
   &.short {
     gap: 10px;
     width: 140px;
+  }
+
+  &:disabled {
+    cursor: default;
+    background: $main-color;
+    color: $cream-color;
+    opacity: .7;
   }
 }
 /* a tag */

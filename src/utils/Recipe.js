@@ -19,7 +19,7 @@ export default {
    */
   getIngredientRecipe(ingredientId) {
     return api({
-      url: `/recipes/${ingredientId}`,
+      url: `/recipes/ingredients/${ingredientId}`,
       method: 'get',
     });
   },
@@ -31,7 +31,7 @@ export default {
    */
   getCatgory(categoryId) {
     return api({
-      url: `/recipes/${categoryId}`,
+      url: `/recipes/categories/${categoryId}`,
       method: 'get',
     });
   },
@@ -63,11 +63,22 @@ export default {
 
   /**
    * @method GET
-   * @summary 레시피 검색
+   * @summary 화제의 레시피 10개 조회
    */
-  getRecipeSearch() {
+  getRecipePopular() {
     return api({
-      url: '/recipes/search',
+      url: '/recipes/popular',
+      method: 'get',
+    });
+  },
+
+  /**
+   * @method GET
+   * @summary 최근 올라온 레시피 조회
+   */
+  getRecipeRecent() {
+    return api({
+      url: '/recipes/recent',
       method: 'get',
     });
   },

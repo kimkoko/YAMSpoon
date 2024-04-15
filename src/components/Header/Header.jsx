@@ -13,14 +13,12 @@ const Header = () => {
   const activeEnter = (e) => {
     if(e.key === "Enter") {
       navigate(`/search?recipes=${searchValue}`);
-      console.log(searchValue);
     }
   }
 
   // input 값 변화를 확인하는 핸들러
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
-    console.log(searchValue);
   }
 
   return (

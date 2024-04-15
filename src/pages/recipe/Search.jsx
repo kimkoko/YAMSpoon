@@ -24,8 +24,8 @@ const Search = () => {
         const fetchData = async () => {
             // 레시피 데이터 가져오기
             const recipeResponse = await Recipe.getRecipe();
-            setRecipes(recipeResponse.data);
-            const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data);
+            setRecipes(recipeResponse.data.data);
+            const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data.data);
             setSortedRecipes(recipeDataDeepCopy);
         }
 
@@ -49,14 +49,14 @@ const Search = () => {
         }else{
             // 검색어 포함하는 레시피 조회
             setSearchResult(SearchRecipes);
-            const filteredRecipes = recipes.filter(recipe => recipe.name.includes(SearchRecipes));
+            const filteredRecipes = recipes.filter(recipe => recipe.title.includes(SearchRecipes));
     
             // 정렬된 레시피 배열
             const sorted = filteredRecipes.sort((a, b) => {
                 if (sortingFilter === 'latest'){
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 }else if (sortingFilter === 'famous') {
-                    return b.user_like.length - a.user_like.length;
+                    return b.like.length - a.like.length;
                 }
                 return new Date(b.createdAt) - new Date(a.createdAt);
             });
@@ -102,7 +102,6 @@ const makeArray = (arr, size) => {
     return result;
 }
 
-console.log(searchResult);
 return (
     <div>
             <Header ></Header>
@@ -126,14 +125,14 @@ return (
                             makeArray(pageData, 4).map((row, rowIndex) => (
                             <div key={rowIndex} className='images-container'>
                                 {row.map((recipe, columnIndex) => (
-                                <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe.id}`} className='image-container'>
+                                <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
                                     <div className='imgBox'>
-                                    <img className='recipe-image' src={recipe.img} alt={recipe.name} />
+                                    <img className='recipe-image' src={recipe.img} alt={recipe.title} />
                                     </div>
-                                    <p className='recipe-name'>{recipe.name}</p>
+                                    <p className='recipe-name'>{recipe.title}</p>
                                     <div className='like-container'>
                                     <Heart fill={"#D3233A"} />
-                                    <p className='like-count'>{recipe.user_like.length}</p>
+                                    <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
                                     </div>
                                 </Link>
                                 ))}

@@ -25,13 +25,14 @@ const TypeRecipe = () => {
     const fetchData = async () => {
       // 카테고리 데이터 가져오기
       const response = await RecipeCategory.getRecipeCategory();
-      setFoodType(response.data.map(category => category));
+      const categoryNames = response.data.data;
+      setFoodType(categoryNames);
 
       // 레시피 데이터 가져오기
       const recipeResponse = await Recipe.getRecipe();
-      setRecipes(recipeResponse.data);
+      setRecipes(recipeResponse.data.data);
 
-      const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data);
+      const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data.data);
       setSortedRecipes(recipeDataDeepCopy);
     }
     
@@ -44,7 +45,7 @@ const TypeRecipe = () => {
       if (sortingFilter === 'latest'){
         return new Date(b.createdAt) - new Date(a.createdAt);
       }else if (sortingFilter === 'famous') {
-        return b.user_like.length - a.user_like.length;
+        return b.like.length - a.like.length;
       }
 
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -61,8 +62,11 @@ const TypeRecipe = () => {
     const startIndex = pageIndex[0] || 0;
     const endIndex = pageIndex[1] || 16;
 
-    setPageData(sortedRecipes.slice(startIndex, endIndex));
-  }, [pageIndex, sortedRecipes]);
+    const recipesToShow = selected !== null ? recipes : sortedRecipes;
+
+    setPageData(recipesToShow.slice(startIndex, endIndex));
+
+  }, [pageIndex, sortedRecipes, recipes, selected]);
   
   // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
   useEffect(() => {
@@ -77,10 +81,14 @@ const TypeRecipe = () => {
     setSortingFilter('latest');
     if (selected === index) {
       setSelected(null);
+      setPageData(recipes);
     }else{
       setSelected(index);
+
       const response = await Recipe.getCatgory(categoryId);
-      setRecipes(response.data);
+      const categoryRecipes = response.data.data.recipes;
+      setRecipes(categoryRecipes);
+      setPageData(categoryRecipes);
     }
   };
 
@@ -89,7 +97,7 @@ const TypeRecipe = () => {
     setSortingFilter('latest');
 
     const response = await Recipe.getRecipe();
-    setRecipes(response.data);
+    setRecipes(response.data.data);
     setSelected(null);
   }
 
@@ -128,9 +136,9 @@ const TypeRecipe = () => {
                 <button
                   key={index}
                   className={`food-type-button ${selected === index ? 'click-food-type-button' : ''}`}
-                  onClick={() => handleSelect(index, category.id)}
+                  onClick={() => handleSelect(index, category._id)}
                 >
-                  {category.category}
+                  {category.name}
                 </button>
                 ))}
             </div>
@@ -149,14 +157,14 @@ const TypeRecipe = () => {
             {makeArray(pageData, 4).map((row, rowIndex) => (
               <div key={rowIndex} className='images-container'>
                 {row.map((recipe, columnIndex) => (
-                  <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe.id}`} className='image-container'>
+                  <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
                     <div className='imgBox'>
-                      <img className='recipe-image' src={recipe.img} alt={recipe.name} />
+                      <img className='recipe-image' src={recipe.img} alt={recipe.title} />
                     </div>
-                    <p className='recipe-name'>{recipe.name}</p>
+                    <p className='recipe-name'>{recipe.title}</p>
                     <div className='like-container'>
                       <Heart fill={"#D3233A"} />
-                      <p className='like-count'>{recipe.user_like.length}</p>
+                      <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
                     </div>
                   </Link>
                 ))}

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types';
 import _ from "lodash"
 import { Link } from 'react-router-dom'
-import styles from './MaterialRecipe.module.scss'
+import './MaterialRecipe.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
@@ -19,21 +19,22 @@ const MaterialRecipe = () => {
   const [ pageIndex, setPageIndex ] = useState(null)
   const [ sort , setSort ] = useState('latest')
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-        try {
-          const response = await Recipe.getRecipe()
-          const recipeDataDeepCopy = _.cloneDeep(response.data)
-          const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
-          setRecipeData(newestData)
-          setFilteredRecipe(newestData)
-          setTotalItems(newestData.length)
+  const fetchRecipes = async () => {
+    try {
+      const response = await Recipe.getRecipe()
+      const recipeDataDeepCopy = _.cloneDeep(response.data)
+      const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+      setRecipeData(newestData)
+      setFilteredRecipe(newestData)
+      setTotalItems(newestData.length)
 
-        } catch (error) {
-          console.error('Error fetching recipes:', error);
-        }
-      };
-  
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
+
+
+  useEffect(() => {
       fetchRecipes();
   }, [])
 
@@ -85,15 +86,15 @@ const MaterialRecipe = () => {
   return (
     <div>
         <Header />
-        <div className={styles['material-container']}>
-            <div className={styles['title']}>재료별로 레시피가 준비되었어요!</div>
-            <div className={styles['bar-container']}>
+        <div className='material-container'>
+            <div className='title'>재료별로 레시피가 준비되었어요!</div>
+            <div className='materialbar-container'>
                 <MaterialBar 
                     handleMaterialSelect={handleMaterialSelect}
                     handleAllClick={handleAllClick}
                 />
             </div>
-            <div className={styles['result']}>
+            <div className='result'>
                 <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
                 <select name="order" onChange={handleSortChange}>
                     <option value="latest">최신순</option>
@@ -128,15 +129,15 @@ const RecipesList = ({ pageData }) => {
 
     
     return (
-        <div className={styles['ListWrapper']}>
-            <div className={styles['RecipeList']}>
+        <div className='ListWrapper'>
+            <div className='RecipeList'>
                 { makeArray(pageData, 4).map((chunk, pageIndex) => (
-                  <div key={pageIndex} className={styles['Recipe-container']}>
+                  <div key={pageIndex} className='Recipe-container'>
                       {chunk.map((item, idx) => (
-                          <div className={styles['RecipeItem']} key={idx}>
+                          <div className='RecipeItem' key={idx}>
                               <Link to={`/recipes/${item.id}`}>
-                                  <div className={styles["item-img"]}>
-                                      <img className={styles['ItemImage']} src={item.img} alt='image_1' />
+                                  <div className="item-img">
+                                      <img className='ItemImage' src={item.img} alt='image_1' />
                                   </div>
                                   <p>{item.name}</p>
                                   <span>

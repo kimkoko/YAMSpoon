@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import _ from "lodash"
 import { Link } from 'react-router-dom'
-import styles from './Refrigerator.module.scss'
+import './Refrigerator.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
@@ -28,30 +28,30 @@ const Refrigerator = () => {
   //const [ selectedMat, setSelectedMat ] = useState(null)
   //const [ ingredientsData, setIngredientsData ] = useState(null)
 
+  const fetchRecipes = async () => {
+    try {
+      const response = await Recipe.getRecipe()
+      //const ingredients = await Ingredients.getIngredients()
+      const user = await User.getUser("u1")
+      const recipeDataDeepCopy = _.cloneDeep(response.data)
+      const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+      setRecipeData(newestData)
+
+      setFilteredRecipe(newestData)
+      setTotalItems(newestData.length)
+      //setIngredientsData(ingredients.data)
+    //   const userIn = user.data.ingredients.map(item => {
+    //     const ingredient = ingredients.data.find(ingredient => ingredient.id === item);
+    //     return ingredient ? ingredient.name : null;
+    //   })
+      setMaterials(user.data.ingredients)
+
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchRecipes = async () => {
-        try {
-          const response = await Recipe.getRecipe()
-          //const ingredients = await Ingredients.getIngredients()
-          const user = await User.getUser("u1")
-          const recipeDataDeepCopy = _.cloneDeep(response.data)
-          const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
-          setRecipeData(newestData)
-
-          setFilteredRecipe(newestData)
-          setTotalItems(newestData.length)
-          //setIngredientsData(ingredients.data)
-        //   const userIn = user.data.ingredients.map(item => {
-        //     const ingredient = ingredients.data.find(ingredient => ingredient.id === item);
-        //     return ingredient ? ingredient.name : null;
-        //   })
-          setMaterials(user.data.ingredients)
-
-        } catch (error) {
-          console.error('Error fetching recipes:', error);
-        }
-      };
-  
       fetchRecipes();
   }, [])
 
@@ -125,8 +125,8 @@ const Refrigerator = () => {
   return (
     <div>
         <Header />
-        <div className={styles['material-container']}>
-            <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
+        <div className='material-container'>
+            <div className='title'>냉장고 속 재료로 레시피가 준비되었어요!</div>
             <MaterialBar 
                 handleAddClick={handleAddClick} 
                 materials={materials} 
@@ -134,7 +134,7 @@ const Refrigerator = () => {
                 recipes={7} 
                 handleSelectMat={handleSelectMat}
             />
-            <div className={styles['result']}>
+            <div className='result'>
                 <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
                 <select name="order" onChange={handleSortChange}>
                     <option value="latest">최신순</option>
@@ -162,8 +162,8 @@ const Refrigerator = () => {
 const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes, handleSelectMat }) => {
 
     return (
-        <div className={styles['bar-container']}>
-            <div className={styles['main-bar']}>
+        <div className='bar-container'>
+            <div className='main-bar'>
                 <Carousel 
                     CategoryData={materials} 
                     items={recipes} 
@@ -172,7 +172,7 @@ const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes,
                     fridge
                     handleSelectMat={handleSelectMat} />
             </div>
-            <button className={styles['Add']} onClick={handleAddClick}>재료 추가</button>
+            <button className='Add' onClick={handleAddClick}>재료 추가</button>
         </div>
     )
 }
@@ -190,15 +190,15 @@ const RecipesList = ({ pageData }) => {
   
       
       return (
-          <div className={styles['ListWrapper']}>
-              <div className={styles['RecipeList']}>
+          <div className='ListWrapper'>
+              <div className='RecipeList'>
                   { makeArray(pageData, 4).map((chunk, pageIndex) => (
-                    <div key={pageIndex} className={styles['Recipe-container']}>
+                    <div key={pageIndex} className='Recipe-container'>
                         {chunk.map((item, idx) => (
-                            <div className={styles['RecipeItem']} key={idx}>
+                            <div className='RecipeItem' key={idx}>
                                 <Link to={`/recipes/${item.id}`}>
-                                    <div className={styles["item-img"]}>
-                                        <img className={styles['ItemImage']} src={item.img} alt='image_1' />
+                                    <div className="item-img">
+                                        <img className='ItemImage' src={item.img} alt='image_1' />
                                     </div>
                                     <p>{item.name}</p>
                                     <span>
@@ -218,8 +218,8 @@ const RecipesList = ({ pageData }) => {
 
 const EmptyList = ({recipe}) => {
     return (
-      <div className={styles['ListWrapper']}>
-        <div className={styles['EmptyList']}>
+      <div className='ListWrapper'>
+        <div className='EmptyList'>
         {   recipe ? '검색된 레시피가 없습니다.'
         : `준비된 재료가 없습니다.
          재료 추가 버튼을 이용해 나만의 냉장고를 채워보세요!`

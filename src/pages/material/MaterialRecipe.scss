@@ -6,19 +6,20 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    .title {
+        font-weight: 700;
+        font-size: 36px;
+        height: 174px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .materialbar-container {
+        width: 77%;
+    }
 }
 
-.title {
-    font-weight: 700;
-    font-size: 36px;
-    height: 174px;
-    display: flex;
-    align-items: center;
-}
 
-.bar-container {
-    width: 77%;
-}
 
 .result {
     width: 77%;

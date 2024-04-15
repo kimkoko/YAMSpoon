@@ -106,7 +106,7 @@
 			justify-content: center;
 			align-items: center;
 
-			button{
+			.action {
 				width: 13%;
 				border-radius: 100px;
 				padding: 13px auto;
@@ -114,14 +114,14 @@
 				font-weight: 500;
 				box-sizing: border-box; 
 				margin-top: 0px; 
-				border: 1px solid $gray-color2;
-				background-color: $cream-color;
-				color: $main-color; 
+				border: 1px solid $gray-color2 !important;
+				background-color: $cream-color !important;
+				color: $main-color !important; 
 				+ button {
 					margin-left: 16px;
-					background-color: $main-color;
-					color: $cream-color;
-					border: none;
+					background-color: $main-color !important;
+					color: $cream-color !important;
+					border: none !important;
 				}           
 			}
 

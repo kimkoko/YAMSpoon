@@ -4,11 +4,10 @@ export default {
   /**
    * @method GET
    * @summary 사용자 정보 조회
-   * @param id 아이디
    */
-  getUser(id) {
+  getUser() {
     return api({
-      url: `/user/${id}`,
+      url: '/user',
       method: 'get'
     })
   },
@@ -18,9 +17,9 @@ export default {
    * @summary 사용자 정보 업데이트
    * @param newUserInfo 새로운 사용자 정보
    */
-  updateUser(id, newUserInfo) {
+  updateUser(newUserInfo) {
     return api({
-      url: `/user/${id}`,
+      url: '/user',
       method: 'put',
       data: newUserInfo
     })
@@ -29,11 +28,10 @@ export default {
   /**
    * @method DELETE
    * @summary 사용자 정보 삭제(탈퇴)
-   * @param id 아이디
    */
-  deleteUser(id) {
+  deleteUser() {
     return api({
-      url: `/user/${id}`,
+      url: '/user',
       method: 'delete'
     })
   },
@@ -45,7 +43,7 @@ export default {
    */
   createUser(userData) {
     return api({
-      url: '/user',
+      url: '/auth/signUp',
       method: 'post',
       data: userData
     })
@@ -58,7 +56,7 @@ export default {
    */
   loginUser(userData) {
     return api({
-      url: '/user',
+      url: '/auth/login',
       method: 'post',
       data: userData
     })
@@ -67,11 +65,10 @@ export default {
   /**
    * @method GET
    * @summary 사용자 냉장고 재료 조회
-   * @param id 아이디
    */
-  getUserFridge(id) {
+  getUserFridge() {
     return api({
-      url: `/user/${id}/fridge`,
+      url: '/user/fridge',
       method: 'get'
     })
   },
@@ -79,26 +76,35 @@ export default {
   /**
    * @method PUT
    * @summary 사용자 냉장고 재료 업데이트
-   * @param id 아이디
    * @param userData 사용자 정보
    */
-  updateUserFridge(id, userData) {
+  updateUserFridge(userData) {
     return api({
-      url: `/user/${id}/fridge`,
+      url: '/user/fridge',
       method: 'put',
       data: userData
     })
   },
 
   /**
+   * @method GET
+   * @summary 사용자 북마크 조회
+   */
+  getUserBookmark() {
+    return api({
+      url: '/user/bookmark',
+      method: 'get',
+    })
+  },
+
+  /**
    * @method PUT
    * @summary 사용자 북마크 업데이트
-   * @param id 아이디
    * @param userData 사용자 정보
    */
-  updateUserBookmark(id, userData) {
+  updateUserBookmark(userData) {
     return api({
-      url: `/user/${id}/bookmark`,
+      url: '/user/bookmark',
       method: 'put',
       data: userData
     })
@@ -111,7 +117,7 @@ export default {
    */
   findUserId(userData) {
     return api({
-      url: '/findUserid',
+      url: '/user/findUserid',
       method: 'post',
       data: userData
     })
@@ -124,7 +130,7 @@ export default {
    */
   findUserPassword(userData) {
     return api({
-      url: '/findUserPassword',
+      url: '/user/findUserPassword',
       method: 'post',
       data: userData
     })
@@ -133,11 +139,12 @@ export default {
   /**
    * @method PUT
    * @summary 비밀번호 재설정
+   * @param userId 사용자 아이디
    * @param userData 사용자 정보
    */
-  resetPassword(userData) {
+  resetPassword(userId, userData) {
     return api({
-      url: '/resetPassword',
+      url: `/user/resetPassword/${userId}`,
       method: 'put',
       data: userData
     })
@@ -159,13 +166,13 @@ export default {
   /**
    * @method POST
    * @summary 인증번호 확인
-   * @param emailData 이메일 정보
+   * @param code 인증번호
    */
-  verifyCode(emailData) {
+  verifyCode(code) {
     return api({
       url: '/auth/verify',
       method: 'post',
-      data: emailData
+      data: code
     })
   },
 

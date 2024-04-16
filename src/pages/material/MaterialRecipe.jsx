@@ -102,7 +102,7 @@ const MaterialRecipe = () => {
             </div>
             <RecipesList pageData={pageData}/>
             {filteredRecipe && filteredRecipe.length === 0 && 
-              <div className='no-recipes'>
+              <div className='no-recipe'>
                 <p>등록된 레시피가 없습니다.</p>
               </div>
             }

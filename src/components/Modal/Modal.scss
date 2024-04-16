@@ -37,7 +37,8 @@
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
-
+    width:auto;
+  
 
 		.modal__content__icon{
 			text-align: center;
@@ -79,13 +80,15 @@
 				color: $main-color !important;
 				border: 1px solid $gray-color2 !important;
 				background: none !important;
-				margin-right: 16px;
+				margin-right: 16px !important;
 			}
 
 			.action{
-				background:$main-color;
-				color: $cream-color;
-				margin-top: 0px;
+				background:$main-color !important;
+				color: $cream-color !important;
+				margin-top: 0px !important;
+        border: none !important;
+        width: auto !important;
 			}
 		}
 	}

@@ -45,14 +45,11 @@ export default function EditProfile () {
     setValidation(prev => ({...prev, [`${name}Error`]: ''}));
   };
 
-  // 사용자 ID 임시로 지정
-  const id = "u3"
-
   // 수정할 유저 정보 가져오기
   // 현재 api 미구현으로 추후 확정된 로직에 따라 변경 필요
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await User.getUser(id);
+      const response = await User.getUser();
       const { name, nickname, userId, email } = response.data;
       setFormData({
         name,
@@ -63,7 +60,7 @@ export default function EditProfile () {
     }
 
     fetchUser();
-  }, [id])
+  }, [])
 
   // 정보 수정 함수
   const handleEdit = async (e) => {
@@ -74,7 +71,7 @@ export default function EditProfile () {
       return;
     }
 
-    await User.updateUser(id, newUserInfo);
+    await User.updateUser(newUserInfo);
     setEditSuccess(true);
   }
 
@@ -92,7 +89,7 @@ export default function EditProfile () {
 
   const confirmWithdraw = () => {
     // 탈퇴 로직 구현
-    User.deleteUser(id);
+    User.deleteUser();
     setIsModalOpen(false);
     // 메인 페이지로 이동
     navigate('/');

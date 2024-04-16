@@ -46,6 +46,7 @@ header {
 
                 white-space: nowrap;
                 transition: all 0.3s;
+                cursor: pointer;
 
                 &:hover{
                     font-size: 18px;
@@ -86,6 +87,7 @@ header {
                 width: 24px;
                 height: 25px;
                 transition: all 0.3s;
+                cursor: pointer;
 
                 &:hover{
                     width: 28px;

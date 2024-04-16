@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
 import User from '../../utils/User';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import Check from '../../components/Icons/Check';
 import './SignUp.scss';
@@ -14,7 +15,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState({
     name: '',
     nickname: '',
-    id: '',
+    userId: '',
     password: '',
     passwordConfirm: '',
     email: '',
@@ -24,32 +25,62 @@ const SignUp = () => {
   const [validation, setValidation] = useState({
     nameError: '',
     nicknameError: '',
-    idError: '',
+    nicknameCheck: false,
+    userIdError: '',
+    userIdCheck: false,
     emailError: '',
     emailSend: false,
     emailCodeError: '',
+    emailCodeCheck: false,
     passwordError: '',
     passwordConfirmError: '',
     passwordMatch: false,
   });
 
-  const { name, nickname, id, email, password, passwordConfirm } = formData;
-  const { nameError, nicknameError, idError, emailError, emailSend, emailCodeError, passwordError, passwordConfirmError, passwordMatch } = validation;
+  const { name, nickname, userId, email, password, passwordConfirm } = formData;
+  const { nameError, nicknameError, nicknameCheck, userIdError, userIdCheck, emailError, 
+    emailSend, emailCodeError, emailCodeCheck, passwordError, passwordConfirmError, passwordMatch } = validation;
   
+  // 입력 처리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setValidation({ ...validation, [`${name}Error`]: '' });
+    setValidation({ ...validation, [`${name}Error`]: '', [`${name}Check`]: '' });
   };
 
+  // 닉네임 중복 확인
   const handleNicknameCheck = async () => {
-    // 닉네임 중복 확인
+    try {
+      const res = await User.verifyNickname({ nickname });
+
+      if (res.status === 200) {
+        setValidation({ ...validation, nicknameError: '', nicknameCheck: true });
+      }
+
+    } catch (err) {
+      if (err.response.status === 400) {
+        setValidation({ ...validation, nicknameError: 'X 이미 사용중인 닉네임입니다.',  nicknameCheck: false });
+      }
+    }
   }
 
+  // 아이디 중복 확인
   const handleIdCheck = async () => {
-    // 아이디 중복 확인
+    try {
+      const res = await User.verifyId({ userId });
+
+      if (res.status === 200) {
+        setValidation({ ...validation, userIdError: '', userIdCheck: true });
+      }
+
+    } catch (err) {
+      if (err.response.status === 400) {
+        setValidation({ ...validation, userIdError: 'X 이미 사용중인 아이디입니다.',  userIdCheck: false });
+      }
+    }
   }
 
+  // 비밀번호 입력 처리
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
@@ -74,6 +105,7 @@ const SignUp = () => {
     }
   };
 
+  // 비밀번호 확인 입력 처리
   const handlePasswordConfirmChange = (e) => {
     const newPasswordConfirm = e.target.value;
     setFormData({ ...formData, passwordConfirm: newPasswordConfirm });
@@ -84,6 +116,7 @@ const SignUp = () => {
     })
   };
 
+  // 이메일 입력 처리
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -94,36 +127,49 @@ const SignUp = () => {
     })
   };
 
+  // 이메일로 인증번호 전송(인증 버튼)
   const handleEmailSend = async () => {
     setValidation({ ...validation, emailSend: true, emailError: '' });
-    // 이메일 인증번호 전송
+    await User.sendEmailCode({ email });
   };
 
+  // 인증번호 입력 처리
   const handleEmailCodeChange = (e) => {
     const newEmailCode = e.target.value;
-    setEmailCode(newEmailCode);
+    setEmailCode(newEmailCode.slice(0, 6));
+    setValidation({ ...validation, emailCodeError: '', emailCodeCheck: false })
   }
 
+  // 이메일 인증번호 확인(확인 버튼)
   const handleEmailCodeConfirm = async () => {
-    // 이메일 인증번호 확인
     if (!emailCode) {
       setValidation({ ...validation, emailCodeError: '※ 인증번호를 입력해 주세요.' })
+    } else {
+      try {
+        const res = await User.verifyCode({ "verificationCode": emailCode });
+        
+        if (res.status === 200) {
+          setValidation({ ...validation, emailCodeError: '', emailCodeCheck: true });
+        }
+
+      } catch (err) {
+        if (err.response.status === 400) {
+          setValidation({ ...validation, 
+            emailCodeError: 'X 입력하신 인증번호가 틀렸습니다. 다시 확인해주세요.',
+            emailCodeCheck: false
+          });
+        }
+      }
     }
   }
 
+  // 회원가입 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
     // 유효한 값 확인
@@ -137,14 +183,29 @@ const SignUp = () => {
       document.getElementById('email').focus();
     }
 
-    // 이메일 인증 확인
-    if (!emailSend) {
-      setValidation({ ...validation, emailError: '※ 이메일 인증을 해주세요.' });
+    // 중복 확인 유무
+    if (!nicknameCheck) {
+      document.getElementById('nickname').focus();
+      setValidation({ ...validation, nicknameError: '※ 닉네임 중복 확인을 해주세요.' });
+      return;
+    } else if (!userIdCheck) {
+      document.getElementById('userId').focus();
+      setValidation({ ...validation, userIdError: '※ 아이디 중복 확인을 해주세요.' });
       return;
     }
 
-    const userData = {
-      userId: id,
+    // 이메일 인증 유무
+    if (!emailSend) {
+      setValidation({ ...validation, emailError: '※ 이메일 인증을 해주세요.' });
+      return;
+    } else if (!emailCodeCheck) {
+      setValidation({ ...validation, emailCodeError: '※ 이메일 인증을 해주세요.' });
+      return;
+    }
+
+    // 회원가입 처리
+    await User.createUser({
+      userId,
       name,
       email,
       password,
@@ -152,8 +213,7 @@ const SignUp = () => {
       isAdmin: false,
       recipe: [],
       ingredients: []
-    };
-    await User.createUser(userData);
+    });
 
     setIsModalOpen(true);
   };
@@ -189,29 +249,41 @@ const SignUp = () => {
                 onChange={handleInputChange}
                 className={`${nicknameError && 'invalid'}`}
               />
-              <button type="button" className="notFilled short" onClick={handleNicknameCheck}>
+              <button 
+                type="button" 
+                className="notFilled short" 
+                onClick={handleNicknameCheck}
+                disabled={!nickname}
+              >
                 중복 확인
               </button>
             </div>
             {nicknameError && <p className="error-message">{nicknameError}</p>}
+            {nicknameCheck && <p className="success-message">O 사용할 수 있는 닉네임입니다.</p>}
           </div>
           <div className="form-group">
-            <label htmlFor="id">아이디</label>
+            <label htmlFor="userId">아이디</label>
             <div className="input-with-button">
               <input
-                id="id"
+                id="userId"
                 type="text"
-                name="id"
+                name="userId"
                 placeholder="아이디를 입력해 주세요."
-                value={id}
+                value={userId}
                 onChange={handleInputChange}
-                className={`${idError && 'invalid'}`}
+                className={`${userIdError && 'invalid'}`}
               />
-              <button type="button" className="notFilled short" onClick={handleIdCheck}>
+              <button 
+                type="button" 
+                className="notFilled short" 
+                onClick={handleIdCheck}
+                disabled={!userId}
+              >
                 중복 확인
               </button>
             </div>
-            {idError && <p className="error-message">{idError}</p>}
+            {userIdError && <p className="error-message">{userIdError}</p>}
+            {userIdCheck && <p className="success-message">O 사용할 수 있는 아이디입니다.</p>}
           </div>
           <div className="form-group">
             <label htmlFor="password">비밀번호</label>
@@ -251,6 +323,7 @@ const SignUp = () => {
                 value={email}
                 onChange={handleEmailChange}
                 className={`${emailError && 'invalid'}`}
+                disabled={emailSend}
               />
               <button
                 type="button"
@@ -265,16 +338,25 @@ const SignUp = () => {
               <div className="input-with-button">
                 <input
                   type="number"
-                  placeholder="인증번호를 입력해 주세요."
+                  placeholder="인증번호 6자리를 입력해 주세요."
                   value={emailCode}
                   onChange={handleEmailCodeChange}
                   name="emailCode"
+                  disabled={emailCodeCheck}
                 />
-                <button type="button" className="notFilled short" onClick={handleEmailCodeConfirm}>확인</button>
+                <button
+                  type="button"
+                  className="notFilled short"
+                  onClick={handleEmailCodeConfirm}
+                  disabled={emailCodeCheck}
+                >
+                  확인
+                </button>
               </div>
             )}
             {emailError && <p className="error-message">{emailError}</p>}
             {emailCodeError && <p className="error-message">{emailCodeError}</p>}
+            {emailCodeCheck && <p className="success-message">O 인증번호가 일치합니다.</p>}
           </div>
           <button type="submit" className="signup-button long">회원가입</button>
         </form>

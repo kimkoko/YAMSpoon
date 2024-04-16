@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
-import _ from "lodash"
-import { Link } from 'react-router-dom'
-import styles from './Refrigerator.module.scss'
+import { Link, Navigate } from 'react-router-dom'
+import './Refrigerator.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
@@ -11,48 +10,55 @@ import TopButon from '../../components/TopButton/TopButton'
 import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 import Recipe from '../../utils/Recipe'
-//import Ingredients from '../../utils/Ingredients';
-import User from '../../utils/User'
+import User from '../../utils/User';
 
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [ materials, setMaterials ] = useState(['감자1']);
-  //const recipes = 7;
-  const [ recipeData, setRecipeData ] = useState(null)
+  const [ materials, setMaterials ] = useState([]);
   const [ filteredRecipe, setFilteredRecipe ] = useState(null)
   const [ totalItems, setTotalItems ] = useState(null)
   const [ pageData, setPageData ] = useState(null)
   const [ pageIndex, setPageIndex ] = useState(null)
   const [ sort , setSort ] = useState('latest')
-  //const [ selectedMat, setSelectedMat ] = useState(null)
-  //const [ ingredientsData, setIngredientsData ] = useState(null)
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-        try {
-          const response = await Recipe.getRecipe()
-          //const ingredients = await Ingredients.getIngredients()
-          const user = await User.getUser("u1")
-          const recipeDataDeepCopy = _.cloneDeep(response.data)
-          const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
-          setRecipeData(newestData)
+  //접근 시 토큰 확인 후 없으면 로그인 페이지로 보냄
+  const token = localStorage.getItem('token')
+  if (!token){
+    return <Navigate to='/signin' />
+  }
 
-          setFilteredRecipe(newestData)
-          setTotalItems(newestData.length)
-          //setIngredientsData(ingredients.data)
-        //   const userIn = user.data.ingredients.map(item => {
-        //     const ingredient = ingredients.data.find(ingredient => ingredient.id === item);
-        //     return ingredient ? ingredient.name : null;
-        //   })
-          setMaterials(user.data.ingredients)
+  const recipesByMaterials = async(ingredient) => {
+    const newArr = ingredient.map(item => item[0])
+      const newRecipes = []
+      await Promise.all(newArr.map(async (item) => {
+        const response = await Recipe.getIngredientRecipe(item)
+        const newFiltered = response.data.data.recipes
+        newFiltered.forEach(item => {
+            if( item ) {
+              if (!newRecipes.some(recipe => recipe._id === item._id)) newRecipes.push(item)
+            }
+        })
+      }))
+      return newRecipes
+  }
 
-        } catch (error) {
-          console.error('Error fetching recipes:', error);
-        }
-      };
+  const fetchRecipes = async () => {
+    try {
+      const UserData = await User.getUserFridge()
+      const ingredient = UserData.data.data.map(item => [item._id, item.name])
+      setMaterials(ingredient)
+      const newRecipes = await recipesByMaterials(ingredient)
+      setFilteredRecipe(newRecipes)
+      setTotalItems(newRecipes.length)
+      
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
   
-      fetchRecipes();
+  useEffect(() => {
+    fetchRecipes();
   }, [])
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const Refrigerator = () => {
   
     let sortedData = [...filteredRecipe];
     if (sort === 'latest') sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    else if (sort === 'likes') sortedData.sort((a, b) => b.user_like.length - a.user_like.length);
+    else if (sort === 'likes') sortedData.sort((a, b) => b.like.length - a.like.length);
   
     setFilteredRecipe(sortedData);
   }, [sort]);
@@ -84,10 +90,14 @@ const Refrigerator = () => {
         setIsModalOpen(true);
   }
 
-  const handleDeleteMaterial = (index) => {
+  const handleDeleteMaterial = async (index) => {
         const updatedMaterials = [...materials];
         updatedMaterials.splice(index, 1); 
         setMaterials(updatedMaterials);
+        const updatedRecipes = await recipesByMaterials(updatedMaterials)
+        setFilteredRecipe(updatedRecipes)
+        const updateData = updatedMaterials.map(item => item[0])
+        await User.updateUserFridge({ingredients: updateData})
   }
 
   const handleSortChange = (e) => {
@@ -96,37 +106,37 @@ const Refrigerator = () => {
   const handlePageData = (data) => {
         setPageIndex([data[0], data[1]])
   }
-  const handleAddAction = (dataArray) => {
-    // const newItems = dataArray
-    //                 .filter(item => !materials.includes(item))
-    //                 .map(item => { // 각 요소를 filtered.name으로 변경
-    //                     const filtered = ingredientsData.find(ingredient => ingredient.id === item);
-    //                     return filtered ? filtered.name : null; // 요소를 filtered.name으로 대체하고, 없으면 null 반환
-    //                 })
-    const newItems = dataArray.filter(item => !materials.includes(item))
-
+  const handleAddAction = async (dataArray) => {
+    const newItems = dataArray.filter(item => !materials.some(mat => mat[0] === item[0]))
     const newArr = [...materials, ...newItems]
-
     setMaterials(newArr)
+    const updatedRecipes = await recipesByMaterials(newArr)
+    setFilteredRecipe(updatedRecipes)
+    const updateData = newArr.map(item => item[0])
+    await User.updateUserFridge({ingredients: updateData})
   };
 
-  const handleSelectMat = (dataArr) => {
+  const handleSelectMat = async (dataArr) => {
     const newArr = []
-    dataArr.map((isTrue,idx) => {
-        if(isTrue) {
-            const newFiltered = recipeData.filter(recipe => 
-                recipe.ingredients.some(ingredient => ingredient.key === materials[idx]))
-            newFiltered.map(item => newArr.includes(item) ? null : newArr.push(item))
-        }
-    })
+    await Promise.all(dataArr.map(async (isTrue, idx) => {
+      if (isTrue) {
+          const response = await Recipe.getIngredientRecipe(materials[idx][0]);
+          const newFiltered = response.data.data.recipes
+          newFiltered.forEach(item => {
+            if( item ) {
+              if (!newArr.some(recipe => recipe._id === item._id)) newArr.push(item)
+            }
+          })   
+      }
+    }));
     setFilteredRecipe(newArr)
   }
 
   return (
     <div>
         <Header />
-        <div className={styles['material-container']}>
-            <div className={styles['title']}>냉장고 속 재료로 레시피가 준비되었어요!</div>
+        <div className='material-container'>
+            <div className='title'>냉장고 속 재료로 레시피가 준비되었어요!</div>
             <MaterialBar 
                 handleAddClick={handleAddClick} 
                 materials={materials} 
@@ -134,7 +144,7 @@ const Refrigerator = () => {
                 recipes={7} 
                 handleSelectMat={handleSelectMat}
             />
-            <div className={styles['result']}>
+            <div className='result'>
                 <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
                 <select name="order" onChange={handleSortChange}>
                     <option value="latest">최신순</option>
@@ -142,7 +152,7 @@ const Refrigerator = () => {
                 </select>
             </div>
             { materials && materials.length === 0 ? <EmptyList /> 
-            : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe/>
+            : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe />
             : <RecipesList pageData={pageData}/>
             }
         </div>
@@ -160,19 +170,19 @@ const Refrigerator = () => {
 }
 
 const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes, handleSelectMat }) => {
-
+    const categoryData = materials.map(item => item[1])
     return (
-        <div className={styles['bar-container']}>
-            <div className={styles['main-bar']}>
+        <div className='bar-container'>
+            <div className='main-bar'>
                 <Carousel 
-                    CategoryData={materials} 
+                    CategoryData={categoryData} 
                     items={recipes} 
                     showDeleteButton={true} 
                     deleteMaterial = {handleDeleteMaterial}
                     fridge
                     handleSelectMat={handleSelectMat} />
             </div>
-            <button className={styles['Add']} onClick={handleAddClick}>재료 추가</button>
+            <button className='Add' onClick={handleAddClick}>재료 추가</button>
         </div>
     )
 }
@@ -190,20 +200,20 @@ const RecipesList = ({ pageData }) => {
   
       
       return (
-          <div className={styles['ListWrapper']}>
-              <div className={styles['RecipeList']}>
+          <div className='ListWrapper'>
+              <div className='RecipeList'>
                   { makeArray(pageData, 4).map((chunk, pageIndex) => (
-                    <div key={pageIndex} className={styles['Recipe-container']}>
+                    <div key={pageIndex} className='Recipe-container'>
                         {chunk.map((item, idx) => (
-                            <div className={styles['RecipeItem']} key={idx}>
-                                <Link to={`/recipes/${item.id}`}>
-                                    <div className={styles["item-img"]}>
-                                        <img className={styles['ItemImage']} src={item.img} alt='image_1' />
+                            <div className='RecipeItem' key={idx}>
+                                <Link to={`/recipes/${item._id}`}>
+                                    <div className="item-img">
+                                        <img className='ItemImage' src={item.img} alt='image_1' />
                                     </div>
-                                    <p>{item.name}</p>
+                                    <p>{item.title}</p>
                                     <span>
                                         <Heart fill={"#D3233A"} />
-                                        {item.user_like.length}
+                                        {item.like.length}
                                     </span>
                                 </Link>
                             </div>
@@ -216,18 +226,18 @@ const RecipesList = ({ pageData }) => {
   }
 
 
-const EmptyList = ({recipe}) => {
+const EmptyList = ({recipe }) => {
     return (
-      <div className={styles['ListWrapper']}>
-        <div className={styles['EmptyList']}>
-        {   recipe ? '검색된 레시피가 없습니다.'
+      <div className='ListWrapper'>
+        <div className='EmptyList'>
+        {   recipe ? '등록된 레시피가 없습니다.'
         : `준비된 재료가 없습니다.
          재료 추가 버튼을 이용해 나만의 냉장고를 채워보세요!`
         }
         </div>
       </div>
     )
-  }
+}
 
 RecipesList.propTypes = {
     recipeData: PropTypes.array,
@@ -245,7 +255,7 @@ MaterialBar.propTypes = {
 };
 
 EmptyList.propTypes = {
-    recipe: PropTypes.bool
+    recipe: PropTypes.bool,
 }
 
 export default Refrigerator

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import styles from './AddModal.module.scss'
+import './AddModal.scss'
 import MaterialBar from "./MaterialBar";
 import ReactDOM from 'react-dom';
 import Delete from "../../components/Icons/Delete";
@@ -14,20 +14,20 @@ const AddModal = ({closeModal, handleAddAction}) => {
   }
     
     return ReactDOM.createPortal(
-        <div className={styles['modal']}>
-        <div className={styles['modal__overlay']}></div>
-        <div className={styles["modal__content"]}>
-          <div className={styles["modal__content__title"]}>
+        <div className='modal'>
+        <div className='modal__overlay'></div>
+        <div className="modal_content">
+          <div className="modal__content__title">
             <p>재료 추가하기</p>
           </div>
-          <div className={styles["modal__content__body"]}>
+          <div className="modal__content__body">
               <MaterialBar handleMaterialSelect={handleMaterialSelect}/>
               <ListBeforeAdd materials={materials} setMaterials={setMaterials}/>
           </div>
-          <div className={styles["modal__content__button"]}>
-              <button type="button" className={styles["action"]} onClick={closeModal}>닫기</button>
+          <div className="modal__content__button">
+              <button type="button" className="action" onClick={closeModal}>닫기</button>
               <button type="button" 
-                className={styles["action"]} 
+                className="action" 
                 onClick={() => {handleAddAction(materials); closeModal();}}
               >
                 추가하기
@@ -47,12 +47,12 @@ const ListBeforeAdd = ({materials, setMaterials}) => {
   };
   
   return (
-    <div className={styles['select-container']}>
-      <div className={styles['select-tap-container']}>
+    <div className='select-container'>
+      <div className='select-tap-container'>
         { materials.map((item, idx) => (
-          <div key={idx} className={styles['select-item']}>
-            <button className={styles['select-button']}>{item}</button>
-            <button className={styles['delete-button']} onClick={() => handleDeleteClick(idx)}><Delete /></button>
+          <div key={idx} className='select-item'>
+            <button className='select-button'>{item[1]}</button>
+            <button className='delete-button' onClick={() => handleDeleteClick(idx)}><Delete /></button>
           </div>
         )) }
       </div>

@@ -1,52 +1,43 @@
 import React, {useState, useEffect, useRef} from "react";
 import PropTypes from 'prop-types';
-import styles from './MaterialBar.module.scss'
+import './MaterialBar.scss'
 import Carousel from "../../components/Carousel/Carousel";
 import Ingredients from "../../utils/Ingredients";
 
 const MaterialBar = ({ handleMaterialSelect, handleAllClick }) => {
     const [ selectedSub, setSelectedSub ] = useState(null);
     const [ categoryData, setCategoryData ] = useState(null)
-    const [ subCategoryData, setSubCategoryData ] = useState(null)
+    const [ categoryIdData, setCategoryIdData ] = useState(null)
     const [ filteredSub, setFilteredSub ] = useState(null)
 
     const carouselRef = useRef(null);
 
-    useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-              const response = await Ingredients.getIngredientsCategory()
-              const categories = response.data.map(item => item.category);
-              setCategoryData(categories)
-      
-            } catch (error) {
-              console.error('Error fetching recipes:', error);
-            }
-        };
-
-        const fetchSubCategory = async() => {
-            try {
-                const response = await Ingredients.getIngredients()
-                const subCategory = response.data
-                setSubCategoryData(subCategory)
-            } catch (error) {
-                console.error('Error fetching subcat:', error)
-            }
+    const fetchCategory = async () => {
+        try {
+          const response = await Ingredients.getIngredientsCategory()
+          const categories = response.data.data.map(item => item.name)
+          const categoriesId = response.data.data.map(item => item._id)
+          setCategoryData(categories)
+          setCategoryIdData(categoriesId)
+  
+        } catch (error) {
+          console.error('Error fetching recipes:', error);
         }
-      
+    };
+
+    useEffect(() => {
         fetchCategory();
-        fetchSubCategory();
     }, [])
 
     const handleSubClick = (idx) => {
         setSelectedSub(selectedSub === idx ? null : idx);
-        handleMaterialSelect(filteredSub[idx].id)
+        handleMaterialSelect(filteredSub[idx])
     };
 
-    const handleSubSelect = (index) => {
-        const value = `c${index+1}`
-        const filteredArr = subCategoryData
-                            .filter(item => item.categoryid === value)
+    const handleSubSelect = async (index) => {
+        const response = await Ingredients.getIngredients(categoryIdData[index])
+        const filteredArr = response.data.data
+                            .map(item => [item._id,item.name])
         setFilteredSub(filteredArr)
         setSelectedSub(null)
     }
@@ -63,11 +54,10 @@ const MaterialBar = ({ handleMaterialSelect, handleAllClick }) => {
     const items = 7;
 
     return (
-        
-        <div className={styles['bar-container']}>
-            <div className={styles["button-box"]}>
-                <button className={styles["all"]} onClick={handleAllButtonClick}>전체</button>
-                <div className={styles['main-bar']}>
+        <div className='bar--container'>
+            <div className="button--box">
+                <button className="all" onClick={handleAllButtonClick}>전체</button>
+                <div className='main--bar'>
                     {categoryData && <Carousel 
                                         ref={carouselRef} 
                                         CategoryData={categoryData} 
@@ -77,14 +67,14 @@ const MaterialBar = ({ handleMaterialSelect, handleAllClick }) => {
                 </div>
             </div>
                 
-            <div className={styles['sub-bar']}>
+            <div className='sub--bar'>
                 { filteredSub && filteredSub.map((item, idx) => (
                     <button
                         key={`${idx}-${item}`}
-                        className={selectedSub === idx ? styles['selected'] : ''}
+                        className={selectedSub === idx ? 'selected' : ''}
                         onClick={() => handleSubClick(idx)}
                     >
-                    {item.name}
+                    {item[1]}
                     </button>
                 ))}
 

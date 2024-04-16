@@ -7,7 +7,7 @@ export default {
    */
   getRecipeCategory() {
     return api({
-      url: '/recipeCategory',
+      url: '/recipes/categories',
       method: 'get',
     });
   },

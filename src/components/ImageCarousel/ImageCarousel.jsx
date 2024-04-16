@@ -60,17 +60,17 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
         {
           slideDatas.map((slide, index) => (
             <div className='imageSlide' key={index}>
-              <Link to={`/recipes/${slide.id}`}>
+              <Link to={`/recipes/${slide._id}`}>
                 <div className="recipe-img">
                     <img src={slide.img} alt="레시피 이미지"/>
                 </div>
                 {/* 레시피 랭킹 숨김 여부 */}
                 {!hideRecipeRanking && <div className='ranking'>{index + 1}</div>}
-                <p className='recipeName'>{slide.name}</p>
+                <p className='recipeName'>{slide.title}</p>
                 <div className='likes'>
                     <span>
                       <Heart fill={"#D3233A"}/>
-                      {slide.user_like.length}
+                      {slide.like.length}
                     </span>
                 </div>
               </Link>

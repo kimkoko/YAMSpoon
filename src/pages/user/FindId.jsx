@@ -66,9 +66,8 @@ const FindId = () => {
         return;
       }
     }
-
-    setValidation({ ...validation, emailSend: true, emailError: '' });
     
+    setValidation({ ...validation, emailSend: true, emailError: '' });
     // 이메일 전송
     await User.sendEmailCode({ email });
   };
@@ -201,7 +200,7 @@ const FindId = () => {
           IconComponent={FindIdIcon}
           alertBody={`${name}님의 아이디는 ${userId} 입니다.`}
           buttonAction={() => navigate('/signin')}
-          actionText='확인'
+          actionText='로그인 화면으로'
           hideCloseButton={true}
         />
       )}

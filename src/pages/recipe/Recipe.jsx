@@ -20,13 +20,13 @@ export default function RecipeDetails () {
   const [isMember, setIsMember] = useState(true);
   const [saveRecipe, setSaveRecipe] = useState(false); // 저장한 레시피
   const [recipeItem, setRecipeItem] = useState({
-    name: "",
+    title: "",
     description: "",
     content: [],
     ingredients: [],
     sauce: [],
-    user_like: [],
-    category: "",
+    like: [],
+    recipe_Category: "",
     img: "",
   }); // 레시피 정보
 
@@ -34,29 +34,50 @@ export default function RecipeDetails () {
 
   // 레시피 아이디
   const { recipeId } = useParams()
-  const id = "u3"
 
   // 레시피 정보 가져오기
   useEffect(() => {
     const fetchRecipe = async () => {
       const response = await Recipe.getDetailRecipe(recipeId);
-      const { name, description, content, ingredients, sauce, user_like, category, img } = response.data;
+      const { title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
+      const recipe = response.data.data;
 
-      setRecipeItem({ name, description, content, ingredients, sauce, user_like, category, img });
+      setRecipeItem({ title, description, content, ingredients, sauce, like, recipe_Category, img });
       setIsLoading(false);
+      
+      // 좋아요 상태 초기화
+      const userId = "user789"
+      if (recipe.like.includes(userId)) setLiked(true);
+
+      return recipe
     }
     fetchRecipe()
   }, [])
 
   if (isLoading) return null
 
+  // 로그인 사용자 정보 가져오기
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await User.getUser();
+  //       const user = response.data;
+
+  //       return user;
+  //     } catch (err) {
+  //       console.error('Error fetching user data:', err);
+  //     }
+  //   };
+    
+  //   fetchUserData();
+  // }, [])
+
   // 저장하기 핸들러
   // api 미구현으로 인한 임시 코드
-  const saveHandle = async () => {
+  const saveHandle = async (user) => {
     setIsSaveModalOpen(true);
 
     try {
-      const user = await User.getUser(id);
       if (!user) setIsMember(false)
 
       let userData;
@@ -76,23 +97,27 @@ export default function RecipeDetails () {
 
   // 좋아요 핸들러
   // api 미구현으로 인한 임시 코드
-  const toggleLike = async () => {
+  const toggleLike = async (user) => {
     setIsLikeModalOpen(true); 
-    const user = await User.getUser(id);
+
     const newLikedStatus = !liked;
-    const updatedUserLikes = newLikedStatus
-    ? [...recipeItem.user_like, user.data.id]
-    : recipeItem.user_like.filter((id) => id !== user.data.id);
+    
+    let updatedUserLikes;
+
+    if (newLikedStatus) {
+      updatedUserLikes = [...recipeItem.like, user.userId]; // id는 현재 사용자의 ID
+    } else {
+        updatedUserLikes = recipeItem.like.filter(userId => userId !== user.userId);
+    }
 
     setLiked(newLikedStatus);
-    setRecipeItem((prev) => ({ ...prev, user_like: updatedUserLikes }));
-
+    setRecipeItem(prev => ({ ...prev, like: updatedUserLikes }));
     try{
-      await Recipe.putLikeRecipe(recipeId, {user_like: updatedUserLikes});
+      await Recipe.putLikeRecipe(recipeId, {like: updatedUserLikes});
     } catch (error) {
       console.error("좋아요 중 오류 발생 : ", error);
       setLiked(!newLikedStatus);
-      setRecipeItem((prev) => ({ ...prev, user_like: recipeItem.user_like }));
+      setRecipeItem((prev) => ({ ...prev, like: recipeItem.like }));
     }
   }
 
@@ -112,13 +137,13 @@ export default function RecipeDetails () {
                 </button>
                 <button type='button' className='likesBtn' onClick={toggleLike}>
                   {!liked ? <Heart fill='none' /> : <Heart fill='#D3233A' />}
-                  <span>{recipeItem.user_like.length}</span>
+                  <span>{recipeItem.like.length}</span>
                 </button>
               </div>
             </div>
             <div className='recipeInfo'>
-              <p className='category'>{recipeItem.category}</p>
-              <h3 className='recipeName'>{recipeItem.name}</h3>
+              <p className='category'>{recipeItem.recipe_Category.name}</p>
+              <h3 className='recipeName'>{recipeItem.title}</h3>
               {recipeItem.description.split("\n").map((line, index) => (
                   <p className='recipeText' key={index}>{line}</p>
                 ))}
@@ -132,8 +157,8 @@ export default function RecipeDetails () {
                   {recipeItem.ingredients.map((ingredient, index) => {
                       return (
                         <li className='material' key={index}>
-                          <span className='materialName'><Check /> {ingredient.key}</span>
-                          <span className='materialQuantity'>{ingredient.value}</span>
+                          <span className='materialName'><Check /> {ingredient.name}</span>
+                          <span className='materialQuantity'>{ingredient.amount}</span>
                         </li>
                       )})}
                 </ul>
@@ -144,8 +169,8 @@ export default function RecipeDetails () {
                   {recipeItem.sauce.map((sauce, index) => {
                       return (
                         <li className='material' key={index}>
-                          <span className='materialName'><Check /> {sauce.key}</span>
-                          <span className='materialQuantity'>{sauce.value}</span>
+                          <span className='materialName'><Check /> {sauce.name}</span>
+                          <span className='materialQuantity'>{sauce.amount}</span>
                         </li>
                       )})}
                 </ul>

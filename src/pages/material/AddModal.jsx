@@ -45,13 +45,12 @@ const ListBeforeAdd = ({materials, setMaterials}) => {
     const newArr = materials.filter((_, idx) => idx !== index);
     setMaterials(newArr)
   };
-  
   return (
     <div className='select-container'>
       <div className='select-tap-container'>
         { materials.map((item, idx) => (
           <div key={idx} className='select-item'>
-            <button className='select-button'>{item}</button>
+            <button className='select-button'>{item[1]}</button>
             <button className='delete-button' onClick={() => handleDeleteClick(idx)}><Delete /></button>
           </div>
         )) }

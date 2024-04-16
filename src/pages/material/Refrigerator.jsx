@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
-import _ from "lodash"
 import { Link } from 'react-router-dom'
 import './Refrigerator.scss'
 import Pagination from '../../components/Pagination/Pagination'
@@ -11,41 +10,76 @@ import TopButon from '../../components/TopButton/TopButton'
 import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 import Recipe from '../../utils/Recipe'
-//import Ingredients from '../../utils/Ingredients';
-import User from '../../utils/User'
+//import User from '../../utils/User';
+
+const UserData = {
+  "_id": {
+    "$oid": "66179bca2be66980eb962d12"
+  },
+  "userId": "applepie",
+  "name": "John Doe",
+  "email": "john@gmail.com",
+  "password": "$2b$12$N04a.3Gb5R0We2gi0nnY2.d6rsv4ZV6M.dBMEEBX2Z7cFrcxCZ/du",
+  "nickname": "johndoe",
+  "isAdmin": false,
+  "recipe": [],
+  "ingredients": [{
+        "_id": "6612527970433cc4f1788b2e",
+        "category": "661250b370433cc4f1788b21",
+        "name": "계란"
+    },
+    {
+        "_id": "6612531c70433cc4f1788b2f",
+        "category": "661250b370433cc4f1788b21",
+        "name": "돈까스"
+    },
+    {
+        "_id": "6612535070433cc4f1788b31",
+        "category": "661250b370433cc4f1788b21",
+        "name": "메추리알"
+    },{
+      "_id": "6612542670433cc4f1788b3a",
+      "category": "661250b370433cc4f1788b21",
+      "name": "소고기"
+    },
+  ],
+  "__v": 0
+};
 
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [ materials, setMaterials ] = useState(['감자1']);
-  //const recipes = 7;
-  const [ recipeData, setRecipeData ] = useState(null)
+  const [ materials, setMaterials ] = useState([]);
   const [ filteredRecipe, setFilteredRecipe ] = useState(null)
   const [ totalItems, setTotalItems ] = useState(null)
   const [ pageData, setPageData ] = useState(null)
   const [ pageIndex, setPageIndex ] = useState(null)
   const [ sort , setSort ] = useState('latest')
-  //const [ selectedMat, setSelectedMat ] = useState(null)
-  //const [ ingredientsData, setIngredientsData ] = useState(null)
+
+  const recipesByMaterials = async(ingredient) => {
+    const newArr = ingredient.map(item => item[0])
+      const newRecipes = []
+      await Promise.all(newArr.map(async (item) => {
+        const response = await Recipe.getIngredientRecipe(item)
+        const newFiltered = response.data.data.recipes
+        newFiltered.forEach(item => {
+            if( item ) {
+              if (!newRecipes.some(recipe => recipe._id === item._id)) newRecipes.push(item)
+            }
+        })
+      }))
+      return newRecipes
+  }
 
   const fetchRecipes = async () => {
     try {
-      const response = await Recipe.getRecipe()
-      //const ingredients = await Ingredients.getIngredients()
-      const user = await User.getUser("u1")
-      const recipeDataDeepCopy = _.cloneDeep(response.data)
-      const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
-      setRecipeData(newestData)
-
-      setFilteredRecipe(newestData)
-      setTotalItems(newestData.length)
-      //setIngredientsData(ingredients.data)
-    //   const userIn = user.data.ingredients.map(item => {
-    //     const ingredient = ingredients.data.find(ingredient => ingredient.id === item);
-    //     return ingredient ? ingredient.name : null;
-    //   })
-      setMaterials(user.data.ingredients)
-
+      //await User.getUserFridge()
+      const ingredient = UserData.ingredients.map(item => [item._id, item.name])
+      setMaterials(ingredient)
+      const newRecipes = await recipesByMaterials(ingredient)
+      setFilteredRecipe(newRecipes)
+      setTotalItems(newRecipes.length)
+      
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -60,7 +94,7 @@ const Refrigerator = () => {
   
     let sortedData = [...filteredRecipe];
     if (sort === 'latest') sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    else if (sort === 'likes') sortedData.sort((a, b) => b.user_like.length - a.user_like.length);
+    else if (sort === 'likes') sortedData.sort((a, b) => b.like.length - a.like.length);
   
     setFilteredRecipe(sortedData);
   }, [sort]);
@@ -84,10 +118,12 @@ const Refrigerator = () => {
         setIsModalOpen(true);
   }
 
-  const handleDeleteMaterial = (index) => {
+  const handleDeleteMaterial = async (index) => {
         const updatedMaterials = [...materials];
         updatedMaterials.splice(index, 1); 
         setMaterials(updatedMaterials);
+        const updatedRecipes = await recipesByMaterials(updatedMaterials)
+        setFilteredRecipe(updatedRecipes)
   }
 
   const handleSortChange = (e) => {
@@ -97,28 +133,26 @@ const Refrigerator = () => {
         setPageIndex([data[0], data[1]])
   }
   const handleAddAction = (dataArray) => {
-    // const newItems = dataArray
-    //                 .filter(item => !materials.includes(item))
-    //                 .map(item => { // 각 요소를 filtered.name으로 변경
-    //                     const filtered = ingredientsData.find(ingredient => ingredient.id === item);
-    //                     return filtered ? filtered.name : null; // 요소를 filtered.name으로 대체하고, 없으면 null 반환
-    //                 })
-    const newItems = dataArray.filter(item => !materials.includes(item))
+    const newItems = dataArray.filter(item => !materials.some(mat => mat[0] === item[0]))
 
     const newArr = [...materials, ...newItems]
 
     setMaterials(newArr)
   };
 
-  const handleSelectMat = (dataArr) => {
+  const handleSelectMat = async (dataArr) => {
     const newArr = []
-    dataArr.map((isTrue,idx) => {
-        if(isTrue) {
-            const newFiltered = recipeData.filter(recipe => 
-                recipe.ingredients.some(ingredient => ingredient.key === materials[idx]))
-            newFiltered.map(item => newArr.includes(item) ? null : newArr.push(item))
-        }
-    })
+    await Promise.all(dataArr.map(async (isTrue, idx) => {
+      if (isTrue) {
+          const response = await Recipe.getIngredientRecipe(materials[idx][0]);
+          const newFiltered = response.data.data.recipes
+          newFiltered.forEach(item => {
+            if( item ) {
+              if (!newArr.some(recipe => recipe._id === item._id)) newArr.push(item)
+            }
+          })   
+      }
+    }));
     setFilteredRecipe(newArr)
   }
 
@@ -142,7 +176,7 @@ const Refrigerator = () => {
                 </select>
             </div>
             { materials && materials.length === 0 ? <EmptyList /> 
-            : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe/>
+            : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe />
             : <RecipesList pageData={pageData}/>
             }
         </div>
@@ -160,12 +194,12 @@ const Refrigerator = () => {
 }
 
 const MaterialBar = ({ handleAddClick, materials, handleDeleteMaterial, recipes, handleSelectMat }) => {
-
+    const categoryData = materials.map(item => item[1])
     return (
         <div className='bar-container'>
             <div className='main-bar'>
                 <Carousel 
-                    CategoryData={materials} 
+                    CategoryData={categoryData} 
                     items={recipes} 
                     showDeleteButton={true} 
                     deleteMaterial = {handleDeleteMaterial}
@@ -196,14 +230,14 @@ const RecipesList = ({ pageData }) => {
                     <div key={pageIndex} className='Recipe-container'>
                         {chunk.map((item, idx) => (
                             <div className='RecipeItem' key={idx}>
-                                <Link to={`/recipes/${item.id}`}>
+                                <Link to={`/recipes/${item._id}`}>
                                     <div className="item-img">
                                         <img className='ItemImage' src={item.img} alt='image_1' />
                                     </div>
-                                    <p>{item.name}</p>
+                                    <p>{item.title}</p>
                                     <span>
                                         <Heart fill={"#D3233A"} />
-                                        {item.user_like.length}
+                                        {item.like.length}
                                     </span>
                                 </Link>
                             </div>
@@ -216,7 +250,7 @@ const RecipesList = ({ pageData }) => {
   }
 
 
-const EmptyList = ({recipe}) => {
+const EmptyList = ({recipe }) => {
     return (
       <div className='ListWrapper'>
         <div className='EmptyList'>
@@ -227,7 +261,7 @@ const EmptyList = ({recipe}) => {
         </div>
       </div>
     )
-  }
+}
 
 RecipesList.propTypes = {
     recipeData: PropTypes.array,
@@ -245,7 +279,7 @@ MaterialBar.propTypes = {
 };
 
 EmptyList.propTypes = {
-    recipe: PropTypes.bool
+    recipe: PropTypes.bool,
 }
 
 export default Refrigerator

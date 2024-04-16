@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types';
-import _ from "lodash"
 import { Link } from 'react-router-dom'
 import './MaterialRecipe.scss'
 import Pagination from '../../components/Pagination/Pagination'
@@ -22,8 +21,7 @@ const MaterialRecipe = () => {
   const fetchRecipes = async () => {
     try {
       const response = await Recipe.getRecipe()
-      const recipeDataDeepCopy = _.cloneDeep(response.data)
-      const newestData = recipeDataDeepCopy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+      const newestData = response.data.data.toSorted((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
       setRecipeData(newestData)
       setFilteredRecipe(newestData)
       setTotalItems(newestData.length)
@@ -43,8 +41,8 @@ const MaterialRecipe = () => {
   
     let sortedData = [...filteredRecipe];
     if (sort === 'latest') sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    else if (sort === 'likes') sortedData.sort((a, b) => b.user_like.length - a.user_like.length);
-  
+    else if (sort === 'likes') sortedData.sort((a, b) => b.like.length - a.like.length);
+    
     setFilteredRecipe(sortedData);
   }, [sort]);
   
@@ -69,17 +67,18 @@ const MaterialRecipe = () => {
   const handleSortChange = (e) => {
     setSort(e.target.value)
   }
-  const handleMaterialSelect = (material) => {
-    const newFiltered = recipeData.filter(recipe => 
-                    recipe.ingredients.some(ingredient => ingredient.key === material));
-    if ( sort === 'likes' ) newFiltered.sort((a, b) => b.user_like.length - a.user_like.length);
+  const handleMaterialSelect = async (material) => {
+    const response = await Recipe.getIngredientRecipe(material[0])
+    const newFiltered = response.data.data.recipes
+    if ( sort === 'latest' ) newFiltered.toSorted((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+    else if ( sort === 'likes' ) newFiltered.toSorted((a,b) =>  b.like.length - a.like.length)
     setFilteredRecipe(newFiltered)
     setTotalItems(filteredRecipe.length)
   }
 
   const handleAllClick = () => {
     const resetData = [...recipeData]
-    if (sort === 'likes') resetData.sort((a, b) => b.user_like.length - a.user_like.length);
+    if (sort === 'likes') resetData.sort((a, b) => b.like.length - a.like.length);
     setFilteredRecipe(resetData)
   }
 
@@ -135,14 +134,14 @@ const RecipesList = ({ pageData }) => {
                   <div key={pageIndex} className='Recipe-container'>
                       {chunk.map((item, idx) => (
                           <div className='RecipeItem' key={idx}>
-                              <Link to={`/recipes/${item.id}`}>
+                              <Link to={`/recipes/${item._id}`}>
                                   <div className="item-img">
-                                      <img className='ItemImage' src={item.img} alt='image_1' />
+                                      <img className='ItemImage' src={item.img} alt={`image_${item.title}`} />
                                   </div>
-                                  <p>{item.name}</p>
+                                  <p>{item.title}</p>
                                   <span>
                                       <Heart fill={"#D3233A"} />
-                                      {item.user_like.length}
+                                      {item.like.length}
                                   </span>
                               </Link>
                           </div>

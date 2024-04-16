@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import './Refrigerator.scss'
 import Pagination from '../../components/Pagination/Pagination'
 import Header from '../../components/Header/Header'
@@ -10,41 +10,7 @@ import TopButon from '../../components/TopButton/TopButton'
 import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 import Recipe from '../../utils/Recipe'
-//import User from '../../utils/User';
-
-const UserData = {
-  "_id": {
-    "$oid": "66179bca2be66980eb962d12"
-  },
-  "userId": "applepie",
-  "name": "John Doe",
-  "email": "john@gmail.com",
-  "password": "$2b$12$N04a.3Gb5R0We2gi0nnY2.d6rsv4ZV6M.dBMEEBX2Z7cFrcxCZ/du",
-  "nickname": "johndoe",
-  "isAdmin": false,
-  "recipe": [],
-  "ingredients": [{
-        "_id": "6612527970433cc4f1788b2e",
-        "category": "661250b370433cc4f1788b21",
-        "name": "계란"
-    },
-    {
-        "_id": "6612531c70433cc4f1788b2f",
-        "category": "661250b370433cc4f1788b21",
-        "name": "돈까스"
-    },
-    {
-        "_id": "6612535070433cc4f1788b31",
-        "category": "661250b370433cc4f1788b21",
-        "name": "메추리알"
-    },{
-      "_id": "6612542670433cc4f1788b3a",
-      "category": "661250b370433cc4f1788b21",
-      "name": "소고기"
-    },
-  ],
-  "__v": 0
-};
+import User from '../../utils/User';
 
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,6 +21,12 @@ const Refrigerator = () => {
   const [ pageData, setPageData ] = useState(null)
   const [ pageIndex, setPageIndex ] = useState(null)
   const [ sort , setSort ] = useState('latest')
+
+  //접근 시 토큰 확인 후 없으면 로그인 페이지로 보냄
+  const token = localStorage.getItem('token')
+  if (!token){
+    return <Navigate to='/signin' />
+  }
 
   const recipesByMaterials = async(ingredient) => {
     const newArr = ingredient.map(item => item[0])
@@ -73,8 +45,8 @@ const Refrigerator = () => {
 
   const fetchRecipes = async () => {
     try {
-      //await User.getUserFridge()
-      const ingredient = UserData.ingredients.map(item => [item._id, item.name])
+      const UserData = await User.getUserFridge()
+      const ingredient = UserData.data.data.map(item => [item._id, item.name])
       setMaterials(ingredient)
       const newRecipes = await recipesByMaterials(ingredient)
       setFilteredRecipe(newRecipes)
@@ -84,9 +56,9 @@ const Refrigerator = () => {
       console.error('Error fetching recipes:', error);
     }
   };
-
+  
   useEffect(() => {
-      fetchRecipes();
+    fetchRecipes();
   }, [])
 
   useEffect(() => {
@@ -124,6 +96,8 @@ const Refrigerator = () => {
         setMaterials(updatedMaterials);
         const updatedRecipes = await recipesByMaterials(updatedMaterials)
         setFilteredRecipe(updatedRecipes)
+        const updateData = updatedMaterials.map(item => item[0])
+        await User.updateUserFridge({ingredients: updateData})
   }
 
   const handleSortChange = (e) => {
@@ -132,12 +106,14 @@ const Refrigerator = () => {
   const handlePageData = (data) => {
         setPageIndex([data[0], data[1]])
   }
-  const handleAddAction = (dataArray) => {
+  const handleAddAction = async (dataArray) => {
     const newItems = dataArray.filter(item => !materials.some(mat => mat[0] === item[0]))
-
     const newArr = [...materials, ...newItems]
-
     setMaterials(newArr)
+    const updatedRecipes = await recipesByMaterials(newArr)
+    setFilteredRecipe(updatedRecipes)
+    const updateData = newArr.map(item => item[0])
+    await User.updateUserFridge({ingredients: updateData})
   };
 
   const handleSelectMat = async (dataArr) => {

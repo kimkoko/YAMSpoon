@@ -29,6 +29,10 @@ const Home = () => {
   useEffect(() => {
     fetchRecipes();
   }, []);
+
+  const loginRequired = () => {
+    return localStorage.getItem('token')
+  }
   
   return (
     <div>
@@ -36,7 +40,7 @@ const Home = () => {
         <div className='banner-container'>
           <div className='banner'>
             <img src="../../images/banner_image.png" alt="banner_image" />
-            <Link to = "/regrigerator">
+            <Link to = {loginRequired() ? "/regrigerator" : "/signin"}>
                 <button className='banner-button'>
                 나만의 냉장고 재료 추가하기
                 <Cutlery />

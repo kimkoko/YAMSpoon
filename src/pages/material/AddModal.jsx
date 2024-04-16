@@ -16,7 +16,7 @@ const AddModal = ({closeModal, handleAddAction}) => {
     return ReactDOM.createPortal(
         <div className='modal'>
         <div className='modal__overlay'></div>
-        <div className="modal__content">
+        <div className="modal_content">
           <div className="modal__content__title">
             <p>재료 추가하기</p>
           </div>
@@ -45,6 +45,7 @@ const ListBeforeAdd = ({materials, setMaterials}) => {
     const newArr = materials.filter((_, idx) => idx !== index);
     setMaterials(newArr)
   };
+  
   return (
     <div className='select-container'>
       <div className='select-tap-container'>

@@ -8,7 +8,7 @@ export default {
    */
   getIngredientsCategory() {
     return api({
-      url: '/ingredientsCategory',
+      url: '/ingredients/categories',
       method: 'get',
     });
   },
@@ -17,9 +17,9 @@ export default {
    * @summary 재료 조회
    * @description 재료 2차 카테고리
    */
-  getIngredients() {
+  getIngredients(categoryName) {
     return api({
-      url: '/ingredients',
+      url: `/ingredients/categories/${categoryName}`,
       method: 'get',
     });
   },

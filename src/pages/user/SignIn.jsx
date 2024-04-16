@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import LoginHeader from '../../components/Header/LoginHeader';
 import { Link, useNavigate } from 'react-router-dom';
-// import User from '../../utils/User';
-import { api } from '../../utils/api';
+import User from '../../utils/User';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import Alert from '../../components/Icons/Alert';
 import './SignIn.scss';
@@ -11,19 +11,19 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    id: '',
+    userId: '',
     password: ''
   });
 
   const [validation, setValidation] = useState({
-    idError: '',
+    userIdError: '',
     passwordError: '',
   });
 
   const [errorModalOpen, setErrorModalOpen] = useState(false);
 
-  const { id, password } = formData;
-  const { idError, passwordError } = validation;
+  const { userId, password } = formData;
+  const { userIdError, passwordError } = validation;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,24 +35,24 @@ const SignIn = () => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
-    const res = await api.get('/user');
-    const user = res.data.find(user => user.userId === id && user.password === password);
-    if (user) {
-      alert(`로그인 성공! 안녕하세요 ${user.name}님`)
-      navigate('/');
-    } else {
-      setErrorModalOpen(true);
+    try {
+      const res = await User.loginUser({ userId, password });
+
+      if (res.status === 201) {
+        localStorage.clear();
+        localStorage.setItem('token', res.data.data);
+
+        navigate('/');
+      }
+
+    } catch (err) {
+      if (err.response.status === 404 || err.response.status === 401) {
+        setErrorModalOpen(true);
+      }
     }
   }
 
@@ -63,16 +63,16 @@ const SignIn = () => {
         <p className='signin-title'>로그인</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor='id'>아이디</label>
+            <label htmlFor='userId'>아이디</label>
             <input
-              id='id'
-              name='id'
+              id='userId'
+              name='userId'
               type='text'
               placeholder='아이디를 입력해 주세요.'
-              value={formData.id}
+              value={userId}
               onChange={handleInputChange}
             />
-            {idError && <p className="error-message">{idError}</p>}
+            {userIdError && <p className="error-message">{userIdError}</p>}
           </div>
           <div className="form-group">
             <label htmlFor='password'>비밀번호</label>
@@ -81,7 +81,7 @@ const SignIn = () => {
               name='password'
               type='password' 
               placeholder='비밀번호를 입력해 주세요.'
-              value={formData.password}
+              value={password}
               onChange={handleInputChange}
             />
             {passwordError && <p className="error-message">{passwordError}</p>}

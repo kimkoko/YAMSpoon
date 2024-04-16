@@ -1,8 +1,8 @@
 @import '../../assets/index.scss';
 
-.bar-container {
+.bar--container {
 
-    .button-box{
+    .button--box{
         width: 100%;
         display: flex;
         justify-content: flex-start;
@@ -23,7 +23,7 @@
         }
     }
 
-    .main-bar {
+    .main--bar {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -31,7 +31,7 @@
         align-items: center;
     }
 
-    .sub-bar {
+    .sub--bar {
         background-color: rgba(211, 35, 58, 0.1);
         display: flex;
         flex-direction: row;

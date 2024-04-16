@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoginHeader from '../../components/Header/LoginHeader';
+import User from '../../utils/User';
+import { validateEmptyFields } from '../../utils/validateEmptyFields';
+import Modal from '../../components/Modal/Modal';
+import FindPwIcon from '../../components/Icons/FindPwIcon';
 import './ResetPassword.scss';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    if (location.state && location.state.userId) {
+      setUserId(location.state.userId);
+    } else {
+      navigate('/');
+    }
+  }, [location, navigate]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     password: '',
@@ -20,6 +36,7 @@ const ResetPassword = () => {
   const { password, passwordConfirm } = formData;
   const { passwordError, passwordConfirmError, passwordMatch } = validation;
 
+  // 비밀번호 입력 처리
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
@@ -44,6 +61,7 @@ const ResetPassword = () => {
     }
   };
 
+  // 비밀번호 확인 입력 처리
   const handlePasswordConfirmChange = (e) => {
     const newPasswordConfirm = e.target.value;
     setFormData({ ...formData, passwordConfirm: newPasswordConfirm });
@@ -54,23 +72,27 @@ const ResetPassword = () => {
     })
   };
 
+  // 비밀번호 재설정 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 빈 값 확인
-    const emptyField = Object.keys(formData).find(field => !formData[field]);
-    if (emptyField) {
-      const inputElement = document.getElementById(emptyField);
-      const text = inputElement.getAttribute('placeholder');
-      setValidation({ ...validation, [`${emptyField}Error`]: `※ ${text}` });
-      if (inputElement) {
-        inputElement.focus();
-        return;
-      }
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
     }
 
-    alert('재설정 완료');
-    navigate('/signin');
+    // 유효한 값 확인
+    if (passwordError) {
+      document.getElementById('password').focus();
+      return;
+    } else if (passwordConfirmError) {
+      document.getElementById('passwordConfirm').focus();
+      return;
+    }
+
+    // 비밀번호 재설정 처리
+    await User.resetPassword(userId, { "newPassword": password });
+    setIsModalOpen(true);
   }
 
   return (
@@ -107,6 +129,15 @@ const ResetPassword = () => {
           <button type='submit' className='reset-button long'>비밀번호 재설정</button>
         </form>
       </div>
+      {isModalOpen && (
+        <Modal
+          IconComponent={FindPwIcon}
+          alertBody='비밀번호 재설정이 완료되었습니다.'
+          buttonAction={() => navigate('/signin')}
+          actionText='로그인 화면으로'
+          hideCloseButton={true}
+        />
+      )}
     </div>
   )
 }

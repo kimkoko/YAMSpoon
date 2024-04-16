@@ -3,62 +3,35 @@
 .material-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
-}
-
-.title {
-    font-weight: 700;
-    font-size: 36px;
-    height: 174px;
-    display: flex;
-    align-items: center;
-}
-
-.bar-container {
-    width: 77%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap:15px;
-    
-    .main-bar {
-        width: 100%;
+    .title {
+        font-weight: 700;
+        font-size: 36px;
+        height: 174px;
         display: flex;
-        justify-content: flex-start;
         align-items: center;
-        border-top: 1px solid $gray-color2;
-        border-bottom: 1px solid $gray-color2;
-        padding: 15px 0;
-        
-        .all{
-            width: 113px;
-            color: $common-color;
-            background-color: $cream-color;
-            white-space: nowrap;
-        }
     }
-
-    .Add {
-        padding: 16px 36px;
-        border: none;
-        white-space: nowrap;
+    
+    .materialbar-container {
+        width: 77%;
     }
     
 }
+
+
 
 .result {
     width: 77%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 99px;
     p {
         font-size: 26px;
         font-weight: bold;
-        > span {
+> span {
             color: $main-color;
         }
     }
@@ -67,8 +40,26 @@
     }
 }
 
+.no-recipes{
+    width: 77%;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border: $gray-color2 1px solid;
+    border-radius: 44px;
+
+    p {
+        font-size: 36px;
+        font-weight: 500;
+        color: $gray-color2;
+        margin: 192px auto;
+    }
+}
+
 .ListWrapper {
-    margin-top: 53px;
+    margin-top: 54px;
     width: 77%;
     
     .RecipeList {
@@ -122,22 +113,6 @@
             }
         }
  
-    }  
-    
-
-    .EmptyList {
-        height: 429px;
-        border: 1px solid $gray-color2;
-        border-radius: 44px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        white-space: pre-line;
-        color: $gray-color2;
-        font-size: 36px;
-        font-weight: 500;
-
     }
     
 }

@@ -19,93 +19,118 @@ export default function RecipeDetails () {
   const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [saveRecipe, setSaveRecipe] = useState(false); // 저장한 레시피
-  const [name, setName] = useState(''); // 레시피 이름
-  const [description, setDescription] = useState(''); // 레시피 설명
-  const [content, setContent] = useState([]); // 레시피 내용
-  const [ingredients, setIngredients] = useState([]); // 레시피 재료
-  const [sauce, setSauce] = useState([]); // 레시피 소스
-  const [user_like, setUser_like] = useState([]); // 사용자가 좋아요한 레시피
-  const [category, setCategory] = useState({}); // 레시피 카테고리
-  const [img, setImg] = useState(''); // 레시피 이미지  
+  const [user, setUser] = useState(null);  // 사용자 정보 상태 추가
+  const [recipeItem, setRecipeItem] = useState({
+    title: "",
+    description: "",
+    content: [],
+    ingredients: [],
+    sauce: [],
+    like: [],
+    recipe_Category: "",
+    img: "",
+  }); // 레시피 정보
+
   const navigate = useNavigate();
 
   // 레시피 아이디
   const { recipeId } = useParams()
-  const id = "u3"
 
-  // 레시피 정보 가져오기
   useEffect(() => {
     const fetchRecipe = async () => {
-      const response = await Recipe.getDetailRecipe(recipeId);
-      const recipe = response.data;
-
-      setName(recipe.name);
-      setDescription(recipe.description);
-      setContent(recipe.content);
-      setIngredients(recipe.ingredients);
-      setSauce(recipe.sauce);
-      setUser_like(recipe.user_like);
-      setCategory(recipe.category);
-      setImg(recipe.img);
-
+      try {
+        const response = await Recipe.getDetailRecipe(recipeId);
+        const { title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
+        setRecipeItem({ title, description, content, ingredients, sauce, like, recipe_Category, img });
+      } catch (error) {
+        console.error('Error loading recipe data:', error);
+      }
       setIsLoading(false);
+    };
+  
+    fetchRecipe(); // 레시피 정보 로드
+  }, [recipeId]);
+  
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await User.getUser();
+        const userData = response.data.data;
+    
+        if (userData) {
+          setIsMember(true);
+          setUser(userData);
+          setSaveRecipe(userData.recipe?.includes(recipeId));
+        } else {
+          setIsMember(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setIsMember(false);
+      }
+    };
+  
+    fetchUserData(); // 사용자 데이터 로드
+  }, [recipeId]);
+  
+  useEffect(() => {
+    // 좋아요 상태 설정
+    if (user && recipeItem.like) {
+      setLiked(recipeItem.like.includes(user.userId));
     }
-    fetchRecipe()
-  }, [])
+  }, [user, recipeItem.like, recipeId]); // user 또는 recipeItem.like가 변경될 때 실행
 
   if (isLoading) return null
 
   // 저장하기 핸들러
-  // api 미구현으로 인한 임시 코드
   const saveHandle = async () => {
     setIsSaveModalOpen(true);
 
-    try {
-      const user = await User.getUser(id);
-      if (user) setIsMember(false)
+    if (isMember) {
+      try {
+        let newRecipeList;
+    
+        if (saveRecipe) {
+          // 저장된 레시피에서 현재 레시피 ID 제거
+          newRecipeList = user.recipe.filter(recipe => recipe.toString() !== recipeId.toString());
+        } else {
+          // 저장되지 않은 레시피에 현재 레시피 ID 추가
+          newRecipeList = [...user.recipe, recipeId];
+        }
 
-      let userData;
-
-      if(saveRecipe) {
-        userData = {recipe: user.data.recipe.filter((id) => id !== recipeId)}
-        setSaveRecipe(false);
-      } else {
-        userData = {recipe: [...user.data.recipe, recipeId]}
-        setSaveRecipe(true);
+        // 서버에 업데이트 요청
+        await User.updateUserBookmark( { recipe: newRecipeList });
+        setUser((prev) => ({ ...prev, recipe: newRecipeList }));
+        setSaveRecipe(!saveRecipe);
+    
+      } catch (error) {
+        console.error("저장하기 중 오류 발생 : ", error);
       }
-
-      await User.updateUserBookmark(user.data.id, userData)
-    } catch (error) {
-      console.error("저장 중 오류 발생 : ", error);
-    }    
+    }
+    
   }
 
   // 좋아요 핸들러
-  // api 미구현으로 인한 임시 코드
   const toggleLike = async () => {
     setIsLikeModalOpen(true); 
-    try {
-      const user = await User.getUser(id);
-      if (user) setIsMember(false)
 
-      let recipeData;
+    if (isMember) {
+      const alreadyLiked = liked; // 현재 좋아요 상태를 임시 변수에 저장
+      const newLikedStatus = !liked; // 좋아요 상태 토글
+      setLiked(newLikedStatus); // UI를 옵티미스틱 업데이트
 
-      if(liked) {
-        recipeData = {user_like: user_like.filter((id) => id !== user.data.id)}
+      const updatedLikeList = newLikedStatus 
+        ? [...recipeItem.like, user.userId]
+        : recipeItem.like.filter(like => like !== user.userId);
 
-        setLiked(false);
-        setUser_like(user_like.filter((id) => id !== user.data.id))
-      } else {
-        recipeData = {user_like: [...user_like, user.data.id]}
-
-        setLiked(true);
-        setUser_like([...user_like, user.data.id])
-      }
-
-      await Recipe.putLikeRecipe(recipeId, recipeData)
-    } catch (error) {
-      console.error("저장 중 오류 발생 : ", error);
-    }    
+      try {
+        await Recipe.putLikeRecipe(recipeId, updatedLikeList);
+        setRecipeItem(prev => ({ ...prev, like: updatedLikeList }));
+      } catch (error) {
+        console.error("좋아요 변경 중 오류 발생: ", error);
+        setLiked(alreadyLiked); // 좋아요 상태를 이전 상태로 되돌림
+      } 
+    }
   }
 
   return (
@@ -115,23 +140,23 @@ export default function RecipeDetails () {
           <div className='recipeTop'>
             <div className='recipeImgBox'>
               <p className='recipeImg'>
-                <img src={img} alt='recipeImg' />
+                <img src={recipeItem.img} alt='recipeImg' />
               </p>
               <div className='saveAndLikes'>
                 <button type='button' className='saveBtn' onClick={saveHandle}>
-                  {saveRecipe ? <Save fill='#aaaaaa' /> : <Save fill='none' />}
+                  {saveRecipe ? <Save fill={"#aaaaaa"}/> : <Save fill='none' />}
                   <span>저장하기</span>
                 </button>
                 <button type='button' className='likesBtn' onClick={toggleLike}>
                   {!liked ? <Heart fill='none' /> : <Heart fill='#D3233A' />}
-                  <span>{user_like.length}</span>
+                  <span>{recipeItem.like.length}</span>
                 </button>
               </div>
             </div>
             <div className='recipeInfo'>
-              <p className='category'>{category}</p>
-              <h3 className='recipeName'>{name}</h3>
-              {description.split("\n").map((line, index) => (
+              <p className='category'>{recipeItem.recipe_Category.name}</p>
+              <h3 className='recipeName'>{recipeItem.title}</h3>
+              {recipeItem.description.split("\n").map((line, index) => (
                   <p className='recipeText' key={index}>{line}</p>
                 ))}
             </div>
@@ -141,11 +166,11 @@ export default function RecipeDetails () {
               <div className='materialBox Boxs'>
                 <h4 className='title'>재료 준비</h4>
                 <ul className='materialList material'>
-                  {ingredients.map((ingredient, index) => {
+                  {recipeItem.ingredients.map((ingredient, index) => {
                       return (
                         <li className='material' key={index}>
-                          <span className='materialName'><Check /> {ingredient.key}</span>
-                          <span className='materialQuantity'>{ingredient.value}</span>
+                          <span className='materialName'><Check /> {ingredient.name}</span>
+                          <span className='materialQuantity'>{ingredient.amount}</span>
                         </li>
                       )})}
                 </ul>
@@ -153,11 +178,11 @@ export default function RecipeDetails () {
               <div className='sauceBox Boxs'>
                 <h4 className='title'>소스 준비</h4>
                 <ul className='materialList sauce'>
-                  {sauce.map((sauce, index) => {
+                  {recipeItem.sauce.map((sauce, index) => {
                       return (
                         <li className='material' key={index}>
-                          <span className='materialName'><Check /> {sauce.key}</span>
-                          <span className='materialQuantity'>{sauce.value}</span>
+                          <span className='materialName'><Check /> {sauce.name}</span>
+                          <span className='materialQuantity'>{sauce.amount}</span>
                         </li>
                       )})}
                 </ul>
@@ -166,7 +191,7 @@ export default function RecipeDetails () {
             <div className='recipeTextBox'>
               <h4 className='title'>레시피</h4>
               <p>
-                {content.map((content, index) => {return (<span key={index}>{content}<br/></span>)})}
+                {recipeItem.content.map((content, index) => {return (<span key={index}>{content}<br/></span>)})}
               </p>
             </div>
           </div>
@@ -175,7 +200,7 @@ export default function RecipeDetails () {
           (<Modal 
             IconComponent={isMember ? (() => <Save fill="none"/>) : (() => <Alert/>)}
             alertBody={isMember ? (saveRecipe ? "레시피가 저장되었습니다.\n마이 페이지에서 저장된 레시피를 확인해 주세요!" : "레시피 저장이 취소되었습니다.") : "로그인 후 이용해 주세요."}
-            buttonAction={isMember ? (() => setIsSaveModalOpen(false)) : (() => navigate('/signin'))} 
+            buttonAction={isMember ? () => setIsSaveModalOpen(false) : () => navigate('/signin')} 
             actionText='확인'
             hideCloseButton={true}
           />)}
@@ -183,7 +208,7 @@ export default function RecipeDetails () {
           (<Modal 
             IconComponent={isMember ? (() => <Heart fill="none"/>) : (() => <Alert/>)}
             alertBody={isMember ? (liked ? "레시피를 좋아해 주셔서 감사합니다." : "레시피 좋아요가 취소되었습니다.") : "로그인 후 이용해 주세요."}
-            buttonAction={isMember ? (() => setIsSaveModalOpen(false)) : (() => navigate('/signin'))} 
+            buttonAction={isMember ? () => setIsLikeModalOpen(false) : () => navigate('/signin')} 
             actionText='확인'
             hideCloseButton={true}
           />)}

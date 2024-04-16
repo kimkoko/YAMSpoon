@@ -8,19 +8,48 @@ import Logo from '../Icons/LogoIcon'
 const Header = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
   // 엔터키를 누르면 검색값 전달
   const activeEnter = (e) => {
     if(e.key === "Enter") {
       navigate(`/search?recipes=${searchValue}`);
-      console.log(searchValue);
     }
   }
 
   // input 값 변화를 확인하는 핸들러
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
-    console.log(searchValue);
+  }
+
+  
+  // 로그인 여부에 따른 마이페이지 이동
+  const handleMyPageClick = () => {
+    if (isLoggedIn) {
+      navigate('/mypage');
+    } else {
+      navigate('/signin');
+    }
+  };
+
+  // 로그인 여부에 따른 로그인, 로그아웃 버튼
+  const handleLoginClick = () => {
+    if(isLoggedIn) {
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      navigate('/');
+    } else{
+      navigate('/signin');
+    }
+  }
+
+  // 로그인 여부에 따른 나만의 냉장고 이동
+  const handleRefrigeratorClick = () => {
+    if(isLoggedIn){
+      navigate('/refrigerator')
+    }else{
+      navigate('/signin');
+    }
   }
 
   return (
@@ -32,7 +61,7 @@ const Header = () => {
           <div className='nav'>
             <Link className='text' to = "/material-recipe">재료별 레시피</Link>
             <Link className='text' to = "/type-recipe">종류별 레시피</Link>
-            <Link className='text' to = "/regrigerator">나만의 냉장고</Link>
+            <div className='text' onClick={handleRefrigeratorClick}>나만의 냉장고</div>
           </div>
 
           <div className='right-container'>
@@ -47,8 +76,12 @@ const Header = () => {
                 onKeyDown={(e) => activeEnter(e)}/>
               <Link className="search-icon" to={`/search?recipes=${searchValue}`}><SearchIcon alt ="searchIcon" /></Link>
             </div>
-            <Link className='mypage-icon' to="/mypage"><MypageIcon alt="myPageIcon"/></Link>
-            <Link to="/signin"><button className='login'>로그인</button></Link>
+            <div className='mypage-icon' onClick={handleMyPageClick}>
+              <MypageIcon alt="myPageIcon"/>
+            </div>
+            <button className='login' onClick={handleLoginClick}>
+              {isLoggedIn ? '로그아웃' : '로그인'}
+            </button>
           </div>
         </div>
       </div>

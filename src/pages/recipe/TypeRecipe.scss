@@ -92,7 +92,7 @@
         justify-content: space-between;
         align-items: center;
 
-        margin-top: 99px;
+        margin-top: 50px;
 
         .result-count {
             font-size: 26px;
@@ -105,6 +105,23 @@
 
         .all-image-container {
             margin-top:54px;
+
+            .no-recipes{
+                display: flex;
+
+                justify-content: center;
+                align-items: center;
+
+                border: $gray-color2 1px solid;
+                border-radius: 44px;
+
+                p {
+                    font-size: 36px;
+                    font-weight: 500;
+                    color: $gray-color2;
+                    margin: 192px auto;
+                }
+            }
 
             .images-container {
                 display: flex;

@@ -5,12 +5,14 @@ import User from '../../utils/User';
 import { validateEmptyFields } from '../../utils/validateEmptyFields';
 import Modal from '../../components/Modal/Modal';
 import FindIdIcon from '../../components/Icons/FindIdIcon';
+import Alert from '../../components/Icons/Alert';
 import './FindId.scss';
 
 const FindId = () => {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -50,7 +52,24 @@ const FindId = () => {
 
   // 이메일로 인증번호 전송(인증 버튼)
   const handleEmailSend = async () => {
+    if (!validateEmptyFields(formData, validation, setValidation)) {
+      return;
+    }
+
+    // 입력한 정보와 일치한 계정이 있는지 확인
+    try {
+      await User.findUserId(formData);
+
+    } catch (err) {
+      if (err.response.status === 404) {
+        setErrorModalOpen(true);
+        return;
+      }
+    }
+
     setValidation({ ...validation, emailSend: true, emailError: '' });
+    
+    // 이메일 전송
     await User.sendEmailCode({ email });
   };
 
@@ -182,6 +201,15 @@ const FindId = () => {
           IconComponent={FindIdIcon}
           alertBody={`${name}님의 아이디는 ${userId} 입니다.`}
           buttonAction={() => navigate('/signin')}
+          actionText='확인'
+          hideCloseButton={true}
+        />
+      )}
+      {errorModalOpen && (
+        <Modal 
+          IconComponent={Alert}
+          alertBody='입력하신 정보와 일치하는 계정이 없습니다. 다시 한 번 확인해 주세요.'
+          buttonAction={() => setErrorModalOpen(false)}
           actionText='확인'
           hideCloseButton={true}
         />

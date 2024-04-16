@@ -55,7 +55,7 @@ export default {
    */
   putLikeRecipe(id, recipeData) {
     return api({
-      url: `/recipes/${id}/like`,
+      url: `/recipes/like/${id}`,
       method: 'put',
       data: recipeData
     });

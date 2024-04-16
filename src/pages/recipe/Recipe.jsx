@@ -17,8 +17,9 @@ export default function RecipeDetails () {
   const [liked, setLiked] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
-  const [isMember, setIsMember] = useState(true);
+  const [isMember, setIsMember] = useState(false);
   const [saveRecipe, setSaveRecipe] = useState(false); // 저장한 레시피
+  const [user, setUser] = useState(null);  // 사용자 정보 상태 추가
   const [recipeItem, setRecipeItem] = useState({
     title: "",
     description: "",
@@ -35,89 +36,100 @@ export default function RecipeDetails () {
   // 레시피 아이디
   const { recipeId } = useParams()
 
-  // 레시피 정보 가져오기
   useEffect(() => {
     const fetchRecipe = async () => {
-      const response = await Recipe.getDetailRecipe(recipeId);
-      const { title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
-      const recipe = response.data.data;
-
-      setRecipeItem({ title, description, content, ingredients, sauce, like, recipe_Category, img });
+      try {
+        const response = await Recipe.getDetailRecipe(recipeId);
+        const { title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
+        setRecipeItem({ title, description, content, ingredients, sauce, like, recipe_Category, img });
+      } catch (error) {
+        console.error('Error loading recipe data:', error);
+      }
       setIsLoading(false);
-      
-      // 좋아요 상태 초기화
-      const userId = "user789"
-      if (recipe.like.includes(userId)) setLiked(true);
-
-      return recipe
+    };
+  
+    fetchRecipe(); // 레시피 정보 로드
+  }, [recipeId]);
+  
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await User.getUser();
+        const userData = response.data.data;
+    
+        if (userData) {
+          setIsMember(true);
+          setUser(userData);
+          setSaveRecipe(userData.recipe?.includes(recipeId));
+        } else {
+          setIsMember(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setIsMember(false);
+      }
+    };
+  
+    fetchUserData(); // 사용자 데이터 로드
+  }, [recipeId]);
+  
+  useEffect(() => {
+    // 좋아요 상태 설정
+    if (user && recipeItem.like) {
+      setLiked(recipeItem.like.includes(user.userId));
     }
-    fetchRecipe()
-  }, [])
+  }, [user, recipeItem.like, recipeId]); // user 또는 recipeItem.like가 변경될 때 실행
 
   if (isLoading) return null
 
-  // 로그인 사용자 정보 가져오기
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await User.getUser();
-  //       const user = response.data;
-
-  //       return user;
-  //     } catch (err) {
-  //       console.error('Error fetching user data:', err);
-  //     }
-  //   };
-    
-  //   fetchUserData();
-  // }, [])
-
   // 저장하기 핸들러
-  // api 미구현으로 인한 임시 코드
-  const saveHandle = async (user) => {
+  const saveHandle = async () => {
     setIsSaveModalOpen(true);
 
-    try {
-      if (!user) setIsMember(false)
+    if (isMember) {
+      try {
+        let newRecipeList;
+    
+        if (saveRecipe) {
+          // 저장된 레시피에서 현재 레시피 ID 제거
+          newRecipeList = user.recipe.filter(recipe => recipe.toString() !== recipeId.toString());
+        } else {
+          // 저장되지 않은 레시피에 현재 레시피 ID 추가
+          newRecipeList = [...user.recipe, recipeId];
+        }
 
-      let userData;
-      if(saveRecipe) {
-        userData = {recipe: user.data.recipe.filter((id) => id !== recipeId)}
-        setSaveRecipe(false);
-      } else {
-        userData = {recipe: [...user.data.recipe, recipeId]}
-        setSaveRecipe(true);
+        // 서버에 업데이트 요청
+        await User.updateUserBookmark( { recipe: newRecipeList });
+        setUser((prev) => ({ ...prev, recipe: newRecipeList }));
+        setSaveRecipe(!saveRecipe);
+    
+      } catch (error) {
+        console.error("저장하기 중 오류 발생 : ", error);
       }
-
-      await User.updateUserBookmark(user.data.id, userData)
-    } catch (error) {
-      console.error("저장 중 오류 발생 : ", error);
-    }    
+    }
+    
   }
 
   // 좋아요 핸들러
-  // api 미구현으로 인한 임시 코드
-  const toggleLike = async (user) => {
+  const toggleLike = async () => {
     setIsLikeModalOpen(true); 
 
-    const newLikedStatus = !liked;
-    
-    let updatedUserLikes;
+    if (isMember) {
+      const alreadyLiked = liked; // 현재 좋아요 상태를 임시 변수에 저장
+      const newLikedStatus = !liked; // 좋아요 상태 토글
+      setLiked(newLikedStatus); // UI를 옵티미스틱 업데이트
 
-    if (newLikedStatus) {
-      updatedUserLikes = [...recipeItem.like, user.userId]; // id는 현재 사용자의 ID
-    } else {
-        updatedUserLikes = recipeItem.like.filter(userId => userId !== user.userId);
-    }
+      const updatedLikeList = newLikedStatus 
+        ? [...recipeItem.like, user.userId]
+        : recipeItem.like.filter(like => like !== user.userId);
 
-    setLiked(newLikedStatus);
-    setRecipeItem(prev => ({ ...prev, like: updatedUserLikes }));
-    try{
-      await Recipe.putLikeRecipe(recipeId, {like: updatedUserLikes});
-    } catch (error) {
-      console.error("좋아요 중 오류 발생 : ", error);
-      setLiked(!newLikedStatus);
-      setRecipeItem((prev) => ({ ...prev, like: recipeItem.like }));
+      try {
+        await Recipe.putLikeRecipe(recipeId, updatedLikeList);
+        setRecipeItem(prev => ({ ...prev, like: updatedLikeList }));
+      } catch (error) {
+        console.error("좋아요 변경 중 오류 발생: ", error);
+        setLiked(alreadyLiked); // 좋아요 상태를 이전 상태로 되돌림
+      } 
     }
   }
 

@@ -41,14 +41,15 @@ const SignUp = () => {
   const { nameError, nicknameError, nicknameCheck, userIdError, userIdCheck, emailError, 
     emailSend, emailCodeError, emailCodeCheck, passwordError, passwordConfirmError, passwordMatch } = validation;
   
+  // 입력 처리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setValidation({ ...validation, [`${name}Error`]: '', [`${name}Check`]: '' });
   };
 
+  // 닉네임 중복 확인
   const handleNicknameCheck = async () => {
-    // 닉네임 중복 확인
     try {
       const res = await User.verifyNickname({ nickname });
 
@@ -63,8 +64,8 @@ const SignUp = () => {
     }
   }
 
+  // 아이디 중복 확인
   const handleIdCheck = async () => {
-    // 아이디 중복 확인
     try {
       const res = await User.verifyId({ userId });
 
@@ -79,6 +80,7 @@ const SignUp = () => {
     }
   }
 
+  // 비밀번호 입력 처리
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
@@ -103,6 +105,7 @@ const SignUp = () => {
     }
   };
 
+  // 비밀번호 확인 입력 처리
   const handlePasswordConfirmChange = (e) => {
     const newPasswordConfirm = e.target.value;
     setFormData({ ...formData, passwordConfirm: newPasswordConfirm });
@@ -113,6 +116,7 @@ const SignUp = () => {
     })
   };
 
+  // 이메일 입력 처리
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -123,20 +127,21 @@ const SignUp = () => {
     })
   };
 
+  // 이메일로 인증번호 전송(인증 버튼)
   const handleEmailSend = async () => {
     setValidation({ ...validation, emailSend: true, emailError: '' });
-    // 이메일 인증번호 전송
     await User.sendEmailCode({ email });
   };
 
+  // 인증번호 입력 처리
   const handleEmailCodeChange = (e) => {
     const newEmailCode = e.target.value;
     setEmailCode(newEmailCode.slice(0, 6));
     setValidation({ ...validation, emailCodeError: '', emailCodeCheck: false })
   }
 
+  // 이메일 인증번호 확인(확인 버튼)
   const handleEmailCodeConfirm = async () => {
-    // 이메일 인증번호 확인
     if (!emailCode) {
       setValidation({ ...validation, emailCodeError: '※ 인증번호를 입력해 주세요.' })
     } else {
@@ -158,6 +163,7 @@ const SignUp = () => {
     }
   }
 
+  // 회원가입 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -197,6 +203,7 @@ const SignUp = () => {
       return;
     }
 
+    // 회원가입 처리
     await User.createUser({
       userId,
       name,

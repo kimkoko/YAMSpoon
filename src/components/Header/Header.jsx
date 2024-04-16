@@ -37,6 +37,16 @@ const Header = () => {
     if(isLoggedIn) {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
+      navigate('/');
+    } else{
+      navigate('/signin');
+    }
+  }
+
+  // 로그인 여부에 따른 나만의 냉장고 이동
+  const handleRefrigeratorClick = () => {
+    if(isLoggedIn){
+      navigate('/refrigerator')
     }else{
       navigate('/signin');
     }
@@ -51,7 +61,7 @@ const Header = () => {
           <div className='nav'>
             <Link className='text' to = "/material-recipe">재료별 레시피</Link>
             <Link className='text' to = "/type-recipe">종류별 레시피</Link>
-            <Link className='text' to = "/regrigerator">나만의 냉장고</Link>
+            <div className='text' onClick={handleRefrigeratorClick}>나만의 냉장고</div>
           </div>
 
           <div className='right-container'>

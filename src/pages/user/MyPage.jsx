@@ -12,13 +12,12 @@ export default function MyPage() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [saveList, setSaveList] = useState(false); // 저장한 레시피 리스트
 
-	// 사용자 ID 임시로 지정
-	const id = "u3"
+  
 
 	// 유저 정보 조회
 	useEffect(() => {
     const fetchUser = async () => {
-      const response = await User.getUser(id);
+      const response = await User.getUser();
       const user = response.data;
       setUser(response.data);
       setIsLoading(false);

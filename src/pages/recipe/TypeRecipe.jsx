@@ -165,22 +165,28 @@ const TypeRecipe = () => {
             </select>
           </div>
           <div className='all-image-container'>
-            {makeArray(pageData, 4).map((row, rowIndex) => (
-              <div key={rowIndex} className='images-container'>
-                {row.map((recipe, columnIndex) => (
-                  <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
-                    <div className='imgBox'>
-                      <img className='recipe-image' src={recipe.img} alt={recipe.title} />
-                    </div>
-                    <p className='recipe-name'>{recipe.title}</p>
-                    <div className='like-container'>
-                      <Heart fill={"#D3233A"} />
-                      <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ))}
+            {recipes.length === 0 ? (
+                <div className='no-recipes'>
+                  <p>등록된 레시피가 없습니다.</p>
+                </div>
+              ) : (
+                makeArray(pageData, 4).map((row, rowIndex) => (
+                  <div key={rowIndex} className='images-container'>
+                    {row.map((recipe, columnIndex) => (
+                      <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
+                        <div className='imgBox'>
+                          <img className='recipe-image' src={recipe.img} alt={recipe.title} />
+                        </div>
+                        <p className='recipe-name'>{recipe.title}</p>
+                        <div className='like-container'>
+                          <Heart fill={"#D3233A"} />
+                          <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ))
+            )}
           </div>
         </div>
         { sortedRecipes && <Pagination

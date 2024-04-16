@@ -40,7 +40,7 @@ const Home = () => {
         <div className='banner-container'>
           <div className='banner'>
             <img src="../../images/banner_image.png" alt="banner_image" />
-            <Link to = {loginRequired() ? "/regrigerator" : "/signin"}>
+            <Link to = {loginRequired() ? "/refrigerator" : "/signin"}>
                 <button className='banner-button'>
                 나만의 냉장고 재료 추가하기
                 <Cutlery />

@@ -230,7 +230,7 @@ const EmptyList = ({recipe }) => {
     return (
       <div className='ListWrapper'>
         <div className='EmptyList'>
-        {   recipe ? '검색된 레시피가 없습니다.'
+        {   recipe ? '등록된 레시피가 없습니다.'
         : `준비된 재료가 없습니다.
          재료 추가 버튼을 이용해 나만의 냉장고를 채워보세요!`
         }

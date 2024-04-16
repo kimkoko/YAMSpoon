@@ -101,6 +101,11 @@ const MaterialRecipe = () => {
                 </select>
             </div>
             <RecipesList pageData={pageData}/>
+            {filteredRecipe && filteredRecipe.length === 0 && 
+              <div className='no-recipes'>
+                <p>등록된 레시피가 없습니다.</p>
+              </div>
+            }
         </div>
         { filteredRecipe && <Pagination
                             key={filteredRecipe.length + sort} 

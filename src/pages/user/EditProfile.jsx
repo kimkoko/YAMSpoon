@@ -12,6 +12,7 @@ export default function EditProfile () {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
+  const [originalNickname, setOriginalNickname] = useState('');
 
   const [formData, setFormData] = useState({
     name: '', // 이름
@@ -23,6 +24,7 @@ export default function EditProfile () {
   const [validation, setValidation] = useState({
     nameError: '',
     nicknameError: '',
+    nicknameCheck: false,
   });
 
   const [basicData, setBasicData] = useState({
@@ -33,7 +35,7 @@ export default function EditProfile () {
   });
 
   const { name, nickname, userId, email } = formData;
-  const { nameError, nicknameError } = validation;
+  const { nameError, nicknameError, nicknameCheck } = validation;
   const newUserInfo = {
     ...formData,
     ...basicData,
@@ -46,21 +48,52 @@ export default function EditProfile () {
   };
 
   // 수정할 유저 정보 가져오기
-  // 현재 api 미구현으로 추후 확정된 로직에 따라 변경 필요
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await User.getUser();
-      const { name, nickname, userId, email } = response.data;
-      setFormData({
-        name,
-        nickname,
-        userId,
-        email,
-      })
+      try {
+        const response = await User.getUser();
+        const { name, nickname, userId, email } = response.data.data;
+        const user = response.data.data;
+        setFormData({
+          name,
+          nickname,
+          userId,
+          email,
+        })
+    
+        setBasicData()
+        setOriginalNickname(user.nickname); // 원래 닉네임 저장
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        navigate('/signin');
+      }
+      
     }
 
     fetchUser();
   }, [])
+
+  // 닉네임 중복 확인
+  const handleNicknameCheck = async () => {
+    if (nickname === originalNickname) {
+      setValidation({...validation, nicknameError: "", nicknameCheck: true})
+      return
+    }
+
+    try {
+      const res = await User.verifyNickname({ nickname });
+
+      if (res.status === 200) {
+        setValidation({ ...validation, nicknameError: '', nicknameCheck: true });
+      }
+
+    } catch (err) {
+      if (err.response.status === 400) {
+        setValidation({ ...validation, nicknameError: 'X 이미 사용중인 닉네임입니다.',  nicknameCheck: false });
+      }
+    }
+  }
+  
 
   // 정보 수정 함수
   const handleEdit = async (e) => {
@@ -70,6 +103,13 @@ export default function EditProfile () {
     if (!validateEmptyFields(formData, validation, setValidation)) {
       return;
     }
+
+    // 중복 확인 유무
+    if (!nicknameCheck) {
+      document.getElementById('nickname').focus();
+      setValidation({ ...validation, nicknameError: '※ 닉네임 중복 확인을 해주세요.' });
+      return;
+    } 
 
     await User.updateUser(newUserInfo);
     setEditSuccess(true);
@@ -89,10 +129,11 @@ export default function EditProfile () {
 
   const confirmWithdraw = () => {
     // 탈퇴 로직 구현
-    User.deleteUser();
-    setIsModalOpen(false);
-    // 메인 페이지로 이동
-    navigate('/');
+    User.deleteUser().then(() => {
+      setIsModalOpen(false);
+      localStorage.removeItem('token');
+      window.location.href="/";
+    })
   }
   
   return (
@@ -126,9 +167,10 @@ export default function EditProfile () {
                 onChange={handleInputChange}
                 className={`${nicknameError && 'invalid'}`}
               />
-              <button className='notFilled short'>중복 확인</button>
+              <button type='button' className='notFilled short' onClick={handleNicknameCheck} disabled={!nickname}>중복 확인</button>
             </div>
             {nicknameError && <p className="error-message">{nicknameError}</p>}
+            {nicknameCheck && <p className="success-message">O 사용할 수 있는 닉네임입니다.</p>}
           </div>
           <div className="form-group">
             <label htmlFor='userId'>아이디</label>
@@ -160,8 +202,7 @@ export default function EditProfile () {
           alertBody='회원님의 정보 수정이 완료되었습니다.'
           buttonAction={goToMypage}
           actionText='마이 페이지'
-          hideCloseButton={false}
-          closeModal={() => setEditSuccess(false)}
+          hideCloseButton={true}
         />
       )}
     </div>

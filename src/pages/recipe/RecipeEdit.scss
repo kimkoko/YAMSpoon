@@ -258,14 +258,16 @@
     box-sizing: border-box;
     width: 29px;
     height: 29px;
-    background-color: none;
+    background: none;
 
     border-radius: 100px;
     border: 2px solid $main-color;
-
-    &:hover{
-        svg {
-            fill: #FAFAFA;
+    
+    &:hover {
+        cursor: pointer;
+        background-color: $main-color;
+        svg path {
+            stroke: #fff;
         }
     }
 }

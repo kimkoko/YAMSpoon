@@ -121,9 +121,9 @@ const RecipeEdit = () => {
                 <div className='recipe-input-container'>
                     <div className='recipe-input-title'>
                         <p>레시피 수정</p>
-                        <button className='plus-icon'>
+                        <div className='plus-icon'>
                             <Plus width="29px" height="29px" strokeColor="#D3233A" />
-                        </button>
+                        </div>
                     </div>
                     <div className='recipe-input'>
                         <p>1</p>

@@ -5,25 +5,25 @@ import TopButton from '../../components/TopButton/TopButton';
 import Plus from '../../components/Icons/Plus';
 import Trashcan from '../../components/Icons/Trashcan';
 import ImageUpload from '../../components/Icons/ImageUpload';
-import './RecipeRegister.scss';
+import './RecipeEdit.scss';
 
-const RecipeRegister = () => {
+const RecipeEdit = () => {
 
     return (
         <div>
             <Header />
-            <div className='recipe-register-container'>
-                <div className='recipe-register-page-title'>
-                    <p>레시피 등록</p>
+            <div className='recipe-edit-container'>
+                <div className='recipe-edit-page-title'>
+                    <p>레시피 수정</p>
                 </div>
-                <div className='register-form-container'>
-                    <div className='image-register'>
+                <div className='edit-form-container'>
+                    <div className='image-edit'>
                         <div className='image-upload'>
                             <ImageUpload />
                         </div>
                         <button className='image-upload-button'>사진 업로드</button>
                     </div>
-                    <div className='left-register-container'>
+                    <div className='left-edit-container'>
                         <div className='recipe-category-container'>
                             <p>카테고리</p>
                             <select className='recipe-filter'>
@@ -120,10 +120,10 @@ const RecipeRegister = () => {
 
                 <div className='recipe-input-container'>
                     <div className='recipe-input-title'>
-                        <p>레시피 입력</p>
-                        <div className='plus-icon'>
-                            <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
-                        </div>
+                        <p>레시피 수정</p>
+                        <button className='plus-icon'>
+                            <Plus width="29px" height="29px" strokeColor="#D3233A" />
+                        </button>
                     </div>
                     <div className='recipe-input'>
                         <p>1</p>
@@ -133,7 +133,7 @@ const RecipeRegister = () => {
                             placeholder='레시피를 입력해주세요.' />
                     </div>
                 </div>
-                <button className='recipe-register-button'>등록하기</button>
+                <button className='recipe-edit-button'>수정하기</button>
             </div>
             <TopButton />
             <Footer />
@@ -141,4 +141,4 @@ const RecipeRegister = () => {
     )
 }
 
-export default RecipeRegister;
+export default RecipeEdit;

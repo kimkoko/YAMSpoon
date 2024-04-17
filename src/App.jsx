@@ -16,6 +16,7 @@ import SignUp from './pages/user/SignUp';
 import ResetPassword from './pages/user/ResetPassword'; 
 import UseScrollToTop from '../src/components/UseScrollToTop/UseScrollToTop';
 import RecipeRegister from './pages/recipe/RecipeRegister';
+import RecipeEdit from './pages/recipe/RecipeEdit';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/recipe-register" element={<RecipeRegister />} />
+        <Route path="/recipe-edit" element={<RecipeEdit />} />
       </Routes>
     </>
   );

@@ -4,6 +4,7 @@ import Footer from '../../components/Footer/Footer';
 import TopButton from '../../components/TopButton/TopButton';
 import Plus from '../../components/Icons/Plus';
 import Trashcan from '../../components/Icons/Trashcan';
+import ImageUpload from '../../components/Icons/ImageUpload';
 import './RecipeRegister.scss';
 
 const RecipeRegister = () => {
@@ -16,7 +17,12 @@ const RecipeRegister = () => {
                     <p>레시피 등록하기</p>
                 </div>
                 <div className='register-form-container'>
-                    <div className='image-register'>사진</div>
+                    <div className='image-register'>
+                        <div className='image-upload'>
+                            <ImageUpload />
+                        </div>
+                        <button className='image-upload-button'>사진 업로드</button>
+                    </div>
                     <div className='left-register-container'>
                         <div className='recipe-category-container'>
                             <p>카테고리</p>
@@ -35,7 +41,7 @@ const RecipeRegister = () => {
                         </div>
                         <div className='recipe-introduction-container'>
                             <p>레시피 설명</p>
-                            <input
+                            <textarea
                                 className='recipe-introduction'
                                 id='recip-introduction'
                                 type='text'
@@ -46,9 +52,11 @@ const RecipeRegister = () => {
 
                 <div className='ingredient-sauce-container'>
                     <div className='ingredient-container'>
-                        <p>재료</p>
-                        <div className='plus-icon'>
-                            <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                        <div className='ingredients-title'>
+                            <p>재료</p>
+                            <div className='plus-icon'>
+                                <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                            </div>
                         </div>
                         <div className='ingregdients'>
                             <div className='ingredient'>
@@ -61,13 +69,35 @@ const RecipeRegister = () => {
                                     <Trashcan />
                                 </div>
                             </div>
+                            <div className='ingredient'>
+                                <p>고등어</p>
+                                <input
+                                    className='ingredient-count'
+                                    type='text'
+                                    placeholder='수량 (ex. 4개)' />
+                                <div className='trashcan-icon'>
+                                    <Trashcan />
+                                </div>
+                            </div>
+                            <div className='ingredient'>
+                                <p>굴</p>
+                                <input
+                                    className='ingredient-count'
+                                    type='text'
+                                    placeholder='수량 (ex. 4개)' />
+                                <div className='trashcan-icon'>
+                                    <Trashcan />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div className='sauce-container'>
-                        <p>소스</p>
-                        <div className='plus-icon'>
-                            <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                        <div className='sauces-title'>
+                            <p>소스</p>
+                            <div className='plus-icon'>
+                                <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                            </div>
                         </div>
                         <div className='recipe-sauces'>
                             <div className='recipe-sauce'>
@@ -89,16 +119,18 @@ const RecipeRegister = () => {
                 </div>
 
                 <div className='recipe-input-container'>
-                    <p>레시피 입력</p>
-                    <div className='plus-icon'>
-                        <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                    <div className='recipe-input-title'>
+                        <p>레시피 입력</p>
+                        <div className='plus-icon'>
+                            <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
+                        </div>
                     </div>
                     <div className='recipe-input'>
                         <p>1</p>
                         <input
                             className='recipe-procedure'
                             type='text'
-                            placeholder='상세 레시피' />
+                            placeholder='레시피를 입력해주세요.' />
                     </div>
                 </div>
                 <button className='recipe-register-button'>등록하기</button>

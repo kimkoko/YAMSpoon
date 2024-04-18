@@ -82,4 +82,32 @@ export default {
       method: 'get',
     });
   },
+
+  /**
+   * @method POST
+   * @summary 레시피 등록
+   * @param recipeData 레시피 정보
+   */
+  postRecipe(recipeData) {
+    return api({
+      url: '/recipes',
+      method: 'post',
+      data: recipeData
+    });
+  },
+  
+  /**
+   * @method PUT
+   * @summary 레시피 수정
+   * @param id 레시피 아이디
+   * @param recipeData 레시피 정보
+   */
+  updateRecipe(id, recipeData) {
+    return api({
+      url: `/recipes/${id}`,
+      method: 'get',
+      data: recipeData
+    });
+  },
+
 };

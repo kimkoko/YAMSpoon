@@ -41,6 +41,12 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                
+                .image-uploaded {
+                    width: 100%;
+                    height: 469px;
+                    border-radius: 44px;
+                }
             }
             
         }
@@ -72,6 +78,9 @@
                     width: 100%;
                     box-sizing: border-box;
                 }
+                input:focus{
+                    border-color: $main-color;
+                }
             }
 
             .recipe-introduction-container {
@@ -96,7 +105,7 @@
                 
                     &:focus {
                         outline: none;
-                        border-color: $common-color;
+                        border-color: $main-color;
                     }
                 
                     &::-webkit-inner-spin-button {
@@ -151,14 +160,14 @@
                     p {
                         font-size: 18px;
                         color: $main-color;
-                        width: 15%;
+                        width: 20%;
                         white-space: nowrap;
 
                     }
 
                     .ingredient-count{
                         box-sizing: border-box;
-                        padding: 9px 33px 9px 10px;
+                        padding: 9px 10px;
                         width: 50%;
                     }
                 }
@@ -196,14 +205,14 @@
 
                     .sauce-name{
                         box-sizing: border-box;
-                        padding: 9px 12px;
+                        padding: 9px 10px;
                         width: 30%;
                     }
                     
                     .sauce-amount{
                         box-sizing: border-box;
-                        padding: 9px 12px;
-                        width: 55%;
+                        padding: 9px 10px;
+                        width: 53%;
                     }
                 }
             }
@@ -216,7 +225,8 @@
         display: flex;
         flex-direction: column;
         margin-top: 116px;
-        gap: 53px;
+        
+        gap: 28px;
 
         .recipe-input-title {
             display: flex;

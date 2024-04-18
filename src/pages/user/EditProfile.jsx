@@ -45,7 +45,7 @@ export default function EditProfile () {
     const { name, value } = e.target;
     setFormData(prev => ({...prev, [name]: value}));
     setValidation(prev => ({...prev, [`${name}Error`]: ''}));
-  };
+  };  
 
   // 수정할 유저 정보 가져오기
   useEffect(() => {

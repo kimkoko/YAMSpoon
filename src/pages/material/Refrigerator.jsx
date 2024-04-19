@@ -147,7 +147,7 @@ const Refrigerator = () => {
         <div className='innerBox'>
           <Loading isLoading={isLoading}/>
           <div className='material-container'>
-              <div className='title'>냉장고 속 재료로 레시피가 준비되었어요!</div>
+              <div className='rtitle'>냉장고 속 재료로 레시피가 준비되었어요!</div>
               <MaterialBar 
                   handleAddClick={handleAddClick} 
                   materials={materials} 

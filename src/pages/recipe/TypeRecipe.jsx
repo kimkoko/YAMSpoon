@@ -9,8 +9,10 @@ import Heart from '../../components/Icons/Heart'
 import RecipeCategory from '../../utils/RecipeCategory'
 import Recipe from '../../utils/Recipe'
 import './TypeRecipe.scss'
+import Loading from "../../components/Loading/Loading";
 
 const TypeRecipe = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [foodType, setFoodType] = useState([]);
   const [selected, setSelected] = useState(null);
   const [recipes , setRecipes] = useState([]);
@@ -22,6 +24,8 @@ const TypeRecipe = () => {
   const [sortedRecipes, setSortedRecipes] = useState([]);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchData = async () => {
       try {
         // 카테고리 데이터 가져오기
@@ -35,6 +39,8 @@ const TypeRecipe = () => {
   
         const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data.data);
         setSortedRecipes(recipeDataDeepCopy);
+
+        setIsLoading(false); 
       } catch (error) {
         throw new Error("데이터 가져오기 실패: ", error);
       }
@@ -135,69 +141,72 @@ const TypeRecipe = () => {
   return (
     <div>
       <Header />
-      <div className='type-recipe-container'>
-        <div className='type-recipe-result'>
-          <p className='type-recipe-text'>종류별로 레시피가 준비되었어요!</p>
-        </div>
-        <div className='food-type'>
-          <div className='line'/>
-          <div className='food-type-filter'>
-            <button className='all' onClick={() => handleAllButton()}>전체</button>
-            <div className='food-type-button-container'>
-              {foodType.map((category, index) => (
-                <button
-                  key={index}
-                  className={`food-type-button ${selected === index ? 'click-food-type-button' : ''}`}
-                  onClick={() => handleSelect(index, category._id)}
-                >
-                  {category.name}
-                </button>
-                ))}
+      <div className='innerBox'>
+        <Loading isLoading={isLoading}/>
+        <div className='type-recipe-container'>
+          <div className='type-recipe-result'>
+            <p className='type-recipe-text'>종류별로 레시피가 준비되었어요!</p>
+          </div>
+          <div className='food-type'>
+            <div className='line'/>
+            <div className='food-type-filter'>
+              <button className='all' onClick={() => handleAllButton()}>전체</button>
+              <div className='food-type-button-container'>
+                {foodType.map((category, index) => (
+                  <button
+                    key={index}
+                    className={`food-type-button ${selected === index ? 'click-food-type-button' : ''}`}
+                    onClick={() => handleSelect(index, category._id)}
+                  >
+                    {category.name}
+                  </button>
+                  ))}
+              </div>
+            </div>
+            <div className='line'/>
+          </div>
+          <div className='search-result-container'>
+            <div className='result-container'>
+              <p className='result-count'>검색 결과 <span className="count">{recipes.length}</span>건 조회</p>
+              <select name="filter" value={sortingFilter} onChange={handleSortingChange}>
+                <option value="latest">최신순</option>
+                <option value="famous">인기순</option>
+              </select>
+            </div>
+            <div className='all-image-container'>
+              {recipes.length === 0 ? (
+                  <div className='no-recipes'>
+                    <p>등록된 레시피가 없습니다.</p>
+                  </div>
+                ) : (
+                  makeArray(pageData, 4).map((row, rowIndex) => (
+                    <div key={rowIndex} className='images-container'>
+                      {row.map((recipe, columnIndex) => (
+                        <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
+                          <div className='imgBox'>
+                            <img className='recipe-image' src={recipe.img} alt={recipe.title} />
+                          </div>
+                          <p className='recipe-name'>{recipe.title}</p>
+                          <div className='like-container'>
+                            <Heart fill={"#D3233A"} />
+                            <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ))
+              )}
             </div>
           </div>
-          <div className='line'/>
+          { sortedRecipes && <Pagination
+                              key={sortedRecipes.length + sortingFilter} 
+                              totalItems={totalItems} 
+                              itemsPerPage={16} 
+                              handlePageData={handlePageData}
+                          />}
+          <TopButton />
+          <Footer />
         </div>
-        <div className='search-result-container'>
-          <div className='result-container'>
-            <p className='result-count'>검색 결과 <span className="count">{recipes.length}</span>건 조회</p>
-            <select name="filter" value={sortingFilter} onChange={handleSortingChange}>
-              <option value="latest">최신순</option>
-              <option value="famous">인기순</option>
-            </select>
-          </div>
-          <div className='all-image-container'>
-            {recipes.length === 0 ? (
-                <div className='no-recipes'>
-                  <p>등록된 레시피가 없습니다.</p>
-                </div>
-              ) : (
-                makeArray(pageData, 4).map((row, rowIndex) => (
-                  <div key={rowIndex} className='images-container'>
-                    {row.map((recipe, columnIndex) => (
-                      <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
-                        <div className='imgBox'>
-                          <img className='recipe-image' src={recipe.img} alt={recipe.title} />
-                        </div>
-                        <p className='recipe-name'>{recipe.title}</p>
-                        <div className='like-container'>
-                          <Heart fill={"#D3233A"} />
-                          <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                ))
-            )}
-          </div>
-        </div>
-        { sortedRecipes && <Pagination
-                            key={sortedRecipes.length + sortingFilter} 
-                            totalItems={totalItems} 
-                            itemsPerPage={16} 
-                            handlePageData={handlePageData}
-                        />}
-        <TopButton />
-        <Footer />
       </div>
     </div>
   )

@@ -11,10 +11,11 @@ import Carousel from '../../components/Carousel/Carousel';
 import AddModal from './AddModal'
 import Recipe from '../../utils/Recipe'
 import User from '../../utils/User';
+import Loading from "../../components/Loading/Loading";
 
 const Refrigerator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [ materials, setMaterials ] = useState([]);
   const [ filteredRecipe, setFilteredRecipe ] = useState(null)
   const [ totalItems, setTotalItems ] = useState(null)
@@ -29,6 +30,7 @@ const Refrigerator = () => {
   }
 
   const recipesByMaterials = async(ingredient) => {
+    setIsLoading(true)
     const newArr = ingredient.map(item => item[0])
       const newRecipes = []
       await Promise.all(newArr.map(async (item) => {
@@ -40,10 +42,13 @@ const Refrigerator = () => {
             }
         })
       }))
+
+      setIsLoading(false)
       return newRecipes
   }
 
   const fetchRecipes = async () => {
+    setIsLoading(true)
     try {
       const UserData = await User.getUserFridge()
       const ingredient = UserData.data.data.map(item => [item._id, item.name])
@@ -55,6 +60,8 @@ const Refrigerator = () => {
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
+
+    setIsLoading(false)
   };
   
   useEffect(() => {
@@ -107,6 +114,7 @@ const Refrigerator = () => {
         setPageIndex([data[0], data[1]])
   }
   const handleAddAction = async (dataArray) => {
+    setIsLoading(true)
     const newItems = dataArray.filter(item => !materials.some(mat => mat[0] === item[0]))
     const newArr = [...materials, ...newItems]
     setMaterials(newArr)
@@ -114,6 +122,7 @@ const Refrigerator = () => {
     setFilteredRecipe(updatedRecipes)
     const updateData = newArr.map(item => item[0])
     await User.updateUserFridge({ingredients: updateData})
+    setIsLoading(false)
   };
 
   const handleSelectMat = async (dataArr) => {
@@ -135,26 +144,29 @@ const Refrigerator = () => {
   return (
     <div>
         <Header />
-        <div className='material-container'>
-            <div className='title'>냉장고 속 재료로 레시피가 준비되었어요!</div>
-            <MaterialBar 
-                handleAddClick={handleAddClick} 
-                materials={materials} 
-                handleDeleteMaterial={handleDeleteMaterial} 
-                recipes={7} 
-                handleSelectMat={handleSelectMat}
-            />
-            <div className='result'>
-                <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
-                <select name="order" onChange={handleSortChange}>
-                    <option value="latest">최신순</option>
-                    <option value="likes">인기순</option>
-                </select>
-            </div>
-            { materials && materials.length === 0 ? <EmptyList /> 
-            : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe />
-            : <RecipesList pageData={pageData}/>
-            }
+        <div className='innerBox'>
+          <Loading isLoading={isLoading}/>
+          <div className='material-container'>
+              <div className='title'>냉장고 속 재료로 레시피가 준비되었어요!</div>
+              <MaterialBar 
+                  handleAddClick={handleAddClick} 
+                  materials={materials} 
+                  handleDeleteMaterial={handleDeleteMaterial} 
+                  recipes={7} 
+                  handleSelectMat={handleSelectMat}
+              />
+              <div className='result'>
+                  <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
+                  <select name="order" onChange={handleSortChange}>
+                      <option value="latest">최신순</option>
+                      <option value="likes">인기순</option>
+                  </select>
+              </div>
+              { materials && materials.length === 0 ? <EmptyList /> 
+              : !filteredRecipe || filteredRecipe.length === 0 ? <EmptyList recipe />
+              : <RecipesList pageData={pageData}/>
+              }
+          </div>
         </div>
         { isModalOpen && <AddModal closeModal={() => setIsModalOpen(false)} handleAddAction={handleAddAction}/> }
         { filteredRecipe && <Pagination

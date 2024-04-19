@@ -201,4 +201,15 @@ export default {
       data: nickname
     })
   },
+
+  /**
+   * @method GET
+   * @summary 작성한 레시피 조회
+   */
+  getCreateRecipe() {
+    return api({
+      url: 'user/myRecipe',
+      method: 'get'
+    })
+  }
 }

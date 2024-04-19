@@ -17,10 +17,13 @@ export default function RecipeDetails () {
   const [liked, setLiked] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [saveRecipe, setSaveRecipe] = useState(false); // 저장한 레시피
   const [user, setUser] = useState(null);  // 사용자 정보 상태 추가
+  const [isCreator, setIsCreator] = useState(false); // 레시피 작성자 여부
   const [recipeItem, setRecipeItem] = useState({
+    creatorNickName: "",
     title: "",
     description: "",
     content: [],
@@ -40,23 +43,37 @@ export default function RecipeDetails () {
     const fetchRecipe = async () => {
       try {
         const response = await Recipe.getDetailRecipe(recipeId);
-        const { title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
-        setRecipeItem({ title, description, content, ingredients, sauce, like, recipe_Category, img });
+
+        const createResponse = await User.getCreateRecipe();
+        const userCreator = createResponse.data.data.userOid;
+
+        const { creatorNickName, title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
+        setRecipeItem({ creatorNickName, title, description, content, ingredients, sauce, like, recipe_Category, img });
+
+        const creatorId = response.data.data.creatorId;
+
+        // 레시피 작성자 id와 로그인 유저 id가 일치하면 isCreator를 true로 설정
+        if (userCreator === creatorId) {
+          setIsCreator(true);
+        }
+
       } catch (error) {
         console.error('Error loading recipe data:', error);
       }
       setIsLoading(false);
+      if (isLoading) return null
     };
   
     fetchRecipe(); // 레시피 정보 로드
-  }, [recipeId]);
+    
+  }, []);
   
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await User.getUser();
         const userData = response.data.data;
-    
+
         if (userData) {
           setIsMember(true);
           setUser(userData);
@@ -64,6 +81,7 @@ export default function RecipeDetails () {
         } else {
           setIsMember(false);
         }
+
       } catch (error) {
         console.error('Error fetching user data:', error);
         setIsMember(false);
@@ -79,8 +97,6 @@ export default function RecipeDetails () {
       setLiked(recipeItem.like.includes(user.userId));
     }
   }, [user, recipeItem.like, recipeId]); // user 또는 recipeItem.like가 변경될 때 실행
-
-  if (isLoading) return null
 
   // 저장하기 핸들러
   const saveHandle = async () => {
@@ -133,6 +149,16 @@ export default function RecipeDetails () {
     }
   }
 
+  // 레시피 삭제
+  const deleteRecipe = async () => {
+    try {
+      await Recipe.deleteRecipe(recipeId);
+      navigate('/mypage');
+    } catch (error) {
+      console.error('레시피 삭제 중 오류 발생:', error);
+    }
+  }
+
   return (
       <>
         <Header />
@@ -154,7 +180,15 @@ export default function RecipeDetails () {
               </div>
             </div>
             <div className='recipeInfo'>
-              <p className='category'>{recipeItem.recipe_Category.name}</p>
+              <div className='categoryBox'>
+                <p className='category'>{recipeItem.recipe_Category.name}</p>
+                <p className='creator'>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                    <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clipRule="evenodd" />
+                  </svg>
+                  By {recipeItem.creatorNickName}
+                </p>
+              </div>
               <h3 className='recipeName'>{recipeItem.title}</h3>
               {recipeItem.description.split("\n").map((line, index) => (
                   <p className='recipeText' key={index}>{line}</p>
@@ -190,11 +224,22 @@ export default function RecipeDetails () {
             </div>
             <div className='recipeTextBox'>
               <h4 className='title'>레시피</h4>
-              <p>
-                {recipeItem.content.map((content, index) => {return (<span key={index}>{content}<br/></span>)})}
-              </p>
+              {recipeItem.content.map((content, index) => {return (
+                <p key={index}>
+                  <span className='num'>{index + 1}</span>
+                  <span>{content}<br/></span>
+                </p>)
+              })}
             </div>
           </div>
+          {
+            isCreator && (
+              <div className='recipeButtons'>
+                <button type='button' className='edit notFilled' onClick={() => navigate(`/recipe-edit/${recipeId}`)}>수정</button>
+                <button type='button' className='delete' onClick={() => setIsDeleteModalOpen(true)}>삭제</button>
+              </div>
+            )
+          }
         </div>
         {isSaveModalOpen && 
           (<Modal 
@@ -212,6 +257,16 @@ export default function RecipeDetails () {
             actionText='확인'
             hideCloseButton={true}
           />)}
+          {
+            isDeleteModalOpen && 
+            (<Modal 
+              IconComponent={() => <Alert/>}
+              alertBody={"정말 삭제하시겠습니까?"}
+              buttonAction={deleteRecipe} 
+              actionText='확인'
+              closeModal={() => setIsDeleteModalOpen(false)}
+            />)
+          }
         <TopButton />
         <Footer />
     </>

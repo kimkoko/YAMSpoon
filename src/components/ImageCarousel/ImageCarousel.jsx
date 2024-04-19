@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import "./ImageSlide.scss";
 import Arrow from ".././Icons/Arrow";
 import propTypes from 'prop-types';
@@ -29,20 +29,9 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
     );
   };
 
-  // 4개 이하의 슬라이드가 있을 때는 버튼을 렌더링하지 않음
-  useEffect(() => {  
-    if (TOTAL_SLIDES <= 4) {
+   // 이제 슬라이드 수가 4개 미만일 때도 버튼을 표시하지 않습니다.
+  const shouldShowArrows = TOTAL_SLIDES > 4;
 
-      // 모든 화살표 버튼 요소를 선택
-      const arrowBtns = document.querySelectorAll('.arrow');
-      
-      // 각 버튼에 대해 숨김 처리
-      arrowBtns.forEach(function(btn) {
-        btn.style.display = 'none';
-      });
-    }
-  })
-  
   // slideDatas가 없으면 아무것도 렌더링하지 않음
   if (!slideDatas || slideDatas.length === 0) {
     return null;
@@ -78,13 +67,18 @@ export default function Slider({ slideDatas, hideRecipeRanking }) {
           ))
         }
       </div>
-
-      <button className='arrow prevBtn' onClick={PrevSlide}>
-        <Arrow stroke={"#d3233a"}/>
-      </button>
-      <button className='arrow nextBtn' onClick={NextSlide}>
-        <Arrow stroke={"#d3233a"}/>
-      </button>
+      {
+        shouldShowArrows && (
+          <>
+            <button className='arrow prevBtn' onClick={PrevSlide}>
+              <Arrow stroke={"#d3233a"}/>
+            </button>
+            <button className='arrow nextBtn' onClick={NextSlide}>
+              <Arrow stroke={"#d3233a"}/>
+            </button>
+          </>
+        )
+      }
     </div>
   );
 }

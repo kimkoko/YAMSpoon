@@ -36,10 +36,11 @@ const TypeRecipe = () => {
         // 레시피 데이터 가져오기
         const recipeResponse = await Recipe.getRecipe();
         setRecipes(recipeResponse.data.data);
-        setIsLoading(false); 
   
         const recipeDataDeepCopy = _.cloneDeep(recipeResponse.data.data);
         setSortedRecipes(recipeDataDeepCopy);
+
+        setIsLoading(false); 
       } catch (error) {
         throw new Error("데이터 가져오기 실패: ", error);
       }

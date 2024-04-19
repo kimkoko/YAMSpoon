@@ -12,6 +12,7 @@ import Recipe from '../../utils/Recipe'
 const Home = () => {
   const [ sortLikesData, setSortLikesData ] = useState(null)
   const [ newestData, setNewestData ] = useState(null)
+  const [isLoading, setIsLoading] = useState(true);
   const targetRef = useRef(null)
   
   useEffect(() => {
@@ -50,6 +51,9 @@ const Home = () => {
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
+
+    setIsLoading(false);
+    if (isLoading) return null
   }
 
   const fetchNewestRecipes = async () => {

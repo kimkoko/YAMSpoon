@@ -27,7 +27,6 @@ export default function MyPage() {
         const response = await User.getUser();
         const user = response.data.data;
         setUser(user);
-        setSaveList(user.recipe.length > 0 ? true : false);
         fetchSaveRecipe(user.recipe);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
@@ -46,8 +45,8 @@ export default function MyPage() {
       const recipes = response.data.data.slice().reverse();
       
       setRecipeData(recipes);
+      setSaveList(recipes.length > 0 ? true : false);
       setIsLoading(false);
-      console.log(recipes)
     }
 
     // 유저 작성 레시피

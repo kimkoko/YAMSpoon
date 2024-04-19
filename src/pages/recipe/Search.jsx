@@ -8,9 +8,11 @@ import TopButton from '../../components/TopButton/TopButton'
 import Heart from '../../components/Icons/Heart'
 import Recipe from '../../utils/Recipe'
 import './Search.scss'
+import Loading from "../../components/Loading/Loading";
 
 const Search = () => {
     const location = useLocation();
+    const [isLoading, setIsLoading] = useState(false);
     const [recipes , setRecipes] = useState([]);
     const [searchResult, setSearchResult] = useState('');
     const [ pageData, setPageData ] = useState([]);
@@ -47,6 +49,7 @@ const Search = () => {
 
             return;
         }else{
+            setIsLoading(true);
             // 검색어 포함하는 레시피 조회
             setSearchResult(SearchRecipes);
             const filteredRecipes = recipes.filter(recipe => recipe.title.includes(SearchRecipes));
@@ -60,8 +63,9 @@ const Search = () => {
                 }
                 return new Date(b.createdAt) - new Date(a.createdAt);
             });
-    
+            
             setSortedRecipes(sorted);
+            setIsLoading(false);
         }
     }, [location.search, recipes, sortingFilter]);
     
@@ -104,57 +108,60 @@ const makeArray = (arr, size) => {
 
 return (
     <div>
-            <Header ></Header>
-            <div className='search-container'>
-                <div className='search-result'>
-                    <p className='data'><span className='search'>&quot;{searchResult}&quot;</span> 검색 결과</p>
-                </div>
-                <div className='line-container'>
-                    <div className='line' />
-                </div>
-                <div className='search-result-container'>
-                    <div className='result-container'>
-                        <p className='result-count'>검색 결과 <span className="count">{sortedRecipes.length}</span>건 조회</p>
-                        <select name="filter" value={sortingFilter} onChange={handleSortingChange}>
-                            <option value="latest">최신순</option>
-                            <option value="famous">인기순</option>
-                        </select>
-                    </div>
-                    <div className='all-image-container'>
-                        {sortedRecipes.length > 0 ? (
-                            makeArray(pageData, 4).map((row, rowIndex) => (
-                            <div key={rowIndex} className='images-container'>
-                                {row.map((recipe, columnIndex) => (
-                                <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
-                                    <div className='imgBox'>
-                                    <img className='recipe-image' src={recipe.img} alt={recipe.title} />
-                                    </div>
-                                    <p className='recipe-name'>{recipe.title}</p>
-                                    <div className='like-container'>
-                                    <Heart fill={"#D3233A"} />
-                                    <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
-                                    </div>
-                                </Link>
-                                ))}
-                            </div>
-                            ))
-                        ) : (
-                            <div className='no-results'>
-                                <p>검색 결과가 없습니다.</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-            { sortedRecipes && <Pagination
-                            key={sortedRecipes.length + sortingFilter} 
-                            totalItems={totalItems} 
-                            itemsPerPage={16} 
-                            handlePageData={handlePageData}
-                        />}
-            <TopButton></TopButton>
-            <Footer></Footer>
+      <Header ></Header>
+      <div className='innerBox'>
+        <Loading isLoading={isLoading}/>
+        <div className='search-container'>
+          <div className='search-result'>
+              <p className='data'><span className='search'>&quot;{searchResult}&quot;</span> 검색 결과</p>
+          </div>
+          <div className='line-container'>
+              <div className='line' />
+          </div>
+          <div className='search-result-container'>
+              <div className='result-container'>
+                  <p className='result-count'>검색 결과 <span className="count">{sortedRecipes.length}</span>건 조회</p>
+                  <select name="filter" value={sortingFilter} onChange={handleSortingChange}>
+                      <option value="latest">최신순</option>
+                      <option value="famous">인기순</option>
+                  </select>
+              </div>
+              <div className='all-image-container'>
+                  {sortedRecipes.length > 0 ? (
+                      makeArray(pageData, 4).map((row, rowIndex) => (
+                      <div key={rowIndex} className='images-container'>
+                          {row.map((recipe, columnIndex) => (
+                          <Link key={rowIndex * 4 + columnIndex} to={`/recipes/${recipe._id}`} className='image-container'>
+                              <div className='imgBox'>
+                              <img className='recipe-image' src={recipe.img} alt={recipe.title} />
+                              </div>
+                              <p className='recipe-name'>{recipe.title}</p>
+                              <div className='like-container'>
+                              <Heart fill={"#D3233A"} />
+                              <p className='like-count'>{recipe.like ? recipe.like.length : 0}</p>
+                              </div>
+                          </Link>
+                          ))}
+                      </div>
+                      ))
+                  ) : (
+                      <div className='no-results'>
+                          <p>검색 결과가 없습니다.</p>
+                      </div>
+                  )}
+              </div>
+          </div>
         </div>
+      </div>
+      { sortedRecipes && <Pagination
+                      key={sortedRecipes.length + sortingFilter} 
+                      totalItems={totalItems} 
+                      itemsPerPage={16} 
+                      handlePageData={handlePageData}
+                  />}
+      <TopButton></TopButton>
+      <Footer></Footer>
+    </div>
     )
 }
 

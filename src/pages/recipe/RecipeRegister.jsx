@@ -316,7 +316,7 @@ const RecipeRegister = () => {
             // 레시피 등록이 완료되면, 레시피 상세 페이지로 이동.
             const id = res.data.data._id;
             navigate(`/recipes/${id}`);
-            
+
         } catch (error) {
             throw new Error('레시피 등록 실패', error);
         }
@@ -389,7 +389,7 @@ const RecipeRegister = () => {
                                         name={ingredient.name}
                                         value={ingredient.amount} 
                                         onChange={(e) => handleIngredientAmountChange(ingredient.name, e)}
-                                        placeholder="수량을 입력하세요"
+                                        placeholder="수량(ex. 10g)"
                                     />
                                     <div className="trashcan-icon" onClick={() => handleRemoveIngredient(index)}>
                                         <Trashcan />

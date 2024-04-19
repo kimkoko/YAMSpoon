@@ -45,7 +45,8 @@ const RecipeEdit = () => {
                 const response = await Recipe.getDetailRecipe(recipeId);
                 const { title, description, content, ingredients, sauce, recipe_Category, img} = response.data.data;
                 setFormData({ title, description, content, ingredients, sauce, recipe_Category, img });
-
+                setUploadedImage(img);
+                
                 // 카테고리 데이터 가져오기
                 const categoryResponse = await RecipeCategory.getRecipeCategory();
                 const categoryNames = categoryResponse.data.data;
@@ -54,9 +55,10 @@ const RecipeEdit = () => {
                 throw new Error("데이터를 가져오기 실패.", error);
             }
         }
-
+        
         fetchRecipe();
-    }, [recipeId])    
+
+    }, [recipeId])
 
     // 이미지 업로드
     const handleImageUpload = (e) => {
@@ -66,13 +68,9 @@ const RecipeEdit = () => {
 
         setUploadedImage(imageURL);
 
-         // FormData에 이미지 추가
-        const data = new FormData();
-        data.append('image', imageFile);    
-
         setFormData(prevData => ({
             ...prevData,
-            img: imageURL
+            img: imageFile
         }))
     }
     
@@ -267,7 +265,7 @@ const RecipeEdit = () => {
     }
 
     const handleRecipeEdit = async () => {
-        // 모든 데이터가 입력되었는지 확인
+        // 필수 필드가 비어 있는지 확인
         if (!formData.title || !formData.description || !formData.recipe_Category || !formData.img || formData.content.length === 0 || formData.ingredients.length === 0 || formData.sauce.length === 0) {
             const currentEmptyFields = [];
             if (!formData.title) currentEmptyFields.push('레시피 제목');
@@ -277,7 +275,6 @@ const RecipeEdit = () => {
             if (formData.content.length === 0) currentEmptyFields.push('레시피 내용');
             if (formData.ingredients.length === 0) currentEmptyFields.push('재료');
             if (formData.sauce.length === 0) currentEmptyFields.push('소스');
-    
 
             if (currentEmptyFields.length > 0) {
                 setIsModalOpen(true);
@@ -287,28 +284,46 @@ const RecipeEdit = () => {
         }
 
         try {
-            const updatedRecipeData = {
-                title: formData.title,
-                description: formData.description,
-                content: formData.content,
-                ingredients: formData.ingredients,
-                sauce: formData.sauce,
-                recipe_Category: formData.recipe_Category,
-                user_like: [],
-                img: formData.img
-            };
+            const formDataToSend = new FormData();
+            formDataToSend.append('title', formData.title);
+            formDataToSend.append('description', formData.description);
+    
+            // content 배열
+            formData.content.forEach((step, index) => {
+                formDataToSend.append(`content[${index}]`, step);
+            });
 
-            const res = await Recipe.updateRecipe(recipeId, updatedRecipeData);
+            // ingredients 배열
+            formData.ingredients.forEach((ingredient, index) => {
+                formDataToSend.append(`ingredients[${index}][ingredientId]`, ingredient.ingredientId);
+                formDataToSend.append(`ingredients[${index}][name]`, ingredient.name);
+                formDataToSend.append(`ingredients[${index}][amount]`, ingredient.amount);
+            });
+
+            // sauce 배열
+            formData.sauce.forEach((sauceItem, index) => {
+                formDataToSend.append(`sauce[${index}][name]`, sauceItem.name);
+                formDataToSend.append(`sauce[${index}][amount]`, sauceItem.amount);
+            });
+
+            // 카테고리
+            formDataToSend.append('recipe_Category[categoryId]', formData.recipe_Category.categoryId); // 카테고리 ID
+            formDataToSend.append('recipe_Category[name]', formData.recipe_Category.name); // 카테고리 이름
+            
+            formDataToSend.append('img', formData.img);
+
+            const res = await Recipe.updateRecipe(recipeId, formDataToSend);
 
             // 레시피 수정이 완료되면, 레시피 상세 페이지로 이동.
             const id = res.data.data._id;
             navigate(`/recipes/${id}`);
-            
+
         } catch (error) {
             throw new Error('레시피 수정 실패', error);
         }
     }
 
+    console.log(formData);
     return (
         <div>
             <Header />

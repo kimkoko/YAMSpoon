@@ -110,4 +110,16 @@ export default {
     });
   },
 
+  /**
+   * @method DELETE
+   * @summary 레시피 삭제
+   * @param id 레시피 아이디
+   */
+    deleteRecipe(id) {
+    return api({
+      url: `/recipes/${id}`,
+      method: 'delete'
+    });
+  },
+
 };

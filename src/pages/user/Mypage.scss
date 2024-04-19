@@ -1,7 +1,7 @@
 @import '../../assets/index.scss';
 
 .inner{
-	width: 76%;
+	width: 77%;
 	margin: 0 auto;
 	padding-bottom: 0px;
 
@@ -55,7 +55,7 @@
 
 	.saveListBox{
 		box-sizing: border-box;
-		padding: 50px 0px 67px;
+		padding: 100px 0px;
 		width: 100%;
 
 		h2.title{
@@ -65,6 +65,10 @@
 			margin: 0 auto 54px;
 		}
 
+    &.top{
+      border-bottom: 1px solid #cecece;
+      padding-top: 50px;
+    }
 	}
 
 }

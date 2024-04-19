@@ -105,7 +105,7 @@ export default {
   updateRecipe(id, recipeData) {
     return api({
       url: `/recipes/${id}`,
-      method: 'get',
+      method: 'put',
       data: recipeData
     });
   },

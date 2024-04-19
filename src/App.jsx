@@ -1,7 +1,8 @@
 import './assets/App.scss';
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import UseScrollToTop from '../src/components/UseScrollToTop/UseScrollToTop';
+// import Loading from './components/Loading/Loading';
 
 const Home = lazy(() => import('./pages/home/Home'));
 const MaterialRecipe = lazy(() => import('./pages/material/MaterialRecipe'));
@@ -23,6 +24,8 @@ function App() {
   return (
     <>
       <UseScrollToTop />
+      {/* <Suspense fallback={<Loading isLoading={true} />}> */}
+      <Suspense fallback={<div>Loading</div>}>
         <Routes>
           <Route path="/" element={<Home />} /> 
           <Route path="/material-recipe" element={<MaterialRecipe />} /> 
@@ -38,8 +41,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/recipe-register" element={<RecipeRegister />} />
-          <Route path="/recipe-edit/:recipepId" element={<RecipeEdit />} />
+          <Route path="/recipe-edit/:recipeId" element={<RecipeEdit />} />
         </Routes>
+      </Suspense>
     </>
   );
 }

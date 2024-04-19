@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import TopButton from '../../components/TopButton/TopButton';
@@ -8,30 +9,33 @@ import ImageUpload from '../../components/Icons/ImageUpload';
 import AddModal from '../material/AddModal';
 import RecipeCategory from '../../utils/RecipeCategory';
 import Recipe from '../../utils/Recipe';
+import Modal from '../../components/Modal/Modal';
+import Alert from '../../components/Icons/Alert';
 import './RecipeRegister.scss';
 
 const RecipeRegister = () => {
-    const [ uploadedImage, setUploadedImage ] = useState(null);
+    const navigate = useNavigate();
+
     const [ categories, setCategories ] = useState([]);
+    const [ uploadedImage, setUploadedImage ] = useState(null);
     const [ ingredientsData, setIngredientsData ] = useState([]);
-    const [ isModalOpen, setIsModalOpen ] = useState(false);
-    const [ ingredient, setIngredient ] = useState([]);
-    const [ ingredientName, setIngredientName ] = useState([]);
+    const [ addModalOpen, setAddModalOpen ] = useState(false);
     const [ sauces, setSauces ] = useState([]);
-    const [ recipes, setRecipes ] = useState([]);
+    const [ recipesData, setRecipesData ] = useState([]);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
     
 
     const [ formData, setFormData ] = useState({
-        name: '',
+        title: '',
         description: '',
         content: [],
         ingredients: [],
         sauce: [],
-        category: "",
+        recipe_Category: "",
         img: "",
     })
 
-    const { name, description, content, ingredients, sauce, category, img } = formData;
+    const { title, description, content, ingredients, sauce, recipe_Category, img } = formData;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,27 +44,31 @@ const RecipeRegister = () => {
                 const response = await RecipeCategory.getRecipeCategory();
                 const categoryNames = response.data.data;
                 setCategories(categoryNames);
-        
             } catch (error) {
-              throw new Error("데이터 가져오기 실패: ", error);
+                throw new Error("데이터 가져오기 실패: ", error);
             }
-          };
-          
-          fetchData();
+        };
+        
+        fetchData();
     }, [])
+    console.log(categories);
+
     
     // 이미지 업로드
     const handleImageUpload = (e) => {
         const imageFile = e.target.files[0];
-        setUploadedImage(URL.createObjectURL(imageFile));
+        const imageURL = URL.createObjectURL(imageFile); // 이미지 파일의 URL 생성
+
+        setUploadedImage(imageURL);
 
          // FormData에 이미지 추가
         const data = new FormData();
         data.append('image', imageFile);    
 
+        console.log(data);
         setFormData(prevData => ({
             ...prevData,
-            img: data
+            img: imageURL
         }))
     }
     
@@ -71,12 +79,13 @@ const RecipeRegister = () => {
             input.click();
         }
     };
+
     
     // 레시피 이름 입력
     const handleTitleChange = (e) => {
         setFormData(prevData => ({
             ...prevData,
-            name: e.target.value
+            title: e.target.value
         }));
     };
     
@@ -91,17 +100,21 @@ const RecipeRegister = () => {
 
     // 카테고리 선택
     const handleCategoryChange = (e) => {
-        const selectedCategory = e.target.value;
+        const selectedCategoryId = e.target.value;
+        const selectedCategory = categories.find(category => category._id === selectedCategoryId);
+        const selectedCategoryObject = {
+            categoryId: selectedCategory._id,
+            name: selectedCategory.name
+        };
         setFormData(prevData => ({
             ...prevData,
-            category: selectedCategory
-        }))
+            recipe_Category: selectedCategoryObject
+        }));
     }
-  
 
     // 재료 추가 모달창 버튼
     const ingredientModalClick = () => {
-        setIsModalOpen(!isModalOpen);
+        setAddModalOpen(!addModalOpen);
     }
 
     // 재료 추가
@@ -111,99 +124,84 @@ const RecipeRegister = () => {
             return !ingredients.some(existingIngredient => existingIngredient.name === newIngredient[1]);
         });
 
-        // ingredient 배열에 새로운 재료 추가
-        setIngredient(prevIngredients => {
-            return new Promise(resolve => {
-                const updatedIngredientsArray = [...prevIngredients, ...updatedIngredients];
-                const newArray = updatedIngredientsArray.map(item => item[1]);
-                
-                 // 새로운 재료 이름 배열 설정
-                setIngredientName(newArray);
+        // 새로운 재료 배열 생성
+        const updatedIngredientArray = updatedIngredients.map(([ingredientId, name]) => ({
+            ingredientId,
+            name,
+            amount: '' // 재료 수량은 초기값으로 빈 문자열 설정
+        }));
 
-                resolve(updatedIngredientsArray);
-            });
-        });
-
-        // 새로운 재료와 재료 수량 초기화
-        const updatedIngredientData = [];
-        ingredientName.forEach(name => {
-            updatedIngredientData.push({ [name]: '' });
-        });
-        setIngredientsData(updatedIngredientData);  
+        // ingredientsData 업데이트
+        setIngredientsData(prevData => [...prevData, ...updatedIngredientArray]);
     };
-            
-    console.log(ingredientName)
-    console.log(ingredientsData);
-
+    
     // 재료 수량 변경
     const handleIngredientAmountChange = (ingredientName, e) => {
         const { value } = e.target;
 
         // ingredientsData 업데이트
-        setIngredientsData(prevData => ({
-            ...prevData,
-            [ingredientName]: value
-        }));
-
-        // formData의 재료 정보 업데이트
-        const updatedIngredientsData = ingredients.map(ingredient => {
-            if (ingredient.name === ingredientName) {
-                return {
-                    ...ingredient,
-                    amount: value
-                };
-            }
-            return ingredient;
+        setIngredientsData(prevData => {
+            const updatedData = prevData.map(ingredient => {
+                if (ingredient.name === ingredientName) {
+                    return {
+                        ...ingredient,
+                        amount: value
+                    };
+                }
+                return ingredient;
+            });
+            return updatedData;
         });
 
         const updatedFormData = {
             ...formData,
-            ingredients: updatedIngredientsData.map(({ name, amount }) => ({ name, amount }))
+            ingredients: ingredientsData
         };
         setFormData(updatedFormData);
     };
-    // console.log(formData);
-
-
+  
     // 재료 삭제 버튼
     const handleRemoveIngredient = (index) => {
         // ingredient 배열에서 삭제
-        const updatedIngredients = [...ingredient];
+        const updatedIngredients = [...ingredientsData];
         updatedIngredients.splice(index, 1);
-        setIngredient(updatedIngredients);
+        setIngredientsData(updatedIngredients);
 
-        // ingredientsData에서 삭제
-        const updatedIngredientsData = { ...ingredientsData };
-        const removedIngredientName = updatedIngredients[index].name;
-        delete updatedIngredientsData[removedIngredientName];
-        setIngredientsData(updatedIngredientsData);
-
-        // formData 업데이트
+        // formData에서도 삭제
         const updatedFormData = {
             ...formData,
-            ingredients: updatedIngredients,
+            ingredients: updatedIngredients // 삭제된 재료를 반영하여 formData 업데이트
         };
         setFormData(updatedFormData);
     }
 
     // 소스 탭 추가 버튼
     const sauceAddButton = () => {
-        setSauces([...sauces, {"" : ""}])
+        setSauces([...sauces, {name:"", amount:""}])
     }
     
     // 소스 입력
     const handleSauceChange = (index, e) => {
-        const { value } = e.target;
+        const { name, value } = e.target; // name을 추출합니다.
         const updatedSauces = sauces.map((sauce, idx) => {
             if (idx === index) {
-                return { ...sauce, [name]: value };     
+                // 입력된 name에 따라 key이름 변경
+                return { ...sauce, [name]: value }; 
             } else {
                 return sauce;
             }
         });
         setSauces(updatedSauces);
+
+        // formData 업데이트
+        const updatedFormData = {
+            ...formData,
+            sauce: updatedSauces
+        };
+        setFormData(updatedFormData)
+
     };
-    console.log(sauces);
+    console.log(formData);
 
 
     // 소스 삭제 버튼
@@ -211,14 +209,22 @@ const RecipeRegister = () => {
         const updatedSauces = [...sauces];
         updatedSauces.splice(index, 1);
         setSauces(updatedSauces);
+
+        // formData 업데이트
+        const updatedFormData = {
+            ...formData,
+            sauce: updatedSauces
+        };
+        setFormData(updatedFormData);
     }
+    console.log(formData);
 
     // 레시피 입력
     const handleRecipeChange = (index, e) => {
         const { value } = e.target;
         const updatedRecipes = [...formData.content];
         updatedRecipes[index] = value;
-        setRecipes(updatedRecipes);
+        setRecipesData(updatedRecipes);
 
         setFormData(prevData => ({
             ...prevData,
@@ -229,7 +235,7 @@ const RecipeRegister = () => {
 
     // 레시피 탭 추가 버튼
     const recipeAddButton = () => {
-        setRecipes([...recipes, ''])
+        setRecipesData([...recipesData, ''])
 
         // 레시피 탭 추가 시 formData에 빈 문자열 추가
         setFormData(prevData => ({
@@ -240,9 +246,9 @@ const RecipeRegister = () => {
 
     // 레시피 삭제 버튼
     const handleRemoveRecipe = (index) => {
-        const updatedRecipes = [...recipes];
+        const updatedRecipes = [...recipesData];
         updatedRecipes.splice(index, 1);
-        setRecipes(updatedRecipes);
+        setRecipesData(updatedRecipes);
 
         // 레시피 삭제 시 해당 내용 formData에서 제거
         const updatedContent = [...formData.content];
@@ -252,22 +258,37 @@ const RecipeRegister = () => {
             content: updatedContent
         }));
     }
-    console.log(formData)
 
     const handleRecipeRegister = async () => {
+        // 필수 필드가 비어 있는지 확인
+        if (!title || !description || !recipe_Category || !img || content.length === 0 || ingredients.length === 0 || sauce.length === 0) {
+            const emptyFields = [];
+            if (!title) emptyFields.push('레시피 제목');
+            if (!description) emptyFields.push('레시피 설명');
+            if (!recipe_Category) emptyFields.push('레시피 카테고리');
+            if (!img) emptyFields.push('레시피 이미지');
+            if (content.length === 0) emptyFields.push('레시피 내용');
+            if (ingredients.length === 0) emptyFields.push('재료');
+            if (sauce.length === 0) emptyFields.push('소스');
+
+            setIsModalOpen(true);
+            console.log("데이터가 비었습니다.",emptyFields);
+            return;
+        }
         try {
-            await Recipe.postRecipe({
-                name,
+            const res = await Recipe.postRecipe({
+                title,
                 description, 
                 content, 
                 ingredients, 
                 sauce, 
-                category, 
+                recipe_Category, 
                 user_like: [], 
-                img, 
-                creatorId: []
-                
+                img,              
             })
+            // 레시피 등록이 완료되면, 레시피 상세 페이지로 이동.
+            const id = res.data.data._id;
+            navigate(`/recipes/${id}`);
         } catch (error) {
             throw new Error('레시피 등록 실패', error);
         }
@@ -291,9 +312,10 @@ const RecipeRegister = () => {
                     <div className='left-register-container'>
                         <div className='recipe-category-container'>
                             <p>카테고리</p>
-                            <select className='recipe-filter' onChange={handleCategoryChange} value={category}>
+                            <select className='recipe-filter' onChange={handleCategoryChange} value={formData.recipe_Category.categoryId}>
+                                <option value="" defaultValue={"종류"} hidden>종류</option>
                                 {categories.map((category) => (
-                                    <option key={category.name} value={category.id}>
+                                    <option key={category._id} value={category._id}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -305,7 +327,7 @@ const RecipeRegister = () => {
                                 className='recipe-title'
                                 id="recipe-title"
                                 type='text'
-                                value={formData.name}
+                                value={formData.title}
                                 onChange={handleTitleChange}
                                 placeholder='레시피 제목을 입력해주세요.' />
                         </div>
@@ -329,17 +351,17 @@ const RecipeRegister = () => {
                             <div className='plus-icon' onClick={ingredientModalClick}>
                                 <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
                             </div>
-                            {isModalOpen && (<AddModal closeModal={ingredientModalClick} handleAddAction={handleAddIngredient}/> )}
+                            {addModalOpen && (<AddModal closeModal={ingredientModalClick} handleAddAction={handleAddIngredient}/> )}
                         </div>
                         <div className='ingregdients'>                            
                             {ingredientsData.map((ingredient, index) => (
                                 <div className="ingredient" key={index}>
-                                    <p>{Object.values(ingredient)[1]}</p>
+                                    <p>{ingredient.name}</p>
                                     <input
                                         type="text"
-                                        name={Object.values(ingredient)[1]}
-                                        value={Object.values(ingredient)[1]} 
-                                        onChange={(e) => handleIngredientAmountChange(Object.keys(ingredient)[0], e)}
+                                        name={ingredient.name}
+                                        value={ingredient.amount} 
+                                        onChange={(e) => handleIngredientAmountChange(ingredient.name, e)}
                                         placeholder="수량을 입력하세요"
                                     />
                                     <div className="trashcan-icon" onClick={() => handleRemoveIngredient(index)}>
@@ -364,14 +386,14 @@ const RecipeRegister = () => {
                                         className='sauce-name'
                                         type='text'
                                         name='name'
-                                        value={Object.keys(sauce)[0]}
+                                        value={sauce.name}
                                         onChange={(e) => handleSauceChange(index, e)}
                                         placeholder='소스명' />
                                     <input
                                         className='sauce-amount'
                                         type='text'
                                         name='amount'
-                                        value={Object.values(sauce)[1]}
+                                        value={sauce.amount}
                                         onChange={(e) => handleSauceChange(index, e)}
                                         placeholder='소스양 (ex. 3스푼)' />
                                     <div className='trashcan-icon' onClick={() => handleRemoveSauce(index)}>
@@ -390,7 +412,7 @@ const RecipeRegister = () => {
                             <Plus width="29px" height="29px" strokeColor="#D3233A" fillColor="#fff" />
                         </div>
                     </div>
-                    {recipes.map((recipe, index) => (
+                    {recipesData.map((recipe, index) => (
                         <div className='recipe-input' key={index}>
                             <p>{index + 1}</p>
                             <input
@@ -408,6 +430,17 @@ const RecipeRegister = () => {
                 </div>
                 <button className='recipe-register-button' onClick={handleRecipeRegister}>등록하기</button>
             </div>
+            {isModalOpen &&
+                (
+                    <Modal
+                        IconComponent={Alert}
+                        alertBody="모든 데이터를 입력해주세요."
+                        buttonAction={() => setIsModalOpen(false)}
+                        actionText="확인"
+                        hideCloseButton={true}
+                        closeModal={() => setIsModalOpen(false)}
+                    />
+                )}
             <TopButton />
             <Footer />
         </div>

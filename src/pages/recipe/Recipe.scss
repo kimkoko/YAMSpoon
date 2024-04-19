@@ -93,7 +93,12 @@
     .recipeInfo{
         width: 54%;
 
-        p.category{
+        .categoryBox{
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+
+          p.category{
             color: $main-color;
             font-size: 16px;
             box-sizing: border-box;
@@ -101,14 +106,27 @@
             display: inline-block;
             border-radius: 100px;
             border: 1px solid $main-color;
-            margin-bottom: 5px;
+          }
+
+          p.creator {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+            color: #8a8a8a;
+            font-size: 14px;
+
+            svg {
+              width: 18px;
+              margin-right: 3px;
+            }
+          }
         }
 
         h3.recipeName{
             font-size: 31px;
             font-weight: 700;
             line-height: 1.5;
-            margin-bottom: 36px;
+            margin-bottom: 20px;
         }
 
         p.recipeText{
@@ -185,15 +203,36 @@
         width: 100%;
 
         h4{
-            font-size: 21px;
-            font-weight: 500;
-            margin-bottom: 15px;
+          font-size: 21px;
+          font-weight: 500;
+          margin-bottom: 15px;
         }
 
         p{
-            font-size: 18px;
-            line-height: 1.5;
+          font-size: 18px;
+          line-height: 2.0;
+
+          span.num {
+            color: $main-color;
+            display: inline-block;
+            width: 3%;
+          }
         }
     }
+}
+
+.recipeButtons{
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+
+  button{
+    width: 150px;
+
+    &.delete{
+      margin-top: 0px;
+      margin-left: 10px;
+    }
+  }
 }
 

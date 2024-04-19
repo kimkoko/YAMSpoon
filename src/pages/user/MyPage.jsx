@@ -5,15 +5,17 @@ import Footer from '../../components/Footer/Footer';
 import TopButton from '../../components/TopButton/TopButton';
 import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
 import User from '../../utils/User';
-import Recipe from '../../utils/Recipe';
 import { Link, useNavigate } from 'react-router-dom';
 import Loading from "../../components/Loading/Loading";
+import PropTypes from 'prop-types';
 
 export default function MyPage() {
 	const [user, setUser] = useState([]); // 유저 정보
 	const [isLoading, setIsLoading] = useState(false);
 	const [saveList, setSaveList] = useState(false); // 저장한 레시피 리스트
   const [recipeData, setRecipeData] = useState([]); // 저장한 레시피 데이터
+  const [createList, setCreateList] = useState(false); // 작성한 레시피 리스트
+  const [createRecipeData, setCreateRecipeData] = useState([]); // 작성한 레시피 데이터
   const navigate = useNavigate(); // navigate 함수를 사용하기 위해 호출
 
 	// 유저 정보 조회
@@ -36,19 +38,32 @@ export default function MyPage() {
       setIsLoading(false);
     }
 
-    // 유저 저장 레시피 매핑
-    const fetchSaveRecipe = async (recipeIds) => {
-      const recipes = await Promise.all(recipeIds.map(async (recipeId) => {
-        const response = await Recipe.getDetailRecipe(recipeId);
-        return response.data.data;
-      }));
+    fetchUser();
 
+    // 유저 저장 레시피 매핑
+    const fetchSaveRecipe = async () => {
+      const response = await User.getUserBookmark()
+      const recipes = response.data.data.slice().reverse();
+      
       setRecipeData(recipes);
       setIsLoading(false);
+      console.log(recipes)
     }
 
-    fetchUser();
-  }, [navigate])
+    // 유저 작성 레시피
+    const fetchUserRecipe = async () => {
+      try {
+        const response = await User.getCreateRecipe();
+        const userRecipe = response.data.data.recipe.slice().reverse();
+
+        setCreateRecipeData(userRecipe)
+        setCreateList(userRecipe.length > 0 ? true : false)
+      } catch (error) {
+        console.error('Failed to fetch user recipe:', error);
+      }
+    }
+    fetchUserRecipe()
+  }, [])
   
 	return (
 			<>
@@ -70,24 +85,65 @@ export default function MyPage() {
               </Link>
             </div>
           </div>
-          
-          <div className='listInner'>
-            <div className='saveListBox'>
-                <h2 className='title'>내가 저장한 레시피</h2>
-                <div className='saveList'>
-                  {saveList ?
-                    (<ImageCarousel slideDatas={recipeData} hideRecipeRanking={true}/>)
-                    :
-                    (<div className='empty'>
-                      <p>저장된 레시피가 없습니다.</p>
-                    </div>)
-                  }
-                </div>
-            </div>
-          </div>
+          <MyRecipe createRecipeData={createRecipeData} createList={createList}/>
+          <SavedRecipe recipeData={recipeData} saveList={saveList}/>
         </div>
         <TopButton />
         <Footer />
     </>
 	)
+}
+
+// 내가 작성한 레시피
+function MyRecipe({createRecipeData, createList}) {
+
+  return (
+    <div className='listInner'>
+      <div className='saveListBox top'>
+          <h2 className='title'>내가 작성한 레시피</h2>
+          <div className='saveList'>
+            {createList ?
+              (<ImageCarousel key="createRecipes" slideDatas={createRecipeData} hideRecipeRanking={true}/>)
+              :
+              (<div className='empty'>
+                <p>작성된 레시피가 없습니다.</p>
+              </div>)
+            }
+          </div>
+      </div>
+    </div>
+  )
+}
+
+// 내가 저장한 레시피
+function SavedRecipe({recipeData, saveList}) {
+
+  return (
+    <div className='listInner'>
+      <div className='saveListBox'>
+          <h2 className='title'>내가 저장한 레시피</h2>
+          <div className='saveList'>
+            {saveList ?
+              (<ImageCarousel key="savedRecipes" slideDatas={recipeData} hideRecipeRanking={true}/>)
+              :
+              (<div className='empty'>
+                <p>저장된 레시피가 없습니다.</p>
+              </div>)
+            }
+          </div>
+      </div>
+    </div>
+  )
+}
+
+// props 정의
+MyRecipe.propTypes = {
+  createRecipeData: PropTypes.array,
+  createList: PropTypes.bool
+}
+
+// props 정의
+SavedRecipe.propTypes = {
+  recipeData: PropTypes.array,
+  saveList: PropTypes.bool
 }

@@ -43,13 +43,12 @@ export default function RecipeDetails () {
     const fetchRecipe = async () => {
       try {
         const response = await Recipe.getDetailRecipe(recipeId);
-
-        const createResponse = await User.getCreateRecipe();
-        const userCreator = createResponse.data.data.userOid;
-
         const { creatorNickName, title, description, content, ingredients, sauce, like, recipe_Category, img } = response.data.data;
         setRecipeItem({ creatorNickName, title, description, content, ingredients, sauce, like, recipe_Category, img });
 
+
+        const createResponse = await User.getCreateRecipe();
+        const userCreator = createResponse.data.data.userOid;
         const creatorId = response.data.data.creatorId;
 
         // 레시피 작성자 id와 로그인 유저 id가 일치하면 isCreator를 true로 설정
@@ -73,6 +72,7 @@ export default function RecipeDetails () {
       try {
         const response = await User.getUser();
         const userData = response.data.data;
+        console.log(userData)
 
         if (userData) {
           setIsMember(true);

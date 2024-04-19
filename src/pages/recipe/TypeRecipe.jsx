@@ -71,16 +71,25 @@ const TypeRecipe = () => {
       if (selected === index) {
         setSelected(null);
         setRecipes(sortedRecipes);
+        setPageData(sortedRecipes);
+        setTotalItems(sortedRecipes.length);
       } else {
         setSelected(index);
         
         const response = await Recipe.getCatgory(categoryId);
         const categoryRecipes = response.data.data.recipes;
-        setRecipes(categoryRecipes);
-
-        console.log(recipes);
-        setPageData(categoryRecipes);
-        setTotalItems(categoryRecipes.length);
+  
+        // 카테고리 레시피를 불러올 때 정렬 기준을 유지하도록 설정
+        const sortedCategoryRecipes = [...categoryRecipes];
+        if (sortingFilter === 'latest') {
+          sortedCategoryRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortingFilter === 'famous') {
+          sortedCategoryRecipes.sort((a, b) => (b.like ? b.like.length : 0) - (a.like ? a.like.length : 0));
+        }
+  
+        setSortedRecipes(sortedCategoryRecipes);
+        setPageData(sortedCategoryRecipes);
+        setTotalItems(sortedCategoryRecipes.length);
       }
     } catch (error) {
       throw new Error("카테고리 선택 실패: ", error);
@@ -97,16 +106,12 @@ const TypeRecipe = () => {
     setTotalItems(recipesData.length);
     setSelected(null);
   }
-
-  // 페이지 바뀔때마다 보여줄 레시피 핸들러
-  const handlePageData = (data) => {
-    setPageIndex([data[0], data[1]])
-  }
-
-  // 정렬 기준 변경 이벤트 핸들러
-  const handleSortingChange = (e) => {
-    setSortingFilter(e.target.value);
-  }
+  // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
+  useEffect(() => {
+    if (recipes) {
+        setTotalItems(recipes.length);
+    }
+  }, []);
 
   // 정렬 기준에 따라 정렬된 레시피 재설정
   useEffect(() => {
@@ -121,13 +126,18 @@ const TypeRecipe = () => {
 
     setRecipes(sorted);
   }, [sortingFilter, sortedRecipes]);
+  
 
-  // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
-  useEffect(() => {
-    if (sortedRecipes) {
-        setTotalItems(sortedRecipes.length);
-    }
-  }, [sortedRecipes]);
+  // 페이지 바뀔때마다 보여줄 레시피 핸들러
+  const handlePageData = (data) => {
+    setPageIndex([data[0], data[1]])
+  }
+  
+  // 정렬 기준 변경 이벤트 핸들러
+  const handleSortingChange = (e) => {
+    setSortingFilter(e.target.value);
+  }
+
 
   // 배열을 원하는 크기로 나누는 함수
   const makeArray = (arr, size) => {

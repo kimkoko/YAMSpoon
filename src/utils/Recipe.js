@@ -105,20 +105,21 @@ export default {
   updateRecipe(id, recipeData) {
     return api({
       url: `/recipes/${id}`,
-      method: 'get',
+      method: 'put',
       data: recipeData
     });
   },
 
   /**
    * @method DELETE
-   * @summary 작성한 레시피 삭제
+   * @summary 레시피 삭제
    * @param id 레시피 아이디
    */
     deleteRecipe(id) {
     return api({
       url: `/recipes/${id}`,
-      method: 'delete',
+      method: 'delete'
     });
   },
+
 };

@@ -235,7 +235,7 @@ export default function RecipeDetails () {
           {
             isCreator && (
               <div className='recipeButtons'>
-                <button type='button' className='edit notFilled' onClick={() => navigate("/recipe-edit")}>수정</button>
+                <button type='button' className='edit notFilled' onClick={() => navigate(`/recipe-edit/${recipeId}`)}>수정</button>
                 <button type='button' className='delete' onClick={() => setIsDeleteModalOpen(true)}>삭제</button>
               </div>
             )

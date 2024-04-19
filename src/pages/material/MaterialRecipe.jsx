@@ -9,8 +9,10 @@ import Heart from '../../components/Icons/Heart'
 import TopButon from '../../components/TopButton/TopButton'
 import MaterialBar from './MaterialBar'
 import Recipe from '../../utils/Recipe'
+import Loading from "../../components/Loading/Loading";
 
 const MaterialRecipe = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [ recipeData, setRecipeData ] = useState(null)
   const [ filteredRecipe, setFilteredRecipe ] = useState(null)
   const [ totalItems, setTotalItems ] = useState(null)
@@ -25,15 +27,15 @@ const MaterialRecipe = () => {
       setRecipeData(newestData)
       setFilteredRecipe(newestData)
       setTotalItems(newestData.length)
-
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
   };
 
-
   useEffect(() => {
-      fetchRecipes();
+    setIsLoading(true);
+    fetchRecipes();
   }, [])
 
   useEffect(() => {
@@ -85,27 +87,30 @@ const MaterialRecipe = () => {
   return (
     <div>
         <Header />
-        <div className='material-container'>
-            <div className='title'>재료별로 레시피가 준비되었어요!</div>
-            <div className='materialbar-container'>
-                <MaterialBar 
-                    handleMaterialSelect={handleMaterialSelect}
-                    handleAllClick={handleAllClick}
-                />
-            </div>
-            <div className='result'>
-                <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
-                <select name="order" onChange={handleSortChange}>
-                    <option value="latest">최신순</option>
-                    <option value="likes">인기순</option>
-                </select>
-            </div>
-            <RecipesList pageData={pageData}/>
-            {filteredRecipe && filteredRecipe.length === 0 && 
-              <div className='no-recipe'>
-                <p>등록된 레시피가 없습니다.</p>
+        <div className='innerBox'>
+          <Loading isLoading={isLoading}/>
+            <div className='material-container'>
+              <div className='title'>재료별로 레시피가 준비되었어요!</div>
+              <div className='materialbar-container'>
+                  <MaterialBar 
+                      handleMaterialSelect={handleMaterialSelect}
+                      handleAllClick={handleAllClick}
+                  />
               </div>
-            }
+              <div className='result'>
+                  <p>검색 결과 <span>{filteredRecipe? filteredRecipe.length : 0}</span>건 조회</p>
+                  <select name="order" onChange={handleSortChange}>
+                      <option value="latest">최신순</option>
+                      <option value="likes">인기순</option>
+                  </select>
+              </div>
+              <RecipesList pageData={pageData}/>
+              {filteredRecipe && filteredRecipe.length === 0 && 
+                <div className='no-recipe'>
+                  <p>등록된 레시피가 없습니다.</p>
+                </div>
+              }
+          </div>
         </div>
         { filteredRecipe && <Pagination
                             key={filteredRecipe.length + sort} 

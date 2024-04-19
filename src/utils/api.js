@@ -1,9 +1,8 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://kdt-sw-8-team06.elicecoding.com/api/v1';
+axios.defaults.baseURL = '/api/v1';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.timeout = 5000;
-axios.defaults.withCredentials = true;
 
 export const api = axios.create();
 
@@ -13,6 +12,9 @@ api.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       req.headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (req.data instanceof FormData) {
+      req.headers['Content-Type'] = 'multipart/form-data';
     }
     return req;
   },

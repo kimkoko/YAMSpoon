@@ -95,10 +95,13 @@
                 .item-img{
                     overflow: hidden;
                     border-radius: 44px;
+                    height: 324px;
+
                     .ItemImage {
                         width: 100%;
-                        height: 320px;
+                        height: 100%;
                         transition: all 0.5s;
+                        border-radius: 44px;
                     }
                 }
     
@@ -136,7 +139,7 @@
         color: $gray-color2;
         font-size: 36px;
         font-weight: 500;
-
+        line-height: 1.5;
     }
     
 }

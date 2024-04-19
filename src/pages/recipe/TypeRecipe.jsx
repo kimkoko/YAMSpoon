@@ -49,21 +49,6 @@ const TypeRecipe = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // 정렬된 레시피 배열
-    const sorted = sortedRecipes.sort((a, b) => {
-      if (sortingFilter === 'latest'){
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      }else if (sortingFilter === 'famous') {
-        return b.like.length - a.like.length;
-      }
-
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    })
-
-    setSortedRecipes(sorted);
-  }, [sortingFilter, recipes]);
-
   // 페이지 인덱스에 따라 보여줄 레시피 설정
   useEffect(() => {
     try {
@@ -73,36 +58,29 @@ const TypeRecipe = () => {
       const startIndex = pageIndex[0] || 0;
       const endIndex = pageIndex[1] || 16;
 
-      const recipesToShow = selected !== null ? recipes : sortedRecipes;
-
-      setPageData(recipesToShow.slice(startIndex, endIndex));
+      setPageData(recipes.slice(startIndex, endIndex));
     } catch (error) {
       throw new Error("페이지 데이터 설정 실패: ", error);
     }
   }, [pageIndex, sortedRecipes, recipes, selected]);
   
-  // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
-  useEffect(() => {
-    if (sortedRecipes) {
-        setTotalItems(sortedRecipes.length);
-    }
-  }, [sortedRecipes]);
-
-
   // 카테고리 선택 핸들러
   const handleSelect = async (index, categoryId) => {
     try {
       setSortingFilter('latest');
       if (selected === index) {
         setSelected(null);
-        setPageData(recipes);
+        setRecipes(sortedRecipes);
       } else {
         setSelected(index);
-
+        
         const response = await Recipe.getCatgory(categoryId);
         const categoryRecipes = response.data.data.recipes;
         setRecipes(categoryRecipes);
+
+        console.log(recipes);
         setPageData(categoryRecipes);
+        setTotalItems(categoryRecipes.length);
       }
     } catch (error) {
       throw new Error("카테고리 선택 실패: ", error);
@@ -114,7 +92,9 @@ const TypeRecipe = () => {
     setSortingFilter('latest');
 
     const response = await Recipe.getRecipe();
-    setRecipes(response.data.data);
+    const recipesData = response.data.data;
+    setRecipes(recipesData);
+    setTotalItems(recipesData.length);
     setSelected(null);
   }
 
@@ -127,6 +107,27 @@ const TypeRecipe = () => {
   const handleSortingChange = (e) => {
     setSortingFilter(e.target.value);
   }
+
+  // 정렬 기준에 따라 정렬된 레시피 재설정
+  useEffect(() => {
+    if (!sortedRecipes) return;
+    
+    const sorted = [...sortedRecipes]; // 복제본을 만들어 정렬합니다.
+    if (sortingFilter === 'latest') {
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (sortingFilter === 'famous') {
+      sorted.sort((a, b) => (b.like ? b.like.length : 0) - (a.like ? a.like.length : 0));
+    }
+
+    setRecipes(sorted);
+  }, [sortingFilter, sortedRecipes]);
+
+  // 정렬된 레시피 배열이 변경될때마다 전체 아이템 수 설정
+  useEffect(() => {
+    if (sortedRecipes) {
+        setTotalItems(sortedRecipes.length);
+    }
+  }, [sortedRecipes]);
 
   // 배열을 원하는 크기로 나누는 함수
   const makeArray = (arr, size) => {

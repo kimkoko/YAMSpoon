@@ -61,15 +61,11 @@ const RecipeRegister = () => {
         // 이미지 파일 URL 생성
         const imageURL = URL.createObjectURL(imageFile); 
 
-        setUploadedImage(imageURL);
-
-         // FormData에 이미지 추가
-        const data = new FormData();
-        data.append('image', imageFile);    
+        setUploadedImage(imageURL);   
 
         setFormData(prevData => ({
             ...prevData,
-            img: imageURL
+            img: imageFile
         }))
     }
     
@@ -287,16 +283,35 @@ const RecipeRegister = () => {
             }    
         }
         try {
-            const res = await Recipe.postRecipe({
-                title,
-                description, 
-                content, 
-                ingredients, 
-                sauce, 
-                recipe_Category, 
-                user_like: [], 
-                img,              
-            })
+            const formDataToSend = new FormData();
+            formDataToSend.append('title', title);
+            formDataToSend.append('description', description);
+    
+            // content 배열
+            content.forEach((step, index) => {
+                formDataToSend.append(`content[${index}]`, step);
+            });
+
+            // ingredients 배열
+            ingredients.forEach((ingredient, index) => {
+                formDataToSend.append(`ingredients[${index}][ingredientId]`, ingredient.ingredientId);
+                formDataToSend.append(`ingredients[${index}][name]`, ingredient.name);
+                formDataToSend.append(`ingredients[${index}][amount]`, ingredient.amount);
+            });
+
+            // sauce 배열
+            sauce.forEach((sauceItem, index) => {
+                formDataToSend.append(`sauce[${index}][name]`, sauceItem.name);
+                formDataToSend.append(`sauce[${index}][amount]`, sauceItem.amount);
+            });
+
+            // 카테고리
+            formDataToSend.append('recipe_Category[categoryId]', recipe_Category.categoryId); // 카테고리 ID
+            formDataToSend.append('recipe_Category[name]', recipe_Category.name); // 카테고리 이름
+            
+            formDataToSend.append('img', img);
+            
+            const res = await Recipe.postRecipe(formDataToSend);
 
             // 레시피 등록이 완료되면, 레시피 상세 페이지로 이동.
             const id = res.data.data._id;

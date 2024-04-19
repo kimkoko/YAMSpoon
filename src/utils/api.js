@@ -13,9 +13,10 @@ api.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       req.headers['Authorization'] = `Bearer ${token}`;
-    } else if (req.data instanceof FormData) {
+    }
+    if (req.data instanceof FormData) {
       req.headers['Content-Type'] = 'multipart/form-data';
-  }
+    }
     return req;
   },
   (err) => {
